@@ -241,6 +241,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GhostSpriteGO: {fileID: 474887010}
+  isScared: 0
   isDead: 1
 --- !u!1 &191492167
 GameObject:
@@ -396,6 +397,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 236566278}
+  - component: {fileID: 236566279}
   m_Layer: 5
   m_Name: GhostWalkingUp
   m_TagString: Untagged
@@ -424,6 +426,21 @@ RectTransform:
   m_AnchoredPosition: {x: 350, y: 15}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &236566279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 236566277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a73092ff3d814246860f0859ef59d24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GhostSpriteGO: {fileID: 2146003758}
+  isScared: 0
+  isDead: 0
 --- !u!1 &260540284
 GameObject:
   m_ObjectHideFlags: 0
@@ -472,6 +489,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 270340529}
+  - component: {fileID: 270340530}
   m_Layer: 5
   m_Name: GhostWalkingLeft
   m_TagString: Untagged
@@ -500,6 +518,21 @@ RectTransform:
   m_AnchoredPosition: {x: 270, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &270340530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 270340528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a73092ff3d814246860f0859ef59d24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GhostSpriteGO: {fileID: 885830868}
+  isScared: 0
+  isDead: 0
 --- !u!1 &293282879
 GameObject:
   m_ObjectHideFlags: 0
@@ -979,6 +1012,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PacStudentSpriteGO: {fileID: 203905448}
+  isDead: 1
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -1767,6 +1801,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1111775297}
+  - component: {fileID: 1111775298}
   m_Layer: 5
   m_Name: PacStudentWalkingRight
   m_TagString: Untagged
@@ -1795,6 +1830,20 @@ RectTransform:
   m_AnchoredPosition: {x: 300, y: 170}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1111775298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1111775296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5eec9940d0d45d046a04af069af1324c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PacStudentSpriteGO: {fileID: 969881445}
+  isDead: 0
 --- !u!1 &1200646354
 GameObject:
   m_ObjectHideFlags: 0
@@ -1846,6 +1895,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GhostSpriteGO: {fileID: 1767420575}
+  isScared: 1
   isDead: 0
 --- !u!1 &1205562122
 GameObject:
@@ -1961,6 +2011,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1331615128}
+  - component: {fileID: 1331615129}
   m_Layer: 5
   m_Name: GhostWalkingDown
   m_TagString: Untagged
@@ -1989,6 +2040,21 @@ RectTransform:
   m_AnchoredPosition: {x: 350, y: -15}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1331615129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1331615127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a73092ff3d814246860f0859ef59d24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GhostSpriteGO: {fileID: 1968622585}
+  isScared: 0
+  isDead: 0
 --- !u!1 &1515884570
 GameObject:
   m_ObjectHideFlags: 0
@@ -2038,6 +2104,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1562045538}
+  - component: {fileID: 1562045539}
   m_Layer: 5
   m_Name: PacStudentWalkingDown
   m_TagString: Untagged
@@ -2066,6 +2133,20 @@ RectTransform:
   m_AnchoredPosition: {x: 350, y: 155}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1562045539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1562045537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5eec9940d0d45d046a04af069af1324c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PacStudentSpriteGO: {fileID: 821581843}
+  isDead: 0
 --- !u!1 &1656872102
 GameObject:
   m_ObjectHideFlags: 0
@@ -2117,6 +2198,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GhostSpriteGO: {fileID: 761142304}
+  isScared: 1
   isDead: 0
 --- !u!1 &1687261454
 GameObject:
@@ -2232,6 +2314,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1687289791}
+  - component: {fileID: 1687289792}
   m_Layer: 5
   m_Name: PacStudentWalkingUp
   m_TagString: Untagged
@@ -2260,6 +2343,20 @@ RectTransform:
   m_AnchoredPosition: {x: 350, y: 185}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1687289792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1687289790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5eec9940d0d45d046a04af069af1324c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PacStudentSpriteGO: {fileID: 2048237726}
+  isDead: 0
 --- !u!1 &1767420575
 GameObject:
   m_ObjectHideFlags: 0
@@ -2374,6 +2471,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1777734151}
+  - component: {fileID: 1777734152}
   m_Layer: 5
   m_Name: GhostWalkingRight
   m_TagString: Untagged
@@ -2402,6 +2500,21 @@ RectTransform:
   m_AnchoredPosition: {x: 300, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1777734152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1777734150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a73092ff3d814246860f0859ef59d24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GhostSpriteGO: {fileID: 1205562122}
+  isScared: 0
+  isDead: 0
 --- !u!1 &1789434311
 GameObject:
   m_ObjectHideFlags: 0
@@ -2453,6 +2566,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GhostSpriteGO: {fileID: 1020717185}
+  isScared: 1
   isDead: 0
 --- !u!1 &1933168780
 GameObject:
@@ -2715,6 +2829,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GhostSpriteGO: {fileID: 443728668}
+  isScared: 1
   isDead: 0
 --- !u!1 &2045212192
 GameObject:
@@ -2725,6 +2840,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2045212193}
+  - component: {fileID: 2045212194}
   m_Layer: 5
   m_Name: PacStudentWalkingLeft
   m_TagString: Untagged
@@ -2753,6 +2869,20 @@ RectTransform:
   m_AnchoredPosition: {x: 270, y: 170}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2045212194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2045212192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5eec9940d0d45d046a04af069af1324c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PacStudentSpriteGO: {fileID: 1687261454}
+  isDead: 0
 --- !u!1 &2048237726
 GameObject:
   m_ObjectHideFlags: 0

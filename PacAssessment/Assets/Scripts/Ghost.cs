@@ -6,6 +6,7 @@ public class Ghost : MonoBehaviour
 {
     private Animator animatorController;
     [SerializeField] private GameObject GhostSpriteGO;
+    public bool isScared = false;
     public bool isDead = false;
 
     // Start is called before the first frame update
@@ -17,7 +18,10 @@ public class Ghost : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        animatorController.SetTrigger("ScaredTrigger");
+        if (isScared)
+        {
+            animatorController.SetTrigger("ScaredTrigger");
+        }
 
         if (isDead)
         {

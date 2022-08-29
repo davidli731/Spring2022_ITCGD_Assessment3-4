@@ -7,6 +7,7 @@ public class PacStudent : MonoBehaviour
 {
     private Animator animatorController;
     [SerializeField] private GameObject PacStudentSpriteGO;
+    public bool isDead = false;
 
     // Start is called before the first frame update
     void Start()
@@ -17,6 +18,9 @@ public class PacStudent : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        animatorController.SetTrigger("DeadTrigger");
+        if (isDead)
+        {
+            animatorController.SetTrigger("DeadTrigger");
+        }
     }
 }
