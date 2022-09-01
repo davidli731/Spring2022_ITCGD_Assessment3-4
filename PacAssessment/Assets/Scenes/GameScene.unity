@@ -241,7 +241,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GhostSpriteGO: {fileID: 474887010}
-  isScared: 0
+  isScared: 1
   isDead: 1
 --- !u!1 &191492167
 GameObject:
