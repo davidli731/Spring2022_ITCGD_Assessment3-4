@@ -5,10 +5,10 @@ using UnityEngine;
 public class Map : MonoBehaviour
 {
     // Declare Variables
-    private const int tileArraySizeY = 28;
-    private const int tileArraySizeX = 30;
-    private const float startingXPos = -17.225f;
-    private const float startingYPos = 9.55f;
+    private const int tileArraySizeY = 14;
+    private const int tileArraySizeX = 15;
+    private const float startingXPos = -16.9f;
+    private const float startingYPos = 9.4f;
     private const float startingZPos = 0.0f;
     private float xPos;
     private float yPos;
@@ -47,11 +47,16 @@ public class Map : MonoBehaviour
             for (int j = 0; j < tileArraySizeY; j++)
             {
                 Instantiate(tile, new Vector3(xPos, yPos, zPos), Quaternion.identity, gameObject.transform);
-                xPos += 0.625f;
+                xPos += 1.25f;
             }
             xPos = startingXPos;
-            yPos -= 0.323f;
+            yPos -= 0.65f;
         }
+
+        /*foreach (int item in levelMap)
+        {
+            Debug.Log(item);
+        }*/
     }
 
     // Update is called once per frame
