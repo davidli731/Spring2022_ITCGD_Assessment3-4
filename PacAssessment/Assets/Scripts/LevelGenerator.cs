@@ -2,14 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Map : MonoBehaviour
+public class LevelGenerator : MonoBehaviour
 {
     // Declare Variables
-    private const int tileArraySizeY = 14;
-    private const int tileArraySizeX = 15;
     private const float startingXPos = -16.9f;
     private const float startingYPos = 9.4f;
     private const float startingZPos = 0.0f;
+    private const float scaleX = 1.25f;
+    private const float scaleY = 0.65f;
+    private int tileArraySizeX;
+    private int tileArraySizeY;
     private float xPos;
     private float yPos;
     private float zPos;
@@ -38,19 +40,24 @@ public class Map : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        tileArraySizeX = levelMap.GetLength(0);
+        tileArraySizeY = levelMap.GetLength(1);
+
+        // Set initial position of x,y,z grid box (top left)
         xPos = startingXPos;
         yPos = startingYPos;
         zPos = startingZPos;
 
+        // Procedurally generate grid map
         for (int i = 0; i < tileArraySizeX; i++)
         {
             for (int j = 0; j < tileArraySizeY; j++)
             {
                 Instantiate(tile, new Vector3(xPos, yPos, zPos), Quaternion.identity, gameObject.transform);
-                xPos += 1.25f;
+                xPos += scaleX;
             }
             xPos = startingXPos;
-            yPos -= 0.65f;
+            yPos -= scaleY;
         }
 
         /*foreach (int item in levelMap)
