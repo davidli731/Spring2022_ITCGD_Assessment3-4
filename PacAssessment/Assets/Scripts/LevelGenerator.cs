@@ -125,6 +125,7 @@ public class LevelGenerator : MonoBehaviour
                     for (int j = tileArraySizeY; j > 0; j--)
                     {
                         tile = createSquare(xPos, yPos, zPos);
+                        //addSprite(levelMap[i, j], tile);
                         xPos += scaleX;
                     }
                     xPos = startingXPos;
@@ -136,9 +137,10 @@ public class LevelGenerator : MonoBehaviour
                 // Bottom Left
                 for (int i = tileArraySizeX - 1; i >= 0; i--)
                 {
-                    for (int j = 0; j < tileArraySizeY; j++)
+                    for (int j = tileArraySizeY - 1; j >= 0; j--)
                     {
                         tile = createSquare(xPos, yPos, zPos);
+                        addSprite(levelMap[i, j], tile);
                         xPos += scaleX;
                     }
                     xPos = startingXPos;
@@ -148,11 +150,12 @@ public class LevelGenerator : MonoBehaviour
 
             case 3:
                 // Bottom Right
-                for (int i = 0; i < tileArraySizeX; i++)
+                for (int i = tileArraySizeX - 1; i >= 0; i--)
                 {
-                    for (int j = 0; j < tileArraySizeY; j++)
+                    for (int j = tileArraySizeY - 1; j >= 0; j--)
                     {
                         tile = createSquare(xPos, yPos, zPos);
+                        addSprite(levelMap[i, j], tile);
                         xPos += scaleX;
                     }
                     xPos = startingXPos;
