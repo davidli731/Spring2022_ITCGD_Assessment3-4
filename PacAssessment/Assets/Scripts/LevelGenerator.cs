@@ -14,7 +14,19 @@ public class LevelGenerator : MonoBehaviour
     private int tileArraySizeX;
     private int tileArraySizeY;
 
-    [SerializeField] private GameObject tile;
+    [SerializeField] private GameObject squareTileGO;
+
+    // Sprites
+    [SerializeField] private Sprite outsideCornerSprite;
+    [SerializeField] private Sprite outsideWallSprite;
+    [SerializeField] private Sprite insideCornerSprite;
+    [SerializeField] private Sprite insideWallSprite;
+    [SerializeField] private Sprite standardPelletSprite;
+    [SerializeField] private Sprite powerPelletSprite;
+    [SerializeField] private Sprite tJunctionSprite;
+
+    // Animator
+    [SerializeField] private RuntimeAnimatorController powerPelletController;
 
     /* Level map index
     * 0 – Empty (do not put anything here, no sprite needed)
@@ -76,16 +88,18 @@ public class LevelGenerator : MonoBehaviour
     /// <summary>
     /// Procedurally generate grid map
     /// </summary>
-    /// <param name="startingXPos"></param>
-    /// <param name="startingYPos"></param>
-    /// <param name="startingZPos"></param>
-    /// <param name="scaleX"></param>
-    /// <param name="scaleY"></param>
+    /// <param name="startingXPos">The x position of the first tile</param>
+    /// <param name="startingYPos">The y position of the first tile</param>
+    /// <param name="startingZPos">The z position of the first tile</param>
+    /// <param name="scaleX">The x scale for the tile</param>
+    /// <param name="scaleY">The y scale for the tile</param>
     private void generateGridMap(float startingXPos, float startingYPos, float startingZPos, float scaleX, float scaleY,  int quadrant)
     {
         float xPos = startingXPos;
         float yPos = startingYPos;
         float zPos = startingZPos;
+
+        GameObject tile;
 
         switch (quadrant)
         {
@@ -95,7 +109,8 @@ public class LevelGenerator : MonoBehaviour
                 {
                     for (int j = tileArraySizeY - 1; j >= 0; j--)
                     {
-                        Instantiate(tile, new Vector3(xPos, yPos, zPos), Quaternion.identity, gameObject.transform);
+                        tile = createSquare(xPos, yPos, zPos);
+                        addSprite(levelMap[i, j], tile);
                         xPos += scaleX;
                     }
                     xPos = startingXPos;
@@ -109,7 +124,7 @@ public class LevelGenerator : MonoBehaviour
                 {
                     for (int j = tileArraySizeY; j > 0; j--)
                     {
-                        Instantiate(tile, new Vector3(xPos, yPos, zPos), Quaternion.identity, gameObject.transform);
+                        tile = createSquare(xPos, yPos, zPos);
                         xPos += scaleX;
                     }
                     xPos = startingXPos;
@@ -123,7 +138,7 @@ public class LevelGenerator : MonoBehaviour
                 {
                     for (int j = 0; j < tileArraySizeY; j++)
                     {
-                        Instantiate(tile, new Vector3(xPos, yPos, zPos), Quaternion.identity, gameObject.transform);
+                        tile = createSquare(xPos, yPos, zPos);
                         xPos += scaleX;
                     }
                     xPos = startingXPos;
@@ -137,7 +152,7 @@ public class LevelGenerator : MonoBehaviour
                 {
                     for (int j = 0; j < tileArraySizeY; j++)
                     {
-                        Instantiate(tile, new Vector3(xPos, yPos, zPos), Quaternion.identity, gameObject.transform);
+                        tile = createSquare(xPos, yPos, zPos);
                         xPos += scaleX;
                     }
                     xPos = startingXPos;
@@ -151,10 +166,63 @@ public class LevelGenerator : MonoBehaviour
     }
 
     /// <summary>
+    /// Create square gameobject tile and add to scene
+    /// </summary>
+    /// <param name="xPos">The x position of the gameobject</param>
+    /// <param name="yPos">The y position of the gameobject</param>
+    /// <param name="zPos">The z position of the gameobject</param>
+    /// <returns></returns>
+    private GameObject createSquare(float xPos, float yPos, float zPos)
+    {
+        return Instantiate(squareTileGO, new Vector3(xPos, yPos, zPos), Quaternion.identity, gameObject.transform);
+    }
+
+    private void addSprite(int value, GameObject parent)
+    {
+        GameObject newSpriteGO = new GameObject("Sprite");
+        newSpriteGO.transform.parent = parent.transform;
+        newSpriteGO.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
+        newSpriteGO.transform.localScale = new Vector3(3.1f, 3.1f, 1.0f);
+        SpriteRenderer rend = newSpriteGO.AddComponent<SpriteRenderer>();
+        Animator animator = newSpriteGO.AddComponent<Animator>();
+
+        switch (value)
+        {
+            case 0:
+                break;
+            case 1:
+                rend.sprite = outsideCornerSprite;
+                break;
+            case 2:
+                rend.sprite = outsideWallSprite;
+                break;
+            case 3:
+                rend.sprite = insideCornerSprite;
+                break;
+            case 4:
+                rend.sprite = insideWallSprite;
+                break;
+            case 5:
+                rend.sprite = standardPelletSprite;
+                break;
+            case 6:
+                rend.sprite = powerPelletSprite;
+                animator.runtimeAnimatorController = powerPelletController;
+                break;
+            case 7:
+                rend.sprite = tJunctionSprite;
+                break;
+            default:
+                break;
+        }
+    }
+
+    /// <summary>
     /// Delete existing level from scene
     /// </summary>
     private void Reset()
     {
+        //Destroy(GameObject.Find("DisplayPacGameObjects"));
         Destroy(GameObject.Find("DisplayGridTopLeft"));
         Destroy(GameObject.Find("DisplayGridTopRight"));
         Destroy(GameObject.Find("DisplayGridBotLeft"));

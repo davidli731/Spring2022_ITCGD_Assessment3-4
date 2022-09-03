@@ -16192,7 +16192,7 @@ GameObject:
   m_Component:
   - component: {fileID: 260540285}
   m_Layer: 5
-  m_Name: DisplayGameObjects
+  m_Name: DisplayPacGameObjects
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -60726,7 +60726,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.09656459, g: 0.32829064, b: 0.5849056, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -107284,7 +107284,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d985826c29cfda458af26c03e0c63a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tile: {fileID: 133485631426175182, guid: 5f3c0baa157f279449a27493c5ebd7d8, type: 3}
+  squareTileGO: {fileID: 133485631426175182, guid: 5f3c0baa157f279449a27493c5ebd7d8, type: 3}
+  outsideCornerSprite: {fileID: -1855069249, guid: 59eed723d5fb82a4a87c97ae9f873d03, type: 3}
+  outsideWallSprite: {fileID: -1977095685, guid: 6400a7ae3af14a64ebb9ef10d566c033, type: 3}
+  insideCornerSprite: {fileID: 640190578, guid: 5b2e20307cfd01c4c9b2ee1b9a1ccf4c, type: 3}
+  insideWallSprite: {fileID: -2067720258, guid: 3544f0ae3ccf4854990dfec84749ee10, type: 3}
+  standardPelletSprite: {fileID: -293828878, guid: fe660b8b086c2c94a8ddf380e8729597, type: 3}
+  powerPelletSprite: {fileID: -1042747270, guid: 0e7ae658e36dd594daeb1c591235856d, type: 3}
+  tJunctionSprite: {fileID: 1004536980, guid: 26791034451a8fc4eb7aed6dff7ab181, type: 3}
+  powerPelletController: {fileID: 9100000, guid: 6d6ee0ba375b17d45bb14dc60ed5b1e3, type: 2}
 --- !u!1 &1696699246
 GameObject:
   m_ObjectHideFlags: 0
