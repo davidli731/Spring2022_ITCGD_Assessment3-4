@@ -137,8 +137,6 @@ public class LevelGenerator : MonoBehaviour
 
         switch (value)
         {
-            case 0:
-                break;
             case 1:
                 rend.sprite = outsideCornerSprite;
                 break;
