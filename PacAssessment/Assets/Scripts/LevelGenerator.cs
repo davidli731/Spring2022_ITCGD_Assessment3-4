@@ -45,68 +45,68 @@ public class LevelGenerator : MonoBehaviour
     {0,0,0,0,0,0,5,0,0,0,4,0,0,0},
 };
 
-// Start is called before the first frame update
-void Start()
-{
-    Reset();
-
-    // Get array size
-    tileArraySizeX = levelMap.GetLength(0);
-    tileArraySizeY = levelMap.GetLength(1);
-
-    // Bottom Right Section
-    generateGridMap(startingXPos, startingYPos, startingZPos, scaleX, -scaleY);
-
-    // Bottom Left Section
-    generateGridMap(startingXPos - scaleX, startingYPos, startingZPos, -scaleX, -scaleY);
-
-    // Top Right Section
-    generateGridMap(startingXPos, startingYPos + scaleY, startingZPos, scaleX, scaleY);
-
-    // Top Left Section
-    generateGridMap(startingXPos - scaleX, startingYPos + scaleY, startingZPos, -scaleX, scaleY);
-}
-
-// Update is called once per frame
-void Update()
-{
-
-}
-
-/// <summary>
-/// Procedurally generate grid map
-/// </summary>
-/// <param name="startingXPos"></param>
-/// <param name="startingYPos"></param>
-/// <param name="startingZPos"></param>
-/// <param name="scaleX"></param>
-/// <param name="scaleY"></param>
-private void generateGridMap(float startingXPos, float startingYPos, float startingZPos, float scaleX, float scaleY)
-{
-    float xPos = startingXPos;
-    float yPos = startingYPos;
-    float zPos = startingZPos;
-
-    for (int i = 0; i < tileArraySizeX; i++)
+    // Start is called before the first frame update
+    void Start()
     {
-        for (int j = 0; j < tileArraySizeY; j++)
-        {
-            Instantiate(tile, new Vector3(xPos, yPos, zPos), Quaternion.identity, gameObject.transform);
-            xPos += scaleX;
-        }
-        xPos = startingXPos;
-        yPos += scaleY;
-    }
-}
+        Reset();
 
-/// <summary>
-/// Delete existing level from scene
-/// </summary>
-private void Reset()
-{
-    Destroy(GameObject.Find("DisplayGridTopLeft"));
-    Destroy(GameObject.Find("DisplayGridTopRight"));
-    Destroy(GameObject.Find("DisplayGridBotLeft"));
-    Destroy(GameObject.Find("DisplayGridBotRight"));
-}
+        // Get array size
+        tileArraySizeX = levelMap.GetLength(0);
+        tileArraySizeY = levelMap.GetLength(1);
+
+        // Bottom Right Section
+        generateGridMap(startingXPos, startingYPos, startingZPos, scaleX, -scaleY);
+
+        // Bottom Left Section
+        generateGridMap(startingXPos - scaleX, startingYPos, startingZPos, -scaleX, -scaleY);
+
+        // Top Right Section
+        generateGridMap(startingXPos, startingYPos + scaleY, startingZPos, scaleX, scaleY);
+
+        // Top Left Section
+        generateGridMap(startingXPos - scaleX, startingYPos + scaleY, startingZPos, -scaleX, scaleY);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
+    /// <summary>
+    /// Procedurally generate grid map
+    /// </summary>
+    /// <param name="startingXPos"></param>
+    /// <param name="startingYPos"></param>
+    /// <param name="startingZPos"></param>
+    /// <param name="scaleX"></param>
+    /// <param name="scaleY"></param>
+    private void generateGridMap(float startingXPos, float startingYPos, float startingZPos, float scaleX, float scaleY)
+    {
+        float xPos = startingXPos;
+        float yPos = startingYPos;
+        float zPos = startingZPos;
+
+        for (int i = 0; i < tileArraySizeX; i++)
+        {
+            for (int j = 0; j < tileArraySizeY; j++)
+            {
+                Instantiate(tile, new Vector3(xPos, yPos, zPos), Quaternion.identity, gameObject.transform);
+                xPos += scaleX;
+            }
+            xPos = startingXPos;
+            yPos += scaleY;
+        }
+    }
+
+    /// <summary>
+    /// Delete existing level from scene
+    /// </summary>
+    private void Reset()
+    {
+        Destroy(GameObject.Find("DisplayGridTopLeft"));
+        Destroy(GameObject.Find("DisplayGridTopRight"));
+        Destroy(GameObject.Find("DisplayGridBotLeft"));
+        Destroy(GameObject.Find("DisplayGridBotRight"));
+    }
 }
