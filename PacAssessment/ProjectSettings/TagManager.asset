@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Tile
   layers:
   - Default
   - TransparentFX
@@ -40,4 +41,16 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Scene
+    uniqueID: 3871141857
+    locked: 0
+  - name: Pellet
+    uniqueID: 1691459839
+    locked: 0
+  - name: Player
+    uniqueID: 2078051883
+    locked: 0
+  - name: Ghost
+    uniqueID: 3087369903
     locked: 0
