@@ -27,23 +27,23 @@ public class LevelGenerator : MonoBehaviour
     * 7 - A t junction piece for connecting with adjoining regions
     */
     private int[,] levelMap =
-{
-    {1,2,2,2,2,2,2,2,2,2,2,2,2,7},
-    {2,5,5,5,5,5,5,5,5,5,5,5,5,4},
-    {2,5,3,4,4,3,5,3,4,4,4,3,5,4},
-    {2,6,4,0,0,4,5,4,0,0,0,4,5,4},
-    {2,5,3,4,4,3,5,3,4,4,4,3,5,3},
-    {2,5,5,5,5,5,5,5,5,5,5,5,5,5},
-    {2,5,3,4,4,3,5,3,3,5,3,4,4,4},
-    {2,5,3,4,4,3,5,4,4,5,3,4,4,3},
-    {2,5,5,5,5,5,5,4,4,5,5,5,5,4},
-    {1,2,2,2,2,1,5,4,3,4,4,3,0,4},
-    {0,0,0,0,0,2,5,4,3,4,4,3,0,3},
-    {0,0,0,0,0,2,5,4,4,0,0,0,0,0},
-    {0,0,0,0,0,2,5,4,4,0,3,4,4,0},
-    {2,2,2,2,2,1,5,3,3,0,4,0,0,0},
-    {0,0,0,0,0,0,5,0,0,0,4,0,0,0},
-};
+    {
+        {1,2,2,2,2,2,2,2,2,2,2,2,2,7},
+        {2,5,5,5,5,5,5,5,5,5,5,5,5,4},
+        {2,5,3,4,4,3,5,3,4,4,4,3,5,4},
+        {2,6,4,0,0,4,5,4,0,0,0,4,5,4},
+        {2,5,3,4,4,3,5,3,4,4,4,3,5,3},
+        {2,5,5,5,5,5,5,5,5,5,5,5,5,5},
+        {2,5,3,4,4,3,5,3,3,5,3,4,4,4},
+        {2,5,3,4,4,3,5,4,4,5,3,4,4,3},
+        {2,5,5,5,5,5,5,4,4,5,5,5,5,4},
+        {1,2,2,2,2,1,5,4,3,4,4,3,0,4},
+        {0,0,0,0,0,2,5,4,3,4,4,3,0,3},
+        {0,0,0,0,0,2,5,4,4,0,0,0,0,0},
+        {0,0,0,0,0,2,5,4,4,0,3,4,4,0},
+        {2,2,2,2,2,1,5,3,3,0,4,0,0,0},
+        {0,0,0,0,0,0,5,0,0,0,4,0,0,0},
+    };
 
     // Start is called before the first frame update
     void Start()
@@ -54,17 +54,17 @@ public class LevelGenerator : MonoBehaviour
         tileArraySizeX = levelMap.GetLength(0);
         tileArraySizeY = levelMap.GetLength(1);
 
-        // Bottom Right Section
-        generateGridMap(startingXPos, startingYPos, startingZPos, scaleX, -scaleY);
-
-        // Bottom Left Section
-        generateGridMap(startingXPos - scaleX, startingYPos, startingZPos, -scaleX, -scaleY);
+        // Top Left Section
+        generateGridMap(startingXPos - scaleX, startingYPos + scaleY, startingZPos,  -scaleX, scaleY, 0);
 
         // Top Right Section
-        generateGridMap(startingXPos, startingYPos + scaleY, startingZPos, scaleX, scaleY);
+        generateGridMap(startingXPos, startingYPos + scaleY, startingZPos, scaleX, scaleY, 1);
 
-        // Top Left Section
-        generateGridMap(startingXPos - scaleX, startingYPos + scaleY, startingZPos, -scaleX, scaleY);
+        // Bottom Left Section
+        generateGridMap(startingXPos - scaleX, startingYPos, startingZPos, -scaleX, -scaleY, 2);
+
+        // Bottom Right Section
+        generateGridMap(startingXPos, startingYPos, startingZPos, scaleX, -scaleY, 3);
     }
 
     // Update is called once per frame
@@ -81,21 +81,72 @@ public class LevelGenerator : MonoBehaviour
     /// <param name="startingZPos"></param>
     /// <param name="scaleX"></param>
     /// <param name="scaleY"></param>
-    private void generateGridMap(float startingXPos, float startingYPos, float startingZPos, float scaleX, float scaleY)
+    private void generateGridMap(float startingXPos, float startingYPos, float startingZPos, float scaleX, float scaleY,  int quadrant)
     {
         float xPos = startingXPos;
         float yPos = startingYPos;
         float zPos = startingZPos;
 
-        for (int i = 0; i < tileArraySizeX; i++)
+        switch (quadrant)
         {
-            for (int j = 0; j < tileArraySizeY; j++)
-            {
-                Instantiate(tile, new Vector3(xPos, yPos, zPos), Quaternion.identity, gameObject.transform);
-                xPos += scaleX;
-            }
-            xPos = startingXPos;
-            yPos += scaleY;
+            case 0:
+                // Top left
+                for (int i = tileArraySizeX - 1; i >= 0; i--)
+                {
+                    for (int j = tileArraySizeY - 1; j >= 0; j--)
+                    {
+                        Instantiate(tile, new Vector3(xPos, yPos, zPos), Quaternion.identity, gameObject.transform);
+                        xPos += scaleX;
+                    }
+                    xPos = startingXPos;
+                    yPos += scaleY;
+                }
+                break;
+
+            case 1:
+                // Top Right
+                for (int i = 0; i < tileArraySizeX; i++)
+                {
+                    for (int j = tileArraySizeY; j > 0; j--)
+                    {
+                        Instantiate(tile, new Vector3(xPos, yPos, zPos), Quaternion.identity, gameObject.transform);
+                        xPos += scaleX;
+                    }
+                    xPos = startingXPos;
+                    yPos += scaleY;
+                }
+                break;
+
+            case 2:
+                // Bottom Left
+                for (int i = tileArraySizeX - 1; i >= 0; i--)
+                {
+                    for (int j = 0; j < tileArraySizeY; j++)
+                    {
+                        Instantiate(tile, new Vector3(xPos, yPos, zPos), Quaternion.identity, gameObject.transform);
+                        xPos += scaleX;
+                    }
+                    xPos = startingXPos;
+                    yPos += scaleY;
+                }
+                break;
+
+            case 3:
+                // Bottom Right
+                for (int i = 0; i < tileArraySizeX; i++)
+                {
+                    for (int j = 0; j < tileArraySizeY; j++)
+                    {
+                        Instantiate(tile, new Vector3(xPos, yPos, zPos), Quaternion.identity, gameObject.transform);
+                        xPos += scaleX;
+                    }
+                    xPos = startingXPos;
+                    yPos += scaleY;
+                }
+                break;
+
+            default:
+                break;
         }
     }
 
