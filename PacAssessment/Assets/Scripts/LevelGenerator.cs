@@ -67,16 +67,16 @@ public class LevelGenerator : MonoBehaviour
         tileArraySizeY = levelMap.GetLength(1);
 
         // Top Left Section
-        generateGridMap(startingXPos - scaleX, startingYPos + scaleY, startingZPos,  -scaleX, scaleY, 0);
+        generateGridMap(startingXPos - scaleX, startingYPos + scaleY, startingZPos,  -scaleX, scaleY);
 
         // Top Right Section
-        generateGridMap(startingXPos, startingYPos + scaleY, startingZPos, scaleX, scaleY, 1);
+        generateGridMap(startingXPos, startingYPos + scaleY, startingZPos, scaleX, scaleY);
 
         // Bottom Left Section
-        generateGridMap(startingXPos - scaleX, startingYPos, startingZPos, -scaleX, -scaleY, 2);
+        generateGridMap(startingXPos - scaleX, startingYPos, startingZPos, -scaleX, -scaleY);
 
         // Bottom Right Section
-        generateGridMap(startingXPos, startingYPos, startingZPos, scaleX, -scaleY, 3);
+        generateGridMap(startingXPos, startingYPos, startingZPos, scaleX, -scaleY);
     }
 
     // Update is called once per frame
@@ -93,7 +93,7 @@ public class LevelGenerator : MonoBehaviour
     /// <param name="startingZPos">The z position of the first tile</param>
     /// <param name="scaleX">The x scale for the tile</param>
     /// <param name="scaleY">The y scale for the tile</param>
-    private void generateGridMap(float startingXPos, float startingYPos, float startingZPos, float scaleX, float scaleY,  int quadrant)
+    private void generateGridMap(float startingXPos, float startingYPos, float startingZPos, float scaleX, float scaleY)
     {
         float xPos = startingXPos;
         float yPos = startingYPos;
@@ -101,70 +101,16 @@ public class LevelGenerator : MonoBehaviour
 
         GameObject tile;
 
-        switch (quadrant)
+        for (int i = tileArraySizeX - 1; i >= 0; i--)
         {
-            case 0:
-                // Top left
-                for (int i = tileArraySizeX - 1; i >= 0; i--)
-                {
-                    for (int j = tileArraySizeY - 1; j >= 0; j--)
-                    {
-                        tile = createSquare(xPos, yPos, zPos);
-                        addSprite(levelMap[i, j], tile);
-                        xPos += scaleX;
-                    }
-                    xPos = startingXPos;
-                    yPos += scaleY;
-                }
-                break;
-
-            case 1:
-                // Top Right
-                for (int i = 0; i < tileArraySizeX; i++)
-                {
-                    for (int j = tileArraySizeY; j > 0; j--)
-                    {
-                        tile = createSquare(xPos, yPos, zPos);
-                        //addSprite(levelMap[i, j], tile);
-                        xPos += scaleX;
-                    }
-                    xPos = startingXPos;
-                    yPos += scaleY;
-                }
-                break;
-
-            case 2:
-                // Bottom Left
-                for (int i = tileArraySizeX - 1; i >= 0; i--)
-                {
-                    for (int j = tileArraySizeY - 1; j >= 0; j--)
-                    {
-                        tile = createSquare(xPos, yPos, zPos);
-                        addSprite(levelMap[i, j], tile);
-                        xPos += scaleX;
-                    }
-                    xPos = startingXPos;
-                    yPos += scaleY;
-                }
-                break;
-
-            case 3:
-                // Bottom Right
-                for (int i = tileArraySizeX - 1; i >= 0; i--)
-                {
-                    for (int j = tileArraySizeY - 1; j >= 0; j--)
-                    {
-                        tile = createSquare(xPos, yPos, zPos);
-                        addSprite(levelMap[i, j], tile);
-                        xPos += scaleX;
-                    }
-                    xPos = startingXPos;
-                    yPos += scaleY;
-                }
-                break;
-
-            default:
-                break;
+            for (int j = tileArraySizeY - 1; j >= 0; j--)
+            {
+                tile = createSquare(xPos, yPos, zPos);
+                addSprite(levelMap[i, j], tile);
+                xPos += scaleX;
+            }
+            xPos = startingXPos;
+            yPos += scaleY;
         }
     }
 
