@@ -52,41 +52,45 @@ public class Map : MonoBehaviour
     /// </summary>
     /// <param name="item"></param>
     /// <returns>Return true if item is wall, else false</returns>
-    private bool IsWall(MapItems item)
+    private bool IsOutsideWall(MapItems item)
     {
         return item.Type == "OutsideCorner" ||
             item.Type == "OutsideWall" ||
-            item.Type == "InsideCorner" ||
-            item.Type == "InsideWall" ||
             item.Type == "TJunction";
     }
 
+    private bool IsInsideWall(MapItems item)
+    {
+        return item.Type == "InsideCorner" ||
+            item.Type == "InsideWall";
+    }
+
     /// <summary>
-    /// Rotate outside corner wall
+    /// Rotate and flip outside corner wall
     /// </summary>
     /// <param name="item"></param>
     public void RotateAndFlipOutsideCornerWall(MapItems item)
     {
         if (GetIndexFromString(item.NeighbourPositions[0]) > 0 &&
-            IsWall(mapItems[GetIndexFromString(item.NeighbourPositions[0])]) &&
+            IsOutsideWall(mapItems[GetIndexFromString(item.NeighbourPositions[0])]) &&
             GetIndexFromString(item.NeighbourPositions[3]) > 0 &&
-            IsWall(mapItems[GetIndexFromString(item.NeighbourPositions[3])])
+            IsOutsideWall(mapItems[GetIndexFromString(item.NeighbourPositions[3])])
             )
         {
             item.SpriteGO.GetComponent<SpriteRenderer>().flipX = true;
         }
         else if (GetIndexFromString(item.NeighbourPositions[2]) > 0 &&
-            IsWall(mapItems[GetIndexFromString(item.NeighbourPositions[2])]) &&
+            IsOutsideWall(mapItems[GetIndexFromString(item.NeighbourPositions[2])]) &&
             GetIndexFromString(item.NeighbourPositions[1]) > 0 &&
-            IsWall(mapItems[GetIndexFromString(item.NeighbourPositions[1])])
+            IsOutsideWall(mapItems[GetIndexFromString(item.NeighbourPositions[1])])
             )
         {
             item.SpriteGO.GetComponent<SpriteRenderer>().flipY = true;
         }
         else if (GetIndexFromString(item.NeighbourPositions[2]) > 0 &&
-            IsWall(mapItems[GetIndexFromString(item.NeighbourPositions[2])]) &&
+            IsOutsideWall(mapItems[GetIndexFromString(item.NeighbourPositions[2])]) &&
             GetIndexFromString(item.NeighbourPositions[0]) > 0 &&
-            IsWall(mapItems[GetIndexFromString(item.NeighbourPositions[0])])
+            IsOutsideWall(mapItems[GetIndexFromString(item.NeighbourPositions[0])])
             )
         {
             item.SpriteGO.GetComponent<SpriteRenderer>().flipX = true;
@@ -95,27 +99,21 @@ public class Map : MonoBehaviour
     }
 
     /// <summary>
-    /// Rotate outside straight wall
+    /// Rotate and flip outside straight wall
     /// </summary>
     /// <param name="item"></param>
     public void RotateAndFlipOutsideWall(MapItems item)
     {
         if ((GetIndexFromString(item.NeighbourPositions[0]) > 0 &&
-            IsWall(mapItems[GetIndexFromString(item.NeighbourPositions[0])])) ||
+            IsOutsideWall(mapItems[GetIndexFromString(item.NeighbourPositions[0])]) &&
+            GetIndexFromString(item.NeighbourPositions[1]) > 0 &&
+            IsOutsideWall(mapItems[GetIndexFromString(item.NeighbourPositions[1])])) ||
+            (GetIndexFromString(item.NeighbourPositions[0]) > 0 &&
+            IsOutsideWall(mapItems[GetIndexFromString(item.NeighbourPositions[0])]) &&
+            GetIndexFromString(item.NeighbourPositions[1]) == -1) ||
             (GetIndexFromString(item.NeighbourPositions[1]) > 0 &&
-            IsWall(mapItems[GetIndexFromString(item.NeighbourPositions[1])]))
-            )
-        {
-            item.SpriteGO.transform.Rotate(new Vector3(0.0f, 0.0f, 90.0f));
-        }
-    }
-
-    public void RotateAndFlipInsideWall(MapItems item)
-    {
-        if ((GetIndexFromString(item.NeighbourPositions[0]) > 0 &&
-            IsWall(mapItems[GetIndexFromString(item.NeighbourPositions[0])])) ||
-            (GetIndexFromString(item.NeighbourPositions[1]) > 0 &&
-            IsWall(mapItems[GetIndexFromString(item.NeighbourPositions[1])]))
+            IsOutsideWall(mapItems[GetIndexFromString(item.NeighbourPositions[1])]) &&
+            GetIndexFromString(item.NeighbourPositions[0]) == -1)
             )
         {
             item.SpriteGO.transform.Rotate(new Vector3(0.0f, 0.0f, 90.0f));
@@ -123,39 +121,100 @@ public class Map : MonoBehaviour
     }
 
     /// <summary>
-    /// Rotate t junction wall
+    /// Rotate and flip inside corner wall
+    /// </summary>
+    /// <param name="item"></param>
+    public void RotateAndFlipInsideCornerWall(MapItems item)
+    {
+        /*if (GetIndexFromString(item.NeighbourPositions[0]) > 0 &&
+            mapItems[GetIndexFromString(item.NeighbourPositions[0])].Type == "InsideCorner" &&
+            GetIndexFromString(item.NeighbourPositions[3]) > 0 &&
+            IsInsideWall(mapItems[GetIndexFromString(item.NeighbourPositions[3])])
+            )
+        {
+            item.SpriteGO.GetComponent<SpriteRenderer>().flipX = true;
+        }
+        else if (GetIndexFromString(item.NeighbourPositions[1]) > 0 &&
+            mapItems[GetIndexFromString(item.NeighbourPositions[1])].Type == "InsideCorner" &&
+            GetIndexFromString(item.NeighbourPositions[2]) > 0 &&
+            IsInsideWall(mapItems[GetIndexFromString(item.NeighbourPositions[2])])
+            )
+        {
+            item.SpriteGO.GetComponent<SpriteRenderer>().flipY = true;
+        }
+        else if (GetIndexFromString(item.NeighbourPositions[0]) > 0 &&
+            mapItems[GetIndexFromString(item.NeighbourPositions[0])].Type == "InsideCorner" &&
+            GetIndexFromString(item.NeighbourPositions[2]) > 0 &&
+            IsInsideWall(mapItems[GetIndexFromString(item.NeighbourPositions[2])])
+            )
+        {
+            item.SpriteGO.GetComponent<SpriteRenderer>().flipX = true;
+            item.SpriteGO.GetComponent<SpriteRenderer>().flipY = true;
+        }*/
+    }
+
+    /// <summary>
+    /// Rotate and flip inside straight wall
+    /// </summary>
+    /// <param name="item"></param>
+    public void RotateAndFlipInsideWall(MapItems item)
+    {
+        if ((GetIndexFromString(item.NeighbourPositions[0]) > 0 &&
+            IsInsideWall(mapItems[GetIndexFromString(item.NeighbourPositions[0])]) &&
+            GetIndexFromString(item.NeighbourPositions[1]) > 0 &&
+            IsInsideWall(mapItems[GetIndexFromString(item.NeighbourPositions[1])])) ||
+            (GetIndexFromString(item.NeighbourPositions[0]) > 0 &&
+            IsInsideWall(mapItems[GetIndexFromString(item.NeighbourPositions[0])]) &&
+            GetIndexFromString(item.NeighbourPositions[1]) > 0 &&
+            mapItems[GetIndexFromString(item.NeighbourPositions[1])].Type == "Empty" &&
+            !IsInsideWall(mapItems[GetIndexFromString(item.NeighbourPositions[2])]) &&
+            !IsInsideWall(mapItems[GetIndexFromString(item.NeighbourPositions[3])])) ||
+            (GetIndexFromString(item.NeighbourPositions[1]) > 0 &&
+            IsInsideWall(mapItems[GetIndexFromString(item.NeighbourPositions[1])]) &&
+            GetIndexFromString(item.NeighbourPositions[0]) > 0 &&
+            mapItems[GetIndexFromString(item.NeighbourPositions[0])].Type == "Empty" &&
+            !IsInsideWall(mapItems[GetIndexFromString(item.NeighbourPositions[2])]) &&
+            !IsInsideWall(mapItems[GetIndexFromString(item.NeighbourPositions[3])]))
+            )
+        {
+            item.SpriteGO.transform.Rotate(new Vector3(0.0f, 0.0f, 90.0f));
+        }
+    }
+
+    /// <summary>
+    /// Rotate and flip t junction wall
     /// </summary>
     /// <param name="item"></param>
     public void RotateAndFlipTJunctionWall(MapItems item)
     {
         if (GetIndexFromString(item.NeighbourPositions[0]) > 0 &&
-            IsWall(mapItems[GetIndexFromString(item.NeighbourPositions[0])]) &&
+            IsOutsideWall(mapItems[GetIndexFromString(item.NeighbourPositions[0])]) &&
             GetIndexFromString(item.NeighbourPositions[1]) > 0 &&
-            IsWall(mapItems[GetIndexFromString(item.NeighbourPositions[1])]) &&
+            IsOutsideWall(mapItems[GetIndexFromString(item.NeighbourPositions[1])]) &&
             GetIndexFromString(item.NeighbourPositions[2]) > 0 &&
-            IsWall(mapItems[GetIndexFromString(item.NeighbourPositions[2])])
+            IsInsideWall(mapItems[GetIndexFromString(item.NeighbourPositions[2])])
             )
         {
             item.SpriteGO.GetComponent<SpriteRenderer>().flipY = true;
         }
         else if (
             GetIndexFromString(item.NeighbourPositions[2]) > 0 &&
-            IsWall(mapItems[GetIndexFromString(item.NeighbourPositions[2])]) &&
+            IsOutsideWall(mapItems[GetIndexFromString(item.NeighbourPositions[2])]) &&
             GetIndexFromString(item.NeighbourPositions[3]) > 0 &&
-            IsWall(mapItems[GetIndexFromString(item.NeighbourPositions[3])]) &&
+            IsOutsideWall(mapItems[GetIndexFromString(item.NeighbourPositions[3])]) &&
             GetIndexFromString(item.NeighbourPositions[1]) > 0 &&
-            IsWall(mapItems[GetIndexFromString(item.NeighbourPositions[1])])
+            IsInsideWall(mapItems[GetIndexFromString(item.NeighbourPositions[1])])
             )
         {
             item.SpriteGO.transform.Rotate(new Vector3(0.0f, 0.0f, 90.0f));
         }
         else if (
             GetIndexFromString(item.NeighbourPositions[2]) > 0 &&
-            IsWall(mapItems[GetIndexFromString(item.NeighbourPositions[2])]) &&
+            IsOutsideWall(mapItems[GetIndexFromString(item.NeighbourPositions[2])]) &&
             GetIndexFromString(item.NeighbourPositions[3]) > 0 &&
-            IsWall(mapItems[GetIndexFromString(item.NeighbourPositions[3])]) &&
+            IsOutsideWall(mapItems[GetIndexFromString(item.NeighbourPositions[3])]) &&
             GetIndexFromString(item.NeighbourPositions[0]) > 0 &&
-            IsWall(mapItems[GetIndexFromString(item.NeighbourPositions[0])])
+            IsInsideWall(mapItems[GetIndexFromString(item.NeighbourPositions[0])])
             )
         {
             item.SpriteGO.transform.Rotate(new Vector3(0.0f, 0.0f, -90.0f));
