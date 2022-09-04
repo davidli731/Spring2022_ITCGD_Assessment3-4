@@ -1,7 +1,7 @@
 # Spring2022_ITCGD_Assessment3-4
 
 ## Overview
-Creating my own variation of the iconic PacMan game in Unity C#.
+Creating my own variation of the iconic PacMan game in Unity C# with a cowboy and bandits theme.
 
 ## Dev Installation
 * Unity (Developed using version 2022.1.8f1)
