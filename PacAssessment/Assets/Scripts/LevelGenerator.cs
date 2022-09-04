@@ -68,12 +68,14 @@ public class LevelGenerator : MonoBehaviour
     {
         Reset();
 
+        arrayIndex = 0;
+
         // Get array size
         tileArraySizeX = levelMap.GetLength(0);
         tileArraySizeY = levelMap.GetLength(1);
 
         map = gameObject.AddComponent<Map>();
-        map.mapItems = new MapItems[tileArraySizeX * tileArraySizeY];
+        map.mapItems = new MapItems[tileArraySizeX * tileArraySizeY * 4];
 
         // Top Left Section
         generateGridMap(startingXPos - scaleX, startingYPos + scaleY, startingZPos,  -scaleX, scaleY, quadrant[0]);
@@ -86,6 +88,15 @@ public class LevelGenerator : MonoBehaviour
 
         // Bottom Right Section
         generateGridMap(startingXPos, startingYPos, startingZPos, scaleX, -scaleY, quadrant[3]);
+
+        // Rotate and flip sprites to face the correct way
+        foreach (MapItems mItem in map.mapItems)
+        {
+            if (mItem.Type == legendString[7])
+            {
+                map.RotateTJunctionWalls(mItem);
+            }
+        }
     }
 
     // Update is called once per frame
@@ -109,7 +120,7 @@ public class LevelGenerator : MonoBehaviour
         float yPos = startingYPos;
         float zPos = startingZPos;
 
-        string[] neighbourPositions = new string[4];
+        string[] neighbourPositions;
 
         GameObject newTileGO;
         GameObject newSpriteGO;
@@ -123,8 +134,9 @@ public class LevelGenerator : MonoBehaviour
                 newSpriteGO = addSprite(levelMap[i, j], newTileGO);
 
                 neighbourPositions = getNeighbourPositions(i, j, quadrant);
-                map.mapItems[arrayIndex] = new MapItems(newTileGO, newSpriteGO, legendString[levelMap[i, j]], neighbourPositions);
+                map.mapItems[arrayIndex] = new MapItems(newTileGO, newSpriteGO, arrayIndex, legendString[levelMap[i, j]], neighbourPositions);
 
+                arrayIndex++;
                 xPos += scaleX;
             }
             xPos = startingXPos;
