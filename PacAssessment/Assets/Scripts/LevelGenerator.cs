@@ -114,10 +114,6 @@ public class LevelGenerator : MonoBehaviour
             {
                 map.RotateAndFlipOutsideWall(mItem);
             }
-            else if (mItem.Type == legendString[3])
-            {
-                map.RotateAndFlipInsideCornerWall(mItem);
-            }
             else if (mItem.Type == legendString[4])
             {
                 map.RotateAndFlipInsideWall(mItem);
@@ -125,6 +121,14 @@ public class LevelGenerator : MonoBehaviour
             else if (mItem.Type == legendString[7])
             {
                 map.RotateAndFlipTJunctionWall(mItem);
+            }
+        }
+
+        foreach(MapItems mItem in map.mapItems)
+        {
+            if (mItem.Type == legendString[3])
+            {
+                map.RotateAndFlipInsideCornerWall(mItem);
             }
         }
     }

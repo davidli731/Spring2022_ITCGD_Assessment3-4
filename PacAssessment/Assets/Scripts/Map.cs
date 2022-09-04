@@ -48,7 +48,7 @@ public class Map : MonoBehaviour
     }
 
     /// <summary>
-    /// Check if item type is wall
+    /// Check if item type is outside wall
     /// </summary>
     /// <param name="item"></param>
     /// <returns>Return true if item is wall, else false</returns>
@@ -59,10 +59,35 @@ public class Map : MonoBehaviour
             item.Type == "TJunction";
     }
 
+    /// <summary>
+    /// Check if item type is inside wall
+    /// </summary>
+    /// <param name="item"></param>
+    /// <returns>true if type is inside wall, else false</returns>
     private bool IsInsideWall(MapItems item)
     {
         return item.Type == "InsideCorner" ||
             item.Type == "InsideWall";
+    }
+
+    /// <summary>
+    /// Check if inside wall type is straight
+    /// </summary>
+    /// <param name="item"></param>
+    /// <returns>true if wall is straight type, else false</returns>
+    private bool IsInsideWallStraight(MapItems item)
+    {
+        return item.Type == "InsideWall";
+    }
+
+    /// <summary>
+    /// Check if wall is rotated horizontally
+    /// </summary>
+    /// <param name="item"></param>
+    /// <returns>true if wall is horizontal, else false</returns>
+    private bool IsWallRotated(MapItems item)
+    {
+        return item.SpriteGO.transform.rotation.z != 0.0f;
     }
 
     /// <summary>
@@ -126,31 +151,54 @@ public class Map : MonoBehaviour
     /// <param name="item"></param>
     public void RotateAndFlipInsideCornerWall(MapItems item)
     {
-        /*if (GetIndexFromString(item.NeighbourPositions[0]) > 0 &&
-            mapItems[GetIndexFromString(item.NeighbourPositions[0])].Type == "InsideCorner" &&
-            GetIndexFromString(item.NeighbourPositions[3]) > 0 &&
-            IsInsideWall(mapItems[GetIndexFromString(item.NeighbourPositions[3])])
+        if (GetIndexFromString(item.NeighbourPositions[3]) > 0 &&
+            IsInsideWallStraight(mapItems[GetIndexFromString(item.NeighbourPositions[3])]) &&
+            !IsWallRotated(mapItems[GetIndexFromString(item.NeighbourPositions[3])])
             )
         {
-            item.SpriteGO.GetComponent<SpriteRenderer>().flipX = true;
+            if ((GetIndexFromString(item.NeighbourPositions[0]) > 0 &&
+            IsInsideWallStraight(mapItems[GetIndexFromString(item.NeighbourPositions[0])]) &&
+            IsWallRotated(mapItems[GetIndexFromString(item.NeighbourPositions[0])])) ||
+            (GetIndexFromString(item.NeighbourPositions[1]) > 0 &&
+            !IsInsideWall(mapItems[GetIndexFromString(item.NeighbourPositions[1])]))
+                )
+            {
+                item.SpriteGO.GetComponent<SpriteRenderer>().flipX = true;
+            }
+        }
+        else if (GetIndexFromString(item.NeighbourPositions[2]) > 0 &&
+            IsInsideWallStraight(mapItems[GetIndexFromString(item.NeighbourPositions[2])]) &&
+            !IsWallRotated(mapItems[GetIndexFromString(item.NeighbourPositions[2])])
+            )
+        {
+            item.SpriteGO.GetComponent<SpriteRenderer>().flipY = true;
+
+            if ((GetIndexFromString(item.NeighbourPositions[0]) > 0 &&
+            IsInsideWallStraight(mapItems[GetIndexFromString(item.NeighbourPositions[0])]) &&
+            IsWallRotated(mapItems[GetIndexFromString(item.NeighbourPositions[0])])) ||
+            (GetIndexFromString(item.NeighbourPositions[1]) > 0 &&
+            !IsInsideWall(mapItems[GetIndexFromString(item.NeighbourPositions[1])]))
+                )
+            {
+                item.SpriteGO.GetComponent<SpriteRenderer>().flipX = true;
+            }
+        }
+        else if (GetIndexFromString(item.NeighbourPositions[3]) > 0 &&
+            !IsInsideWall(mapItems[GetIndexFromString(item.NeighbourPositions[3])]))
+        {
+            item.SpriteGO.GetComponent<SpriteRenderer>().flipY = true;
+
+            if (GetIndexFromString(item.NeighbourPositions[1]) > 0 &&
+            !IsInsideWall(mapItems[GetIndexFromString(item.NeighbourPositions[1])]))
+            {
+                item.SpriteGO.GetComponent<SpriteRenderer>().flipX = true;
+            }
         }
         else if (GetIndexFromString(item.NeighbourPositions[1]) > 0 &&
-            mapItems[GetIndexFromString(item.NeighbourPositions[1])].Type == "InsideCorner" &&
-            GetIndexFromString(item.NeighbourPositions[2]) > 0 &&
-            IsInsideWall(mapItems[GetIndexFromString(item.NeighbourPositions[2])])
-            )
-        {
-            item.SpriteGO.GetComponent<SpriteRenderer>().flipY = true;
-        }
-        else if (GetIndexFromString(item.NeighbourPositions[0]) > 0 &&
-            mapItems[GetIndexFromString(item.NeighbourPositions[0])].Type == "InsideCorner" &&
-            GetIndexFromString(item.NeighbourPositions[2]) > 0 &&
-            IsInsideWall(mapItems[GetIndexFromString(item.NeighbourPositions[2])])
-            )
+            !IsInsideWall(mapItems[GetIndexFromString(item.NeighbourPositions[1])]))
         {
             item.SpriteGO.GetComponent<SpriteRenderer>().flipX = true;
-            item.SpriteGO.GetComponent<SpriteRenderer>().flipY = true;
-        }*/
+        }
     }
 
     /// <summary>
