@@ -476,5 +476,8 @@ public class LevelGenerator : MonoBehaviour
         Destroy(GameObject.Find("DisplayGridTopRight"));
         Destroy(GameObject.Find("DisplayGridBotLeft"));
         Destroy(GameObject.Find("DisplayGridBotRight"));
+
+        GameObject.Find("CentreX").SetActive(false);
+        GameObject.Find("CentreY").SetActive(false);
     }
 }

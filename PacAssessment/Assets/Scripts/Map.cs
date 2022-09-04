@@ -214,13 +214,13 @@ public class Map : MonoBehaviour
             (GetIndexFromString(item.NeighbourPositions[0]) > 0 &&
             IsInsideWall(mapItems[GetIndexFromString(item.NeighbourPositions[0])]) &&
             GetIndexFromString(item.NeighbourPositions[1]) > 0 &&
-            mapItems[GetIndexFromString(item.NeighbourPositions[1])].Type == "Empty" &&
+            !IsInsideWall(mapItems[GetIndexFromString(item.NeighbourPositions[1])]) &&
             !IsInsideWall(mapItems[GetIndexFromString(item.NeighbourPositions[2])]) &&
             !IsInsideWall(mapItems[GetIndexFromString(item.NeighbourPositions[3])])) ||
             (GetIndexFromString(item.NeighbourPositions[1]) > 0 &&
             IsInsideWall(mapItems[GetIndexFromString(item.NeighbourPositions[1])]) &&
             GetIndexFromString(item.NeighbourPositions[0]) > 0 &&
-            mapItems[GetIndexFromString(item.NeighbourPositions[0])].Type == "Empty" &&
+            !IsInsideWall(mapItems[GetIndexFromString(item.NeighbourPositions[0])]) &&
             !IsInsideWall(mapItems[GetIndexFromString(item.NeighbourPositions[2])]) &&
             !IsInsideWall(mapItems[GetIndexFromString(item.NeighbourPositions[3])]))
             )
