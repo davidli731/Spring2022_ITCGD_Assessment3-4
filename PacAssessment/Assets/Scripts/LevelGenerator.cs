@@ -106,9 +106,25 @@ public class LevelGenerator : MonoBehaviour
         // Rotate and flip sprites to face the correct way
         foreach (MapItems mItem in map.mapItems)
         {
-            if (mItem.Type == legendString[7])
+            if (mItem.Type == legendString[1])
             {
-                map.RotateTJunctionWalls(mItem);
+                map.RotateAndFlipOutsideCornerWall(mItem);
+            }
+            else if (mItem.Type == legendString[2])
+            {
+                map.RotateAndFlipOutsideWall(mItem);
+            }
+            else if (mItem.Type == legendString[3])
+            {
+                map.RotateAndFlipOutsideCornerWall(mItem);
+            }
+            else if (mItem.Type == legendString[4])
+            {
+                map.RotateAndFlipInsideWall(mItem);
+            }
+            else if (mItem.Type == legendString[7])
+            {
+                map.RotateAndFlipTJunctionWall(mItem);
             }
         }
     }

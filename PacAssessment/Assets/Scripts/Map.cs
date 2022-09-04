@@ -61,7 +61,72 @@ public class Map : MonoBehaviour
             item.Type == "TJunction";
     }
 
-    public void RotateTJunctionWalls(MapItems item)
+    /// <summary>
+    /// Rotate outside corner wall
+    /// </summary>
+    /// <param name="item"></param>
+    public void RotateAndFlipOutsideCornerWall(MapItems item)
+    {
+        if (GetIndexFromString(item.NeighbourPositions[0]) > 0 &&
+            IsWall(mapItems[GetIndexFromString(item.NeighbourPositions[0])]) &&
+            GetIndexFromString(item.NeighbourPositions[3]) > 0 &&
+            IsWall(mapItems[GetIndexFromString(item.NeighbourPositions[3])])
+            )
+        {
+            item.SpriteGO.GetComponent<SpriteRenderer>().flipX = true;
+        }
+        else if (GetIndexFromString(item.NeighbourPositions[2]) > 0 &&
+            IsWall(mapItems[GetIndexFromString(item.NeighbourPositions[2])]) &&
+            GetIndexFromString(item.NeighbourPositions[1]) > 0 &&
+            IsWall(mapItems[GetIndexFromString(item.NeighbourPositions[1])])
+            )
+        {
+            item.SpriteGO.GetComponent<SpriteRenderer>().flipY = true;
+        }
+        else if (GetIndexFromString(item.NeighbourPositions[2]) > 0 &&
+            IsWall(mapItems[GetIndexFromString(item.NeighbourPositions[2])]) &&
+            GetIndexFromString(item.NeighbourPositions[0]) > 0 &&
+            IsWall(mapItems[GetIndexFromString(item.NeighbourPositions[0])])
+            )
+        {
+            item.SpriteGO.GetComponent<SpriteRenderer>().flipX = true;
+            item.SpriteGO.GetComponent<SpriteRenderer>().flipY = true;
+        }
+    }
+
+    /// <summary>
+    /// Rotate outside straight wall
+    /// </summary>
+    /// <param name="item"></param>
+    public void RotateAndFlipOutsideWall(MapItems item)
+    {
+        if ((GetIndexFromString(item.NeighbourPositions[0]) > 0 &&
+            IsWall(mapItems[GetIndexFromString(item.NeighbourPositions[0])])) ||
+            (GetIndexFromString(item.NeighbourPositions[1]) > 0 &&
+            IsWall(mapItems[GetIndexFromString(item.NeighbourPositions[1])]))
+            )
+        {
+            item.SpriteGO.transform.Rotate(new Vector3(0.0f, 0.0f, 90.0f));
+        }
+    }
+
+    public void RotateAndFlipInsideWall(MapItems item)
+    {
+        if ((GetIndexFromString(item.NeighbourPositions[0]) > 0 &&
+            IsWall(mapItems[GetIndexFromString(item.NeighbourPositions[0])])) ||
+            (GetIndexFromString(item.NeighbourPositions[1]) > 0 &&
+            IsWall(mapItems[GetIndexFromString(item.NeighbourPositions[1])]))
+            )
+        {
+            item.SpriteGO.transform.Rotate(new Vector3(0.0f, 0.0f, 90.0f));
+        }
+    }
+
+    /// <summary>
+    /// Rotate t junction wall
+    /// </summary>
+    /// <param name="item"></param>
+    public void RotateAndFlipTJunctionWall(MapItems item)
     {
         if (GetIndexFromString(item.NeighbourPositions[0]) > 0 &&
             IsWall(mapItems[GetIndexFromString(item.NeighbourPositions[0])]) &&
