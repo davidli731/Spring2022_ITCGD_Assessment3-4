@@ -6,14 +6,17 @@ using UnityEngine.UIElements;
 public class LevelGenerator : MonoBehaviour
 {
     // Declare Variables
-    private const float scaleX = 1.25f;
-    private const float scaleY = 0.65f;
-    private const float startingXPos = 0.6f;
-    private const float startingYPos = -0.35f;
+    private float scaleX = 26.0f;
+    private float scaleY = 15.5f;
+    private float scaleZ = 1.0f;
+    private float spriteScaleX = 3.1f * 15.0f;
+    private float spriteScaleY = 3.1f * 14.0f;
+    private float startingXPos = 14.0f;
+    private float startingYPos = -8.0f;
     private const float startingZPos = 0.0f;
     private int tileArraySizeX;
     private int tileArraySizeY;
-    private int arrayIndex = 0;
+    private int arrayIndex;
 
     private string[] quadrant = {"TopLeft", "TopRight", "BotLeft", "BotRight"};
     private string[] legendString = { "Empty", "OutsideCorner", "OutsideWall", "InsideCorner", "InsideWall", "StandardPellet", "PowerPellet", "TJunction" };
@@ -66,13 +69,8 @@ public class LevelGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Reset();
-
-        arrayIndex = 0;
-
-        // Get array size
-        tileArraySizeX = levelMap.GetLength(0);
-        tileArraySizeY = levelMap.GetLength(1);
+        reset();
+        calculateMaths();
 
         map = gameObject.AddComponent<Map>();
         map.mapItems = new MapItems[tileArraySizeX * tileArraySizeY * 4];
@@ -130,6 +128,8 @@ public class LevelGenerator : MonoBehaviour
             for (int j = tileArraySizeY - 1; j >= 0; j--)
             {
                 newTileGO = createSquare(xPos, yPos, zPos);
+                newTileGO.transform.localPosition = new Vector3(xPos, yPos, zPos);
+                newTileGO.transform.localScale = new Vector3(scaleX, scaleY, scaleZ);
                 newTileGO.name = quadrant + "_" + i + "_" + j;
                 newSpriteGO = addSprite(levelMap[i, j], newTileGO);
 
@@ -167,7 +167,7 @@ public class LevelGenerator : MonoBehaviour
         GameObject newSpriteGO = new GameObject("Sprite");
         newSpriteGO.transform.parent = parent.transform;
         newSpriteGO.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
-        newSpriteGO.transform.localScale = new Vector3(3.1f, 3.1f, 1.0f);
+        newSpriteGO.transform.localScale = new Vector3(spriteScaleX, spriteScaleY, 1.0f);
         SpriteRenderer rend = newSpriteGO.AddComponent<SpriteRenderer>();
         Animator animator = newSpriteGO.AddComponent<Animator>();
 
@@ -418,9 +418,26 @@ public class LevelGenerator : MonoBehaviour
     }
 
     /// <summary>
+    /// Calculate the maths to account for various level map sizes
+    /// </summary>
+    private void calculateMaths()
+    {
+        arrayIndex = 0;
+
+        // Get array size
+        tileArraySizeX = levelMap.GetLength(0);
+        tileArraySizeY = levelMap.GetLength(1);
+
+        scaleX = scaleX * (15.0f / tileArraySizeY);
+        scaleY = scaleY * (14.0f / tileArraySizeX);
+        spriteScaleX /= tileArraySizeX;
+        spriteScaleY /= tileArraySizeY;
+    }
+
+    /// <summary>
     /// Delete existing level from scene
     /// </summary>
-    private void Reset()
+    private void reset()
     {
         //Destroy(GameObject.Find("DisplayPacGameObjects"));
         Destroy(GameObject.Find("DisplayGridTopLeft"));
