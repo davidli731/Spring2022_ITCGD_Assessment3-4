@@ -13,6 +13,10 @@ public class LevelGenerator : MonoBehaviour
     private const float startingZPos = 0.0f;
     private int tileArraySizeX;
     private int tileArraySizeY;
+    private int arrayIndex = 0;
+
+    private string[] quadrant = {"TopLeft", "TopRight", "BotLeft", "BotRight"};
+    private string[] legendString = { "Empty", "OutsideCorner", "OutsideWall", "InsideCorner", "InsideWall", "StandardPellet", "PowerPellet", "TJunction" };
 
     [SerializeField] private GameObject squareTileGO;
 
@@ -57,6 +61,8 @@ public class LevelGenerator : MonoBehaviour
         {0,0,0,0,0,0,5,0,0,0,4,0,0,0},
     };
 
+    private Map map;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -66,17 +72,20 @@ public class LevelGenerator : MonoBehaviour
         tileArraySizeX = levelMap.GetLength(0);
         tileArraySizeY = levelMap.GetLength(1);
 
+        map = gameObject.AddComponent<Map>();
+        map.mapItems = new MapItems[tileArraySizeX * tileArraySizeY];
+
         // Top Left Section
-        generateGridMap(startingXPos - scaleX, startingYPos + scaleY, startingZPos,  -scaleX, scaleY);
+        generateGridMap(startingXPos - scaleX, startingYPos + scaleY, startingZPos,  -scaleX, scaleY, quadrant[0]);
 
         // Top Right Section
-        generateGridMap(startingXPos, startingYPos + scaleY, startingZPos, scaleX, scaleY);
+        generateGridMap(startingXPos, startingYPos + scaleY, startingZPos, scaleX, scaleY, quadrant[1]);
 
         // Bottom Left Section
-        generateGridMap(startingXPos - scaleX, startingYPos, startingZPos, -scaleX, -scaleY);
+        generateGridMap(startingXPos - scaleX, startingYPos, startingZPos, -scaleX, -scaleY, quadrant[2]);
 
         // Bottom Right Section
-        generateGridMap(startingXPos, startingYPos, startingZPos, scaleX, -scaleY);
+        generateGridMap(startingXPos, startingYPos, startingZPos, scaleX, -scaleY, quadrant[3]);
     }
 
     // Update is called once per frame
@@ -93,20 +102,29 @@ public class LevelGenerator : MonoBehaviour
     /// <param name="startingZPos">The z position of the first tile</param>
     /// <param name="scaleX">The x scale for the tile</param>
     /// <param name="scaleY">The y scale for the tile</param>
-    private void generateGridMap(float startingXPos, float startingYPos, float startingZPos, float scaleX, float scaleY)
+    /// <param name="quadrant">What quadrant the gameobject is in</param>
+    private void generateGridMap(float startingXPos, float startingYPos, float startingZPos, float scaleX, float scaleY, string quadrant)
     {
         float xPos = startingXPos;
         float yPos = startingYPos;
         float zPos = startingZPos;
 
-        GameObject tile;
+        string[] neighbourPositions = new string[4];
+
+        GameObject newTileGO;
+        GameObject newSpriteGO;
 
         for (int i = tileArraySizeX - 1; i >= 0; i--)
         {
             for (int j = tileArraySizeY - 1; j >= 0; j--)
             {
-                tile = createSquare(xPos, yPos, zPos);
-                addSprite(levelMap[i, j], tile);
+                newTileGO = createSquare(xPos, yPos, zPos);
+                newTileGO.name = quadrant + "_" + i + "_" + j;
+                newSpriteGO = addSprite(levelMap[i, j], newTileGO);
+
+                neighbourPositions = getNeighbourPositions(i, j, quadrant);
+                map.mapItems[arrayIndex] = new MapItems(newTileGO, newSpriteGO, legendString[levelMap[i, j]], neighbourPositions);
+
                 xPos += scaleX;
             }
             xPos = startingXPos;
@@ -120,13 +138,19 @@ public class LevelGenerator : MonoBehaviour
     /// <param name="xPos">The x position of the gameobject</param>
     /// <param name="yPos">The y position of the gameobject</param>
     /// <param name="zPos">The z position of the gameobject</param>
-    /// <returns></returns>
+    /// <returns>Square tile gameobject</returns>
     private GameObject createSquare(float xPos, float yPos, float zPos)
     {
         return Instantiate(squareTileGO, new Vector3(xPos, yPos, zPos), Quaternion.identity, gameObject.transform);
     }
 
-    private void addSprite(int value, GameObject parent)
+    /// <summary>
+    /// Add sprite to the parent square gameobject
+    /// </summary>
+    /// <param name="value">Determine what sprite to assign to gameobject</param>
+    /// <param name="parent">The parent gameobject the sprite is assigned to</param>
+    /// <returns>The gameobject of the sprite</returns>
+    private GameObject addSprite(int value, GameObject parent)
     {
         GameObject newSpriteGO = new GameObject("Sprite");
         newSpriteGO.transform.parent = parent.transform;
@@ -162,6 +186,223 @@ public class LevelGenerator : MonoBehaviour
             default:
                 break;
         }
+
+        return newSpriteGO;
+    }
+
+    /// <summary>
+    /// Get neighbouring positions of a given position on the map
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="quadrant"></param>
+    /// <returns>Array of neighbour positions</returns>
+    private string[] getNeighbourPositions(float x, float y, string quadrant)
+    {
+        /*
+         * let neighbourPositions[0] = left side of given position
+         * neighbourPositions[1] = right side of given position
+         * neighbourPositions[2] = top of the given position
+         * neighbourPositions[3] = bottom of the given position
+         */
+        string[] neighbourPositions = new string[4];
+
+        // TopLeft quadrant
+        if (quadrant == this.quadrant[0])
+        {
+
+            if (x < tileArraySizeX - 1)
+            {
+                neighbourPositions[3] = quadrant + "_" + (x + 1) + "_" + y;
+            }
+            else
+            {
+                neighbourPositions[3] = this.quadrant[2] + "_" + x + "_" + y;
+            }
+
+            if (x > 0)
+            {
+                neighbourPositions[2] = quadrant + "_" + (x - 1) + "_" + y;
+            }
+            else
+            {
+                neighbourPositions[2] = "Out of bounds";
+            }
+
+            if (y < tileArraySizeY - 1)
+            {
+                neighbourPositions[1] = quadrant + "_" + x + "_" + (y + 1);
+            }
+            else
+            {
+                neighbourPositions[1] = this.quadrant[1] + "_" + x + "_" + y;
+            }
+
+            if (y > 0)
+            {
+                neighbourPositions[0] = quadrant + "_" + x + "_" + (y - 1);
+            }
+            else
+            {
+                if (x == tileArraySizeX - 1)
+                {
+                    neighbourPositions[0] = this.quadrant[1] + "_" + x + "_" + y;
+                }
+                else
+                {
+                    neighbourPositions[0] = "Out of bounds";
+                }
+            }
+
+        }
+
+        // TopRight quadrant
+        else if (quadrant == this.quadrant[1])
+        {
+
+            if (x < tileArraySizeX - 1)
+            {
+                neighbourPositions[3] = quadrant + "_" + (x + 1) + "_" + y;
+            }
+            else
+            {
+                neighbourPositions[3] = this.quadrant[3] + "_" + x + "_" + y;
+            }
+
+            if (x > 0)
+            {
+                neighbourPositions[2] = quadrant + "_" + (x - 1) + "_" + y;
+            }
+            else
+            {
+                neighbourPositions[2] = "Out of bounds";
+            }
+
+            if (y < tileArraySizeY - 1)
+            {
+                neighbourPositions[0] = quadrant + "_" + x + "_" + (y + 1);
+            }
+            else
+            {
+                neighbourPositions[0] = this.quadrant[0] + "_" + x + "_" + y;
+            }
+
+            if (y > 0)
+            {
+                neighbourPositions[1] = quadrant + "_" + x + "_" + (y - 1);
+            }
+            else
+            {
+                if (x == tileArraySizeX - 1)
+                {
+                    neighbourPositions[1] = this.quadrant[0] + "_" + x + "_" + y;
+                }
+                else
+                {
+                    neighbourPositions[1] = "Out of bounds";
+                }
+            }
+
+        }
+
+        // BotLeft quadrant
+        else if (quadrant == this.quadrant[2])
+        {
+            
+            if (x < tileArraySizeX - 1)
+            {
+                neighbourPositions[2] = quadrant + "_" + (x + 1) + "_" + y;
+            }
+            else
+            {
+                neighbourPositions[2] = this.quadrant[0] + "_" + x + "_" + y;
+            }
+
+            if (x > 0)
+            {
+                neighbourPositions[3] = quadrant + "_" + (x - 1) + "_" + y;
+            }
+            else
+            {
+                neighbourPositions[3] = "Out of bounds";
+            }
+
+            if (y < tileArraySizeY - 1)
+            {
+                neighbourPositions[1] = quadrant + "_" + x + "_" + (y + 1);
+            }
+            else
+            {
+                neighbourPositions[1] = this.quadrant[3] + "_" + x + "_" + y;
+            }
+
+            if (y > 0)
+            {
+                neighbourPositions[0] = quadrant + "_" + x + "_" + (y - 1);
+            }
+            else
+            {
+                if (x == tileArraySizeX - 1)
+                {
+                    neighbourPositions[0] = this.quadrant[3] + "_" + x + "_" + y;
+                }
+                else
+                {
+                    neighbourPositions[0] = "Out of bounds";
+                }
+            }
+
+        }
+
+        // BotRight quadrant
+        else if (quadrant == this.quadrant[3])
+        {
+            
+            if (x < tileArraySizeX - 1)
+            {
+                neighbourPositions[2] = quadrant + "_" + (x + 1) + "_" + y;
+            }
+            else
+            {
+                neighbourPositions[2] = this.quadrant[1] + "_" + x + "_" + y;
+            }
+
+            if (x > 0)
+            {
+                neighbourPositions[3] = quadrant + "_" + (x - 1) + "_" + y;
+            }
+            else
+            {
+                neighbourPositions[3] = "Out of bounds";
+            }
+
+            if (y < tileArraySizeY - 1)
+            {
+                neighbourPositions[0] = quadrant + "_" + x + "_" + (y + 1);
+            }
+            else
+            {
+                neighbourPositions[0] = this.quadrant[2] + "_" + x + "_" + y;
+            }
+
+            if (y > 0)
+            {
+                neighbourPositions[1] = quadrant + "_" + x + "_" + (y - 1);
+            }
+            else
+            {
+                if (x == tileArraySizeX - 1)
+                {
+                    neighbourPositions[1] = this.quadrant[2] + "_" + x + "_" + y;
+                }
+                else
+                {
+                    neighbourPositions[1] = "Out of bounds";
+                }
+            }
+
+        }
+        return neighbourPositions;
     }
 
     /// <summary>
