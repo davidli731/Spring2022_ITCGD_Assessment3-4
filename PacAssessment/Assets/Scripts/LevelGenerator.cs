@@ -6,6 +6,8 @@ using UnityEngine.UIElements;
 public class LevelGenerator : MonoBehaviour
 {
     // Declare Variables
+    private float width;
+    private float height;
     private float scaleX = 26.0f;
     private float scaleY = 15.5f;
     private float scaleZ = 1.0f;
@@ -75,8 +77,22 @@ public class LevelGenerator : MonoBehaviour
         map = gameObject.AddComponent<Map>();
         map.mapItems = new MapItems[tileArraySizeX * tileArraySizeY * 4];
 
+        createLevel();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
+    /// <summary>
+    /// Create level
+    /// </summary>
+    private void createLevel()
+    {
         // Top Left Section
-        generateGridMap(startingXPos - scaleX, startingYPos + scaleY, startingZPos,  -scaleX, scaleY, quadrant[0]);
+        generateGridMap(startingXPos - scaleX, startingYPos + scaleY, startingZPos, -scaleX, scaleY, quadrant[0]);
 
         // Top Right Section
         generateGridMap(startingXPos, startingYPos + scaleY, startingZPos, scaleX, scaleY, quadrant[1]);
@@ -95,12 +111,6 @@ public class LevelGenerator : MonoBehaviour
                 map.RotateTJunctionWalls(mItem);
             }
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     /// <summary>
@@ -129,7 +139,7 @@ public class LevelGenerator : MonoBehaviour
             {
                 newTileGO = createSquare(xPos, yPos, zPos);
                 newTileGO.transform.localPosition = new Vector3(xPos, yPos, zPos);
-                newTileGO.transform.localScale = new Vector3(scaleX, scaleY, scaleZ);
+                newTileGO.transform.localScale = new Vector3(width, height, scaleZ);
                 newTileGO.name = quadrant + "_" + i + "_" + j;
                 newSpriteGO = addSprite(levelMap[i, j], newTileGO);
 
@@ -430,6 +440,8 @@ public class LevelGenerator : MonoBehaviour
 
         scaleX = scaleX * (15.0f / tileArraySizeY);
         scaleY = scaleY * (14.0f / tileArraySizeX);
+        width = scaleX;
+        height = scaleY;
         spriteScaleX /= tileArraySizeX;
         spriteScaleY /= tileArraySizeY;
     }
