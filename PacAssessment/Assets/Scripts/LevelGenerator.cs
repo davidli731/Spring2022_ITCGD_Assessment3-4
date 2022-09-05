@@ -14,7 +14,7 @@ public class LevelGenerator : MonoBehaviour
     private float spriteScaleX = 3.1f * 15.0f;
     private float spriteScaleY = 3.1f * 14.0f;
     private float startingXPos = 14.0f;
-    private float startingYPos = -8.0f;
+    private float startingYPos = -14.0f;
     private const float startingZPos = 0.0f;
     private int tileArraySizeX;
     private int tileArraySizeY;
@@ -75,7 +75,7 @@ public class LevelGenerator : MonoBehaviour
         calculateMaths();
 
         map = gameObject.AddComponent<Map>();
-        map.mapItems = new MapItems[tileArraySizeX * tileArraySizeY * 4];
+        map.mapItems = new MapItems[(tileArraySizeX * tileArraySizeY * 4) - (2 * tileArraySizeY)];
 
         createLevel();
     }
@@ -153,7 +153,19 @@ public class LevelGenerator : MonoBehaviour
         GameObject newTileGO;
         GameObject newSpriteGO;
 
-        for (int i = tileArraySizeX - 1; i >= 0; i--)
+        // If in bottom quadrant, remove the last line of array
+        int isInBotQuadrant;
+
+        if (quadrant == this.quadrant[0] || quadrant == this.quadrant[1])
+        {
+            isInBotQuadrant = 0;
+        }
+        else
+        {
+            isInBotQuadrant = 1;
+        }
+
+        for (int i = tileArraySizeX - 1 - isInBotQuadrant; i >= 0; i--)
         {
             for (int j = tileArraySizeY - 1; j >= 0; j--)
             {
@@ -259,7 +271,7 @@ public class LevelGenerator : MonoBehaviour
             }
             else
             {
-                neighbourPositions[3] = this.quadrant[2] + "_" + x + "_" + y;
+                neighbourPositions[3] = this.quadrant[2] + "_" + (x - 1) + "_" + y;
             }
 
             if (x > 0)
@@ -308,7 +320,7 @@ public class LevelGenerator : MonoBehaviour
             }
             else
             {
-                neighbourPositions[3] = this.quadrant[3] + "_" + x + "_" + y;
+                neighbourPositions[3] = this.quadrant[3] + "_" + (x - 1) + "_" + y;
             }
 
             if (x > 0)
@@ -351,13 +363,13 @@ public class LevelGenerator : MonoBehaviour
         else if (quadrant == this.quadrant[2])
         {
             
-            if (x < tileArraySizeX - 1)
+            if (x < tileArraySizeX - 2)
             {
                 neighbourPositions[2] = quadrant + "_" + (x + 1) + "_" + y;
             }
             else
             {
-                neighbourPositions[2] = this.quadrant[0] + "_" + x + "_" + y;
+                neighbourPositions[2] = this.quadrant[0] + "_" + (x + 1) + "_" + y;
             }
 
             if (x > 0)
@@ -400,13 +412,13 @@ public class LevelGenerator : MonoBehaviour
         else if (quadrant == this.quadrant[3])
         {
             
-            if (x < tileArraySizeX - 1)
+            if (x < tileArraySizeX - 2)
             {
                 neighbourPositions[2] = quadrant + "_" + (x + 1) + "_" + y;
             }
             else
             {
-                neighbourPositions[2] = this.quadrant[1] + "_" + x + "_" + y;
+                neighbourPositions[2] = this.quadrant[1] + "_" + (x + 1) + "_" + y;
             }
 
             if (x > 0)
