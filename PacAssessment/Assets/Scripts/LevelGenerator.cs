@@ -73,10 +73,6 @@ public class LevelGenerator : MonoBehaviour
     {
         reset();
         calculateMaths();
-
-        map = gameObject.AddComponent<Map>();
-        map.mapItems = new MapItems[(tileArraySizeX * tileArraySizeY * 4) - (2 * tileArraySizeY)];
-
         createLevel();
     }
 
@@ -91,6 +87,9 @@ public class LevelGenerator : MonoBehaviour
     /// </summary>
     private void createLevel()
     {
+        map = gameObject.AddComponent<Map>();
+        map.mapItems = new MapItems[(tileArraySizeX * tileArraySizeY * 4) - (2 * tileArraySizeY)];
+
         // Top Left Section
         generateGridMap(startingXPos - scaleX, startingYPos + scaleY, startingZPos, -scaleX, scaleY, quadrant[0]);
 
