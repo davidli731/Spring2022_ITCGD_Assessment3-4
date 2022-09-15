@@ -48,6 +48,23 @@ public class Map : MonoBehaviour
     }
 
     /// <summary>
+    /// Get vector3 position from name
+    /// </summary>
+    /// <param name="name">Name of gameobject</param>
+    /// <returns></returns>
+    public Vector3 GetPositionFromName(string name)
+    {
+        foreach (MapItems item in mapItems)
+        {
+            if (name == item.MapGO.name)
+            {
+                return item.MapGO.transform.position;
+            }
+        }
+        return Vector3.zero;
+    }
+
+    /// <summary>
     /// Check if item type is outside wall
     /// </summary>
     /// <param name="item"></param>

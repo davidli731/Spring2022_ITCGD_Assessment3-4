@@ -16,9 +16,10 @@ public class LevelGenerator : MonoBehaviour
     private float startingXPos = 14.0f;
     private float startingYPos = -14.0f;
     private const float startingZPos = 0.0f;
-    private int tileArraySizeX;
-    private int tileArraySizeY;
     private int arrayIndex;
+
+    public int tileArraySizeX;
+    public int tileArraySizeY;
 
     private string[] quadrant = {"TopLeft", "TopRight", "BotLeft", "BotRight"};
     private string[] legendString = { "Empty", "OutsideCorner", "OutsideWall", "InsideCorner", "InsideWall", "StandardPellet", "PowerPellet", "TJunction" };
@@ -36,6 +37,9 @@ public class LevelGenerator : MonoBehaviour
 
     // Animator
     [SerializeField] private RuntimeAnimatorController powerPelletController;
+
+    // PacStudent
+    [SerializeField] private PacStudent pacStudent;
 
     /* Level map index
     * 0 – Empty (do not put anything here, no sprite needed)
@@ -74,6 +78,11 @@ public class LevelGenerator : MonoBehaviour
         reset();
         calculateMaths();
         createLevel();
+
+        // Set up pacStudent
+        pacStudent.SetInitialScale(tileArraySizeX, tileArraySizeY);
+        pacStudent.SetMap(map);
+        pacStudent.Setup();
     }
 
     // Update is called once per frame
