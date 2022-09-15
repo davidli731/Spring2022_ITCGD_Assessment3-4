@@ -17,7 +17,7 @@ public class PacStudent : MonoBehaviour
 
     [SerializeField] private GameObject PacStudentSpriteGO;
     [SerializeField] private Sprite idleSprite;
-
+    [SerializeField] private AudioSource walkingAudio;
     [SerializeField] private LevelGenerator levelGenerator;
 
     public bool isWalking = false;
@@ -36,7 +36,6 @@ public class PacStudent : MonoBehaviour
         if (isWalking)
         {
             animatorController.speed = 1;
-
             handleMovement();
         } else
         {
@@ -106,6 +105,7 @@ public class PacStudent : MonoBehaviour
                 gameObject.transform.position = Vector3.Lerp(tween.StartPos, tween.DestPos, (Time.time - tween.StartTime) / duration);
             } else
             {
+                walkingAudio.Play();
                 gameObject.transform.position = tween.DestPos;
 
                 startPosName = map.GetNameFromPosition(gameObject.transform.position);
