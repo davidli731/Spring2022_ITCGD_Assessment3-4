@@ -56,9 +56,45 @@ public class Map : MonoBehaviour
     {
         foreach (MapItems item in mapItems)
         {
-            if (name == item.MapGO.name)
+            if (name == item.MapGO.name && name != "Out of bounds")
             {
                 return item.MapGO.transform.position;
+            }
+        }
+        return Vector3.zero;
+    }
+
+    /// <summary>
+    /// Get name from position
+    /// </summary>
+    /// <param name="position">Vector3 position</param>
+    /// <returns></returns>
+    public string GetNameFromPosition(Vector3 position)
+    {
+        foreach (MapItems item in mapItems)
+        {
+            if (position == item.MapGO.transform.position)
+            {
+                return item.MapGO.name;
+            }
+        }
+        return "Out of bounds";
+    }
+
+    public Vector3 GetNeighbourPosition(string name, string direction)
+    {
+        foreach (MapItems item in mapItems)
+        {
+            if (name == item.MapGO.name)
+            {
+                if (direction == "Left")
+                    return GetPositionFromName(item.NeighbourPositions[0]);
+                if (direction == "Right")
+                    return GetPositionFromName(item.NeighbourPositions[1]);
+                if (direction == "Up")
+                    return GetPositionFromName(item.NeighbourPositions[2]);
+                if (direction == "Down")
+                    return GetPositionFromName(item.NeighbourPositions[3]);
             }
         }
         return Vector3.zero;
