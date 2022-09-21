@@ -72,19 +72,7 @@ public class PacStudent : MonoBehaviour
     public void Setup()
     {
         resetPacStudent();
-        currentDirection = directions[1];
-        isWalking = true;
-
-        string startPosName = "TopLeft_1_1";
-        Vector3 startPos = map.GetPositionFromName(startPosName);
-        Vector3 destPos = map.GetNeighbourPosition(startPosName, currentDirection);
-
-        if (startPos != Vector3.zero)
-        {
-            gameObject.transform.position = startPos;
-        }
-
-        tween = new PacStudentTween(startPos, destPos, Time.time);
+        testInit();
     }
 
     /// <summary>
@@ -94,53 +82,84 @@ public class PacStudent : MonoBehaviour
     {
         if (tween != null)
         {
-            string startPosName;
-            Vector3 startPos;
-            Vector3 destPos;
-
-            float distance = Vector3.Distance(gameObject.transform.position, tween.DestPos);
+            float distance = Vector3.Distance(transform.position, tween.DestPos);
 
             if (distance > marginalDistance)
             {
-                gameObject.transform.position = Vector3.Lerp(tween.StartPos, tween.DestPos, (Time.time - tween.StartTime) / duration);
+                transform.position = Vector3.Lerp(tween.StartPos, tween.DestPos, (Time.time - tween.StartTime) / duration);
             } else
             {
+                // Test code to move pacStudent on its own inside the top-left inner block
+
+                string currentPosName;
+                Vector3 currentPos;
+                Vector3 nextPos;
+
+                // Play walking fx (different from eating pellet fx)
                 walkingAudio.Play();
-                gameObject.transform.position = tween.DestPos;
+                transform.position = tween.DestPos;
 
-                startPosName = map.GetNameFromPosition(gameObject.transform.position);
-                startPos = map.GetPositionFromName(startPosName);
+                currentPosName = map.GetNameFromPosition(transform.position);
+                currentPos = map.GetPositionFromName(currentPosName);
 
-                if (currentDirection == directions[1] && startPosName == "TopLeft_1_12")
-                {
-                    resetPacStudent();
-                    currentDirection = directions[3];
-                    gameObject.transform.Rotate(0.0f, 0.0f, -90.0f);
-                }
-                else if (currentDirection == directions[3] && startPosName == "TopLeft_14_12")
-                {
-                    resetPacStudent();
-                    currentDirection = directions[0];
-                    gameObject.transform.rotation = Quaternion.identity;
-                    pacStudentSpriteRenderer.flipX = true;
-                    
-                }
-                else if (currentDirection == directions[0] && startPosName == "TopLeft_14_1")
-                {
-                    resetPacStudent();
-                    currentDirection = directions[2];
-                    gameObject.transform.Rotate(0.0f, 0.0f, 90.0f);
-                }
-                else if (currentDirection == directions[2] && startPosName == "TopLeft_1_1")
-                {
-                    resetPacStudent();
-                    currentDirection = directions[1];
-                }
+                changeMoveDirection(currentPosName);
 
-                    destPos = map.GetNeighbourPosition(startPosName, currentDirection);
+                nextPos = map.GetNeighbourPosition(currentPosName, currentDirection);
 
-                tween = new PacStudentTween(startPos, destPos, Time.time);
+                tween = new PacStudentTween(currentPos, nextPos, Time.time);
             }
+        }
+    }
+
+    /// <summary>
+    /// Set pacStudent to initial position and initialise tween
+    /// </summary>
+    private void testInit()
+    {
+        currentDirection = directions[1];
+        isWalking = true;
+
+        string startPosName = "TopLeft_1_1";
+        Vector3 startPos = map.GetPositionFromName(startPosName);
+        Vector3 destPos = map.GetNeighbourPosition(startPosName, currentDirection);
+
+        if (startPos != Vector3.zero)
+        {
+            transform.position = startPos;
+        }
+
+        tween = new PacStudentTween(startPos, destPos, Time.time);
+    }
+
+    /// <summary>
+    /// Set of conditions to change pacStudent direction, test code
+    /// </summary>
+    private void changeMoveDirection(string currentPosName)
+    {
+        if (currentDirection == directions[1] && currentPosName == "TopLeft_1_6")
+        {
+            resetPacStudent();
+            currentDirection = directions[3];
+            transform.Rotate(0.0f, 0.0f, -90.0f);
+        }
+        else if (currentDirection == directions[3] && currentPosName == "TopLeft_5_6")
+        {
+            resetPacStudent();
+            currentDirection = directions[0];
+            transform.rotation = Quaternion.identity;
+            pacStudentSpriteRenderer.flipX = true;
+
+        }
+        else if (currentDirection == directions[0] && currentPosName == "TopLeft_5_1")
+        {
+            resetPacStudent();
+            currentDirection = directions[2];
+            transform.Rotate(0.0f, 0.0f, 90.0f);
+        }
+        else if (currentDirection == directions[2] && currentPosName == "TopLeft_1_1")
+        {
+            resetPacStudent();
+            currentDirection = directions[1];
         }
     }
 
