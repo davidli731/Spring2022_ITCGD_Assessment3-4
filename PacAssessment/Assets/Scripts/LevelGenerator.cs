@@ -41,6 +41,9 @@ public class LevelGenerator : MonoBehaviour
     // PacStudent
     [SerializeField] private PacStudent pacStudent;
 
+    // Ghost
+    [SerializeField] private Ghost ghost;
+
     /* Level map index
     * 0 – Empty (do not put anything here, no sprite needed)
     * 1 - Outside corner (double lined corner piece in original game)
@@ -83,6 +86,11 @@ public class LevelGenerator : MonoBehaviour
         pacStudent.SetInitialScale(tileArraySizeX, tileArraySizeY);
         pacStudent.SetMap(map);
         pacStudent.Setup();
+
+        // Set up ghosts
+        ghost.SetInitialScale(tileArraySizeX, tileArraySizeY);
+        ghost.SetMap(map);
+        ghost.Setup();
     }
 
     // Update is called once per frame

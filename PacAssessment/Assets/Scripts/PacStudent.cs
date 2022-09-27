@@ -102,7 +102,7 @@ public class PacStudent : MonoBehaviour
                 currentPosName = map.GetNameFromPosition(transform.position);
                 currentPos = map.GetPositionFromName(currentPosName);
 
-                changeMoveDirection(currentPosName);
+                //changeMoveDirection(currentPosName);
 
                 nextPos = map.GetNeighbourPosition(currentPosName, currentDirection);
 
@@ -117,7 +117,7 @@ public class PacStudent : MonoBehaviour
     private void testInit()
     {
         currentDirection = directions[1];
-        isWalking = true;
+        //isWalking = true;
 
         string startPosName = "TopLeft_1_1";
         Vector3 startPos = map.GetPositionFromName(startPosName);
