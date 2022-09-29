@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class PacStudent : MonoBehaviour
 {
-    private static float duration = 1.0f;
-    private static float marginalDistance = 0.05f;
+    private const float duration = 1.0f;
+    private const float marginalDistance = 0.05f;
 
     private Animator animatorController;
     private SpriteRenderer pacStudentSpriteRenderer;
