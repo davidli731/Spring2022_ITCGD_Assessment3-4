@@ -7,22 +7,17 @@ using UnityEngine.UI;
 public class TitleMenu : MonoBehaviour
 {
     private const float marginalDistance = 0.05f;
-
-    private float duration;
-    private float pacStudentOffset;
+    private const int arraySize = 5;
 
     private IEnumerator swapSpriteCoroutine;
     private int currentSpriteValue;
     [SerializeField] private Image ghostImage;
     [SerializeField] private Sprite[] ghostSprites;
+    [SerializeField] private GameObject[] tsObjectGO = new GameObject[arraySize];
 
-    [SerializeField] private GameObject pacStudentGO;
-    [SerializeField] private GameObject[] ghostGO;
-    private PacStudentTween pacStudentTween;
-    private GhostTween[] ghostTween = new GhostTween[4];
+    public SpriteRenderer[] tsObjectRenderer = new SpriteRenderer[arraySize];
+    private DemoTween[] tsObjectTween = new DemoTween[arraySize];
     private string[] directions = { "Left", "Right", "Up", "Down" };
-    private string pacStudentCurrentDirection;
-    private string[] ghostCurrentDirection = new string[4];
 
     private Vector3[] corners =
     {
@@ -61,7 +56,7 @@ public class TitleMenu : MonoBehaviour
     /// <returns>IEnumerator</returns>
     private IEnumerator swapSprite()
     {
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(0.75f);
 
         currentSpriteValue++;
 
@@ -90,41 +85,66 @@ public class TitleMenu : MonoBehaviour
     /// </summary>
     private void handleMovement()
     {
-        if (pacStudentTween != null)
+        for (int i = 0; i < arraySize; i++)
         {
-            float distance = Vector3.Distance(pacStudentGO.transform.localPosition, pacStudentTween.DestPos);
-
-            if (distance > marginalDistance)
+            if (tsObjectTween[i] != null)
             {
-                pacStudentGO.transform.localPosition = Vector3.Lerp(pacStudentTween.StartPos, pacStudentTween.DestPos, (Time.time - pacStudentTween.StartTime) / duration);
-            }
-            else
-            {
-                pacStudentGO.transform.localPosition = pacStudentTween.DestPos;
+                float distance = Vector3.Distance(tsObjectGO[i].transform.localPosition, tsObjectTween[i].DestPos);
 
-                if (pacStudentCurrentDirection == directions[1] && pacStudentGO.transform.localPosition == corners[0])
+                if (distance > marginalDistance)
                 {
-                    pacStudentCurrentDirection = directions[2];
-                    duration = 4.0f;
-                    pacStudentTween = new PacStudentTween(pacStudentGO.transform.localPosition, corners[1], Time.time);
+                    tsObjectGO[i].transform.localPosition = Vector3.Lerp(tsObjectTween[i].StartPos, tsObjectTween[i].DestPos, (Time.time - tsObjectTween[i].StartTime) / tsObjectTween[i].Duration);
                 }
-                else if (pacStudentCurrentDirection == directions[2] && pacStudentGO.transform.localPosition == corners[1])
+                else
                 {
-                    pacStudentCurrentDirection = directions[0];
-                    duration = 10.0f;
-                    pacStudentTween = new PacStudentTween(pacStudentGO.transform.localPosition, corners[2], Time.time);
-                }
-                else if (pacStudentCurrentDirection == directions[0] && pacStudentGO.transform.localPosition == corners[2])
-                {
-                    pacStudentCurrentDirection = directions[3];
-                    duration = 4.0f;
-                    pacStudentTween = new PacStudentTween(pacStudentGO.transform.localPosition, corners[3], Time.time);
-                }
-                else if (pacStudentCurrentDirection == directions[3] && pacStudentGO.transform.localPosition == corners[3])
-                {
-                    pacStudentCurrentDirection = directions[1];
-                    duration = 10.0f;
-                    pacStudentTween = new PacStudentTween(pacStudentGO.transform.localPosition, corners[0], Time.time);
+                    tsObjectGO[i].transform.localPosition = tsObjectTween[i].DestPos;
+
+                    string direction;
+                    float duration;
+
+                    if (tsObjectTween[i].Direction == directions[1] && tsObjectGO[i].transform.localPosition == corners[0])
+                    {
+                        // Bottom right corner
+                        direction = directions[2];
+                        duration = 4.0f;
+
+                        reset(i);
+                        tsObjectGO[i].transform.Rotate(0.0f, 0.0f, 90.0f);
+
+                        tsObjectTween[i] = new DemoTween(tsObjectGO[i].transform.localPosition, corners[1], Time.time, duration, direction);
+                    }
+                    else if (tsObjectTween[i].Direction == directions[2] && tsObjectGO[i].transform.localPosition == corners[1])
+                    {
+                        // Top right corner
+                        direction = directions[0];
+                        duration = 10.0f;
+
+                        reset(i);
+                        tsObjectRenderer[i].flipX = true;
+
+                        tsObjectTween[i] = new DemoTween(tsObjectGO[i].transform.localPosition, corners[2], Time.time, duration, direction);
+                    }
+                    else if (tsObjectTween[i].Direction == directions[0] && tsObjectGO[i].transform.localPosition == corners[2])
+                    {
+                        // Top left corner
+                        direction = directions[3];
+                        duration = 4.0f;
+
+                        reset(i);
+                        tsObjectGO[i].transform.Rotate(0.0f, 0.0f, -90.0f);
+
+                        tsObjectTween[i] = new DemoTween(tsObjectGO[i].transform.localPosition, corners[3], Time.time, duration, direction);
+                    }
+                    else if (tsObjectTween[i].Direction == directions[3] && tsObjectGO[i].transform.localPosition == corners[3])
+                    {
+                        // Bottom left corner
+                        direction = directions[1];
+                        duration = 10.0f;
+
+                        reset(i);
+
+                        tsObjectTween[i] = new DemoTween(tsObjectGO[i].transform.localPosition, corners[0], Time.time, duration, direction);
+                    }
                 }
             }
         }
@@ -135,15 +155,28 @@ public class TitleMenu : MonoBehaviour
     /// </summary>
     private void testInit()
     {
-        pacStudentCurrentDirection = directions[1];
-        pacStudentOffset = (Vector3.Distance(pacStudentGO.transform.localPosition, corners[0]) + 150.0f) / 300.0f;
-        duration = 5.0f / pacStudentOffset;
-        pacStudentTween = new PacStudentTween(pacStudentGO.transform.localPosition, corners[0], Time.time);
+        string direction;
+        float duration;
+        float offset;
 
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < arraySize; i++)
         {
-            ghostCurrentDirection[i] = directions[1];
-            ghostTween[i] = new GhostTween(corners[3], corners[0], Time.time);
+            tsObjectRenderer[i] = tsObjectGO[i].GetComponentInChildren<SpriteRenderer>();
+
+            direction = directions[1];
+            offset = (Vector3.Distance(tsObjectGO[i].transform.localPosition, corners[0]) + 150.0f) / 300.0f;
+            duration = (5.0f / offset) + (i * 4);
+            tsObjectTween[i] = new DemoTween(tsObjectGO[i].transform.localPosition, corners[0], Time.time, duration, direction);
         }
+    }
+
+    /// <summary>
+    /// Reset rotation and flip
+    /// </summary>
+    private void reset(int i)
+    {
+        tsObjectGO[i].transform.rotation = Quaternion.identity;
+        tsObjectRenderer[i].flipX = false;
+        tsObjectRenderer[i].flipY = false;
     }
 }

@@ -1166,12 +1166,24 @@ MonoBehaviour:
   - {fileID: -830052214, guid: cb42c0ef533c3f84d8cdafe83b854f47, type: 3}
   - {fileID: -56877240, guid: e89dc1ec47b851c469517a2e2202b511, type: 3}
   - {fileID: 585083406, guid: ebff96d690457a541b26b98f612e1e3a, type: 3}
-  pacStudentGO: {fileID: 1005582818}
-  ghostGO:
+  tsObjectGO:
+  - {fileID: 1005582818}
   - {fileID: 2120017182}
   - {fileID: 957822972}
   - {fileID: 938734083}
   - {fileID: 1384433105}
+  tsObjectSpriteTransform:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  tsObjectRenderer:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &993880165
 GameObject:
   m_ObjectHideFlags: 0
