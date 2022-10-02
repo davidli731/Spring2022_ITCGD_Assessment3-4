@@ -21,8 +21,8 @@ public class LevelGenerator : MonoBehaviour
     public int tileArraySizeX;
     public int tileArraySizeY;
 
-    private string[] quadrant = {"TopLeft", "TopRight", "BotLeft", "BotRight"};
-    private string[] legendString = { "Empty", "OutsideCorner", "OutsideWall", "InsideCorner", "InsideWall", "StandardPellet", "PowerPellet", "TJunction" };
+    private string[] quadrant = { "TopLeft", "TopRight", "BotLeft", "BotRight" };
+    //private string[] legendString = { "Empty", "OutsideCorner", "OutsideWall", "InsideCorner", "InsideWall", "StandardPellet", "PowerPellet", "TJunction" };
 
     [SerializeField] private GameObject squareTileGO;
 
@@ -122,19 +122,19 @@ public class LevelGenerator : MonoBehaviour
         // Rotate and flip sprites to face the correct way
         foreach (MapItems mItem in map.mapItems)
         {
-            if (mItem.Type == legendString[1])
+            if (mItem.Type == Legend.OutsideCorner)
             {
                 map.RotateAndFlipOutsideCornerWall(mItem);
             }
-            else if (mItem.Type == legendString[2])
+            else if (mItem.Type == Legend.OutsideWall)
             {
                 map.RotateAndFlipOutsideWall(mItem);
             }
-            else if (mItem.Type == legendString[4])
+            else if (mItem.Type == Legend.InsideWall)
             {
                 map.RotateAndFlipInsideWall(mItem);
             }
-            else if (mItem.Type == legendString[7])
+            else if (mItem.Type == Legend.TJunction)
             {
                 map.RotateAndFlipTJunctionWall(mItem);
             }
@@ -142,7 +142,7 @@ public class LevelGenerator : MonoBehaviour
 
         foreach(MapItems mItem in map.mapItems)
         {
-            if (mItem.Type == legendString[3])
+            if (mItem.Type == Legend.InsideCorner)
             {
                 map.RotateAndFlipInsideCornerWall(mItem);
             }
@@ -192,7 +192,7 @@ public class LevelGenerator : MonoBehaviour
                 newSpriteGO = addSprite(levelMap[i, j], newTileGO);
 
                 neighbourPositions = getNeighbourPositions(i, j, quadrant);
-                map.mapItems[arrayIndex] = new MapItems(newTileGO, newSpriteGO, arrayIndex, legendString[levelMap[i, j]], neighbourPositions);
+                map.mapItems[arrayIndex] = new MapItems(newTileGO, newSpriteGO, arrayIndex, (Legend)levelMap[i, j], neighbourPositions);
 
                 arrayIndex++;
                 xPos += scaleX;

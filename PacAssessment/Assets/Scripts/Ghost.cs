@@ -11,8 +11,7 @@ public class Ghost : MonoBehaviour
     private GameObject[] GhostSpriteGO;
     private SpriteRenderer[] spriteRenderer;
     private Map map;
-    private string[] directions = { "Left", "Right", "Up", "Down" };
-    private string currentDirection;
+    private Direction currentDirection;
 
     public bool isScared = false;
     public bool isDead = false;

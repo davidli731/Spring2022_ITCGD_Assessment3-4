@@ -28,7 +28,7 @@ public class DemoTween
         private set;
     }
 
-    public string Direction
+    public Direction Direction
     {
         get;
         private set;
@@ -47,7 +47,7 @@ public class DemoTween
         Vector3 destPos,
         float startTime,
         float duration,
-        string direction
+        Direction direction
         )
     {
         StartPos = startPos;

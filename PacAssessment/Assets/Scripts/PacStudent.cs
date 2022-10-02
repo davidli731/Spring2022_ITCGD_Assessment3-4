@@ -12,8 +12,7 @@ public class PacStudent : MonoBehaviour
     private SpriteRenderer pacStudentSpriteRenderer;
     private Map map;
     private PacStudentTween tween;
-    private string[] directions = { "Left", "Right", "Up", "Down" };
-    private string currentDirection;
+    private Direction currentDirection;
 
     [SerializeField] private GameObject PacStudentSpriteGO;
     [SerializeField] private Sprite idleSprite;
@@ -116,7 +115,7 @@ public class PacStudent : MonoBehaviour
     /// </summary>
     private void testInit()
     {
-        currentDirection = directions[1];
+        currentDirection = Direction.Right;
         //isWalking = true;
 
         string startPosName = "TopLeft_1_1";
@@ -136,30 +135,30 @@ public class PacStudent : MonoBehaviour
     /// </summary>
     private void changeMoveDirection(string currentPosName)
     {
-        if (currentDirection == directions[1] && currentPosName == "TopLeft_1_6")
+        if (currentDirection == Direction.Right && currentPosName == "TopLeft_1_6")
         {
             resetPacStudent();
-            currentDirection = directions[3];
+            currentDirection = Direction.Down;
             transform.Rotate(0.0f, 0.0f, -90.0f);
         }
-        else if (currentDirection == directions[3] && currentPosName == "TopLeft_5_6")
+        else if (currentDirection == Direction.Down && currentPosName == "TopLeft_5_6")
         {
             resetPacStudent();
-            currentDirection = directions[0];
+            currentDirection = Direction.Left;
             transform.rotation = Quaternion.identity;
             pacStudentSpriteRenderer.flipX = true;
 
         }
-        else if (currentDirection == directions[0] && currentPosName == "TopLeft_5_1")
+        else if (currentDirection == Direction.Left && currentPosName == "TopLeft_5_1")
         {
             resetPacStudent();
-            currentDirection = directions[2];
+            currentDirection = Direction.Up;
             transform.Rotate(0.0f, 0.0f, 90.0f);
         }
-        else if (currentDirection == directions[2] && currentPosName == "TopLeft_1_1")
+        else if (currentDirection == Direction.Up && currentPosName == "TopLeft_1_1")
         {
             resetPacStudent();
-            currentDirection = directions[1];
+            currentDirection = Direction.Right;
         }
     }
 

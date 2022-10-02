@@ -14,10 +14,9 @@ public class TitleMenu : MonoBehaviour
     [SerializeField] private Image ghostImage;
     [SerializeField] private Sprite[] ghostSprites;
     [SerializeField] private GameObject[] tsObjectGO = new GameObject[arraySize];
+    [SerializeField] private SpriteRenderer[] tsObjectRenderer = new SpriteRenderer[arraySize];
 
-    public SpriteRenderer[] tsObjectRenderer = new SpriteRenderer[arraySize];
     private DemoTween[] tsObjectTween = new DemoTween[arraySize];
-    private string[] directions = { "Left", "Right", "Up", "Down" };
 
     private Vector3[] corners =
     {
@@ -99,13 +98,13 @@ public class TitleMenu : MonoBehaviour
                 {
                     tsObjectGO[i].transform.localPosition = tsObjectTween[i].DestPos;
 
-                    string direction;
+                    Direction direction;
                     float duration;
 
-                    if (tsObjectTween[i].Direction == directions[1] && tsObjectGO[i].transform.localPosition == corners[0])
+                    if (tsObjectTween[i].Direction == Direction.Right && tsObjectGO[i].transform.localPosition == corners[0])
                     {
                         // Bottom right corner
-                        direction = directions[2];
+                        direction = Direction.Up;
                         duration = 4.0f;
 
                         reset(i);
@@ -113,10 +112,10 @@ public class TitleMenu : MonoBehaviour
 
                         tsObjectTween[i] = new DemoTween(tsObjectGO[i].transform.localPosition, corners[1], Time.time, duration, direction);
                     }
-                    else if (tsObjectTween[i].Direction == directions[2] && tsObjectGO[i].transform.localPosition == corners[1])
+                    else if (tsObjectTween[i].Direction == Direction.Up && tsObjectGO[i].transform.localPosition == corners[1])
                     {
                         // Top right corner
-                        direction = directions[0];
+                        direction = Direction.Left;
                         duration = 10.0f;
 
                         reset(i);
@@ -124,10 +123,10 @@ public class TitleMenu : MonoBehaviour
 
                         tsObjectTween[i] = new DemoTween(tsObjectGO[i].transform.localPosition, corners[2], Time.time, duration, direction);
                     }
-                    else if (tsObjectTween[i].Direction == directions[0] && tsObjectGO[i].transform.localPosition == corners[2])
+                    else if (tsObjectTween[i].Direction == Direction.Left && tsObjectGO[i].transform.localPosition == corners[2])
                     {
                         // Top left corner
-                        direction = directions[3];
+                        direction = Direction.Down;
                         duration = 4.0f;
 
                         reset(i);
@@ -135,10 +134,10 @@ public class TitleMenu : MonoBehaviour
 
                         tsObjectTween[i] = new DemoTween(tsObjectGO[i].transform.localPosition, corners[3], Time.time, duration, direction);
                     }
-                    else if (tsObjectTween[i].Direction == directions[3] && tsObjectGO[i].transform.localPosition == corners[3])
+                    else if (tsObjectTween[i].Direction == Direction.Down && tsObjectGO[i].transform.localPosition == corners[3])
                     {
                         // Bottom left corner
-                        direction = directions[1];
+                        direction = Direction.Right;
                         duration = 10.0f;
 
                         reset(i);
@@ -155,7 +154,7 @@ public class TitleMenu : MonoBehaviour
     /// </summary>
     private void testInit()
     {
-        string direction;
+        Direction direction;
         float duration;
         float offset;
 
@@ -163,7 +162,7 @@ public class TitleMenu : MonoBehaviour
         {
             tsObjectRenderer[i] = tsObjectGO[i].GetComponentInChildren<SpriteRenderer>();
 
-            direction = directions[1];
+            direction = Direction.Right;
             offset = (Vector3.Distance(tsObjectGO[i].transform.localPosition, corners[0]) + 150.0f) / 300.0f;
             duration = (5.0f / offset) + (i * 4);
             tsObjectTween[i] = new DemoTween(tsObjectGO[i].transform.localPosition, corners[0], Time.time, duration, direction);

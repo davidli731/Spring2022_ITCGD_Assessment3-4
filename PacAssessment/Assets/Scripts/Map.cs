@@ -7,7 +7,7 @@ public struct MapItems
     public GameObject MapGO;
     public GameObject SpriteGO;
     public int Index;
-    public string Type;
+    public Legend Type;
     public string[]  NeighbourPositions;
 
     // Constructor
@@ -15,7 +15,7 @@ public struct MapItems
         GameObject mapGO,
         GameObject spriteGO,
         int index,
-        string type,
+        Legend type,
         string[] neighbourPositions)
     {
         MapGO = mapGO;
@@ -81,19 +81,19 @@ public class Map : MonoBehaviour
         return "Out of bounds";
     }
 
-    public Vector3 GetNeighbourPosition(string name, string direction)
+    public Vector3 GetNeighbourPosition(string name, Direction direction)
     {
         foreach (MapItems item in mapItems)
         {
             if (name == item.MapGO.name)
             {
-                if (direction == "Left")
+                if (direction == Direction.Left)
                     return GetPositionFromName(item.NeighbourPositions[0]);
-                if (direction == "Right")
+                if (direction == Direction.Right)
                     return GetPositionFromName(item.NeighbourPositions[1]);
-                if (direction == "Up")
+                if (direction == Direction.Up)
                     return GetPositionFromName(item.NeighbourPositions[2]);
-                if (direction == "Down")
+                if (direction == Direction.Down)
                     return GetPositionFromName(item.NeighbourPositions[3]);
             }
         }
@@ -107,9 +107,9 @@ public class Map : MonoBehaviour
     /// <returns>Return true if item is wall, else false</returns>
     private bool IsOutsideWall(MapItems item)
     {
-        return item.Type == "OutsideCorner" ||
-            item.Type == "OutsideWall" ||
-            item.Type == "TJunction";
+        return item.Type == Legend.OutsideCorner ||
+            item.Type == Legend.OutsideWall ||
+            item.Type == Legend.TJunction;
     }
 
     /// <summary>
@@ -119,8 +119,8 @@ public class Map : MonoBehaviour
     /// <returns>true if type is inside wall, else false</returns>
     private bool IsInsideWall(MapItems item)
     {
-        return item.Type == "InsideCorner" ||
-            item.Type == "InsideWall";
+        return item.Type == Legend.InsideCorner ||
+            item.Type == Legend.InsideWall;
     }
 
     /// <summary>
@@ -130,7 +130,7 @@ public class Map : MonoBehaviour
     /// <returns>true if wall is straight type, else false</returns>
     private bool IsInsideWallStraight(MapItems item)
     {
-        return item.Type == "InsideWall";
+        return item.Type == Legend.InsideWall;
     }
 
     /// <summary>
