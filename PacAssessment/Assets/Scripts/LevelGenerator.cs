@@ -39,7 +39,7 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField] private RuntimeAnimatorController powerPelletController;
 
     // PacStudent
-    [SerializeField] private PacStudent pacStudent;
+    [SerializeField] private PacStudentController pacStudent;
 
     // Ghost
     [SerializeField] private Ghost ghost;

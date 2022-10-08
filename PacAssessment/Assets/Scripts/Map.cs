@@ -81,6 +81,12 @@ public class Map : MonoBehaviour
         return "Out of bounds";
     }
 
+    /// <summary>
+    /// Get neighbouring position given a direction
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="direction"></param>
+    /// <returns></returns>
     public Vector3 GetNeighbourPosition(string name, Direction direction)
     {
         foreach (MapItems item in mapItems)
@@ -98,6 +104,38 @@ public class Map : MonoBehaviour
             }
         }
         return Vector3.zero;
+    }
+
+    /// <summary>
+    /// Get the current state of the position
+    /// </summary>
+    /// <param name="position"></param>
+    /// <returns></returns>
+    public Legend GetLegendFromPosition(Vector3 position)
+    {
+        foreach (MapItems item in mapItems)
+        {
+            if (position == item.MapGO.transform.position)
+            {
+                return item.Type;
+            }
+        }
+        return Legend.Null;
+    }
+
+    public bool IsWallTypeFromPosition(Vector3 position)
+    {
+        foreach (MapItems item in mapItems)
+        {
+            if (position == item.MapGO.transform.position)
+            {
+                if (IsOutsideWall(item) || IsInsideWall(item))
+                {
+                    return true;
+                } 
+            }
+        }
+        return false;
     }
 
     /// <summary>

@@ -1,5 +1,6 @@
 public enum Legend
 {
+    Null = -1,
     Empty,
     OutsideCorner,
     OutsideWall,
