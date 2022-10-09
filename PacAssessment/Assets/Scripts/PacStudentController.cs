@@ -14,12 +14,13 @@ public class PacStudentController : MonoBehaviour
     private PacStudentTween tween;
     private KeyCode lastInput;
     private KeyCode currentInput;
+    private Direction currentDirection;
 
     [SerializeField] private GameObject PacStudentSpriteGO;
     [SerializeField] private Sprite idleSprite;
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip[] audioArray;
-    [SerializeField] private LevelGenerator levelMap;
+    [SerializeField] private ParticleSystem walkingParticleSystem;
 
     public bool isWalking = false;
     public bool isDead = false;
@@ -39,10 +40,14 @@ public class PacStudentController : MonoBehaviour
         // Handle Animations
         if (isWalking)
         {
+            playWalkingParticleEffect();
+
             animatorController.speed = 1;
             handleMovement();
         } else
         {
+            stopWalkingParticleEffect();
+
             if (pacStudentSpriteRenderer.sprite == idleSprite)
                 animatorController.speed = 0;
         }
@@ -95,7 +100,7 @@ public class PacStudentController : MonoBehaviour
             tween == null)
         {
             string posName = map.GetNameFromPosition(transform.position);
-            Direction currentDirection = getDirectionFromInput(lastInput);
+            currentDirection = getDirectionFromInput(lastInput);
             Vector3 destPos = map.GetNeighbourPosition(posName, currentDirection);
 
             if (destPos != Vector3.zero)
@@ -150,8 +155,8 @@ public class PacStudentController : MonoBehaviour
                 string currentPosName;
                 Vector3 currentPos;
                 Vector3 nextPos;
-                Direction currentDirection = getDirectionFromInput(lastInput);
 
+                currentDirection = getDirectionFromInput(lastInput);
                 transform.position = tween.DestPos;
 
                 currentPosName = map.GetNameFromPosition(transform.position);
@@ -361,6 +366,39 @@ public class PacStudentController : MonoBehaviour
                 audioSource.clip = audioArray[(int)PacStudentState.HitWall];
                 audioSource.Play();
             }
+        }
+    }
+
+    /// <summary>
+    /// Play walking particle system effect for pacStudent
+    /// </summary>
+    private void playWalkingParticleEffect()
+    {
+        if (currentDirection == Direction.Right ||
+            currentDirection == Direction.Down ||
+            currentDirection == Direction.Up)
+        {
+            walkingParticleSystem.transform.localScale = new Vector3(-1.0f, 1.0f, 1.0f);
+        }
+        else
+        {
+            walkingParticleSystem.transform.localScale = Vector3.one;
+        }
+
+        if (!walkingParticleSystem.isPlaying)
+        {
+            walkingParticleSystem.Play();
+        }
+    }
+
+    /// <summary>
+    /// Stop walking particle system effect for pacStudent
+    /// </summary>
+    private void stopWalkingParticleEffect()
+    {
+        if (walkingParticleSystem.isPlaying)
+        {
+            walkingParticleSystem.Stop();
         }
     }
 }
