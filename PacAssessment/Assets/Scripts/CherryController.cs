@@ -38,34 +38,34 @@ public class CherryController : MonoBehaviour
             if (directionOfSpawn == Direction.Up)
             {
                 directionOfTravel = Direction.Down;
-                startPos = new Vector3(0.0f, 230.0f, 0.0f);
-                endPos = new Vector3(0.0f, -230.0f, 0.0f);
+                startPos = new Vector3(0.0f, 10.2f, 0.0f);
+                endPos = new Vector3(0.0f, -10.2f, 0.0f);
             }
             else if (directionOfSpawn == Direction.Down)
             {
                 directionOfTravel = Direction.Up;
-                startPos = new Vector3(0.0f, -230.0f, 0.0f);
-                endPos = new Vector3(0.0f, 230.0f, 0.0f);
+                startPos = new Vector3(0.0f, -10.2f, 0.0f);
+                endPos = new Vector3(0.0f, 10.2f, 0.0f);
             }
             else if (directionOfSpawn == Direction.Left)
             {
                 directionOfTravel = Direction.Right;
-                startPos = new Vector3(410.0f, 0.0f, 0.0f);
-                endPos = new Vector3(-410.0f, 0.0f, 0.0f);
+                startPos = new Vector3(18.0f, 0.0f, 0.0f);
+                endPos = new Vector3(-18.0f, 0.0f, 0.0f);
             }
             else if (directionOfSpawn == Direction.Right)
             {
                 directionOfTravel = Direction.Left;
-                startPos = new Vector3(-410.0f, 0.0f, 0.0f);
-                endPos = new Vector3(410.0f, 0.0f, 0.0f);
+                startPos = new Vector3(-18.0f, 0.0f, 0.0f);
+                endPos = new Vector3(18.0f, 0.0f, 0.0f);
             }
 
             bonusGO = Instantiate(bonusGOPrefab, Vector3.zero, Quaternion.identity, parent);
-            bonusGO.transform.localPosition = startPos;
+            bonusGO.transform.position = startPos;
 
             if (bonusTween == null)
             {
-                bonusTween = new DemoTween(bonusGO.transform.localPosition, endPos, Time.timeSinceLevelLoad, durationOfTravel, directionOfTravel);
+                bonusTween = new DemoTween(bonusGO.transform.position, endPos, Time.timeSinceLevelLoad, durationOfTravel, directionOfTravel);
             }
         }
     }
@@ -77,9 +77,9 @@ public class CherryController : MonoBehaviour
     {
         if (bonusTween != null)
         {
-            if (bonusGO.transform.localPosition != endPos)
+            if (bonusGO.transform.position != endPos)
             {
-                bonusGO.transform.localPosition = Vector3.Lerp(bonusTween.StartPos, bonusTween.DestPos, (Time.timeSinceLevelLoad - bonusTween.StartTime) / durationOfTravel);
+                bonusGO.transform.position = Vector3.Lerp(bonusTween.StartPos, bonusTween.DestPos, (Time.timeSinceLevelLoad - bonusTween.StartTime) / durationOfTravel);
             }
             else
             {
