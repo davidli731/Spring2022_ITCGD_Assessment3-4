@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 0e7ae658e36dd594daeb1c591235856d
+guid: ea3eea06d5767b84a9226e32bed98bf2
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -106,13 +106,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Power_pellet_0
+      name: Bonus_cherry_0
       rect:
         serializedVersion: 2
-        x: 12
-        y: 11
-        width: 8
-        height: 9
+        x: 10
+        y: 12
+        width: 11
+        height: 11
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -120,8 +120,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bd4b217a2da5d094591a6a896b389974
-      internalID: -1042747270
+      spriteID: 9ce6250f76aac6b4b91d5dc108c9e61c
+      internalID: 630584445
       vertices: []
       indices: 
       edges: []
@@ -137,7 +137,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Power_pellet_0: -1042747270
+      Bonus_cherry_0: 630584445
   spritePackingTag: 
   pSDRemoveMatte: 0
   userData: 

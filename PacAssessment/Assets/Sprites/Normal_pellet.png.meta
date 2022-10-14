@@ -110,7 +110,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 12
-        y: 76
+        y: 12
         width: 8
         height: 8
       alignment: 0
@@ -126,174 +126,6 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
-    - serializedVersion: 2
-      name: Normal_pellet_1
-      rect:
-        serializedVersion: 2
-        x: 44
-        y: 76
-        width: 8
-        height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8fc810788a7cb0b40900f8dfaa344e53
-      internalID: 2056680394
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Normal_pellet_2
-      rect:
-        serializedVersion: 2
-        x: 76
-        y: 76
-        width: 8
-        height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 07f16c30bfb0c824686a11df9d7c5599
-      internalID: 1795006316
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Normal_pellet_3
-      rect:
-        serializedVersion: 2
-        x: 12
-        y: 44
-        width: 8
-        height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 2b4dd637daa3e924a9a46cdeddf8f707
-      internalID: 122870704
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Normal_pellet_4
-      rect:
-        serializedVersion: 2
-        x: 44
-        y: 44
-        width: 8
-        height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: d68f89949d446fa49a6efa06a788fe14
-      internalID: 314962207
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Normal_pellet_5
-      rect:
-        serializedVersion: 2
-        x: 76
-        y: 45
-        width: 8
-        height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a84f8a03121aaab499f55c6d2d3ba462
-      internalID: 246426004
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Normal_pellet_6
-      rect:
-        serializedVersion: 2
-        x: 12
-        y: 14
-        width: 8
-        height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: c4a4d464696cc3e449b821438d679997
-      internalID: -1167347834
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Normal_pellet_7
-      rect:
-        serializedVersion: 2
-        x: 44
-        y: 13
-        width: 8
-        height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: c2b4db78ec4f5104f98c2eae27743a81
-      internalID: -1457472733
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Normal_pellet_8
-      rect:
-        serializedVersion: 2
-        x: 76
-        y: 12
-        width: 8
-        height: 8
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 40d58367d0598c840a343c4f78d5c79a
-      internalID: 432556806
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -305,15 +137,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Normal_pellet_6: -1167347834
-      Normal_pellet_5: 246426004
-      Normal_pellet_3: 122870704
-      Normal_pellet_1: 2056680394
-      Normal_pellet_2: 1795006316
-      Normal_pellet_8: 432556806
-      Normal_pellet_7: -1457472733
       Normal_pellet_0: -293828878
-      Normal_pellet_4: 314962207
   spritePackingTag: 
   pSDRemoveMatte: 0
   userData: 
