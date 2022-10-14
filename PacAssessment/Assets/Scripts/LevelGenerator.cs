@@ -168,6 +168,7 @@ public class LevelGenerator : MonoBehaviour
 
         GameObject newTileGO;
         GameObject newSpriteGO;
+        ParticleSystem particleSystem;
 
         // If in bottom quadrant, remove the last line of array
         int isInBotQuadrant;
@@ -189,10 +190,25 @@ public class LevelGenerator : MonoBehaviour
                 newTileGO.transform.localPosition = new Vector3(xPos, yPos, zPos);
                 newTileGO.transform.localScale = new Vector3(width, height, scaleZ);
                 newTileGO.name = quadrant + "_" + i + "_" + j;
+
+                particleSystem = newTileGO.GetComponentInChildren<ParticleSystem>();
+
+                if (levelMap[i, j] == (int)Legend.OutsideWall || levelMap[i, j] == (int)Legend.InsideWall)
+                {
+
+                }
+
                 newSpriteGO = addSprite(levelMap[i, j], newTileGO);
 
                 neighbourPositions = getNeighbourPositions(i, j, quadrant);
-                map.mapItems[arrayIndex] = new MapItems(newTileGO, newSpriteGO, arrayIndex, (Legend)levelMap[i, j], neighbourPositions);
+                map.mapItems[arrayIndex] = new MapItems(
+                    newTileGO, 
+                    newSpriteGO, 
+                    arrayIndex, 
+                    (Legend)levelMap[i, j], 
+                    neighbourPositions, 
+                    particleSystem
+                    );
 
                 arrayIndex++;
                 xPos += scaleX;

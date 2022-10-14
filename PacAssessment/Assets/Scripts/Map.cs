@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public struct MapItems
 {
@@ -9,6 +10,7 @@ public struct MapItems
     public int Index;
     public Legend Type;
     public string[]  NeighbourPositions;
+    public ParticleSystem WallParticleSystem;
 
     // Constructor
     public MapItems(
@@ -16,13 +18,15 @@ public struct MapItems
         GameObject spriteGO,
         int index,
         Legend type,
-        string[] neighbourPositions)
+        string[] neighbourPositions,
+        ParticleSystem wallParticleSystem)
     {
         MapGO = mapGO;
         SpriteGO = spriteGO;
         Index = index;
         Type = type;
         NeighbourPositions = neighbourPositions;
+        WallParticleSystem = wallParticleSystem;
     }
 }
 
@@ -121,6 +125,22 @@ public class Map : MonoBehaviour
             }
         }
         return Legend.Null;
+    }
+
+    /// <summary>
+    /// Get item of neighbour
+    /// </summary>
+    /// <returns></returns>
+    public ParticleSystem GetWallParticleSystemFromPosition(Vector3 position)
+    {
+        foreach (MapItems item in mapItems)
+        {
+            if (position == item.MapGO.transform.position)
+            {
+                return item.WallParticleSystem;
+            }
+        }
+        return null;
     }
 
     public bool IsWallTypeFromPosition(Vector3 position)
