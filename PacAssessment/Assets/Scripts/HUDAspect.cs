@@ -7,9 +7,16 @@ using UnityEngine;
 public class HUDAspect : MonoBehaviour
 {
     private const string hudTag = "HUD";
+    private const string scoreTag = "HUDScore";
+    private const string scoreText = "Score: ";
 
     // set this to 4_3 or 16_9 to change aspect ratio
     private string defaultAspectRatio = "16_9";
+
+    private GameObject hudGO;
+    public TextMeshProUGUI scoreTMP;
+
+    private static int scoreValue = 0;
 
     [SerializeField] private GameObject hud4_3;
     [SerializeField] private GameObject hud16_9;
@@ -17,10 +24,10 @@ public class HUDAspect : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GameObject[] dupes = GameObject.FindGameObjectsWithTag(hudTag);
+        GameObject[] gameObjects = GameObject.FindGameObjectsWithTag(hudTag);
 
         // Remove existing canvas
-        foreach(GameObject dupe in dupes)
+        foreach(GameObject dupe in gameObjects)
         {
             Destroy(dupe);
         }
@@ -28,11 +35,31 @@ public class HUDAspect : MonoBehaviour
         // Add new canvas
         if (defaultAspectRatio == "4_3")
         {
-            Instantiate(hud4_3);
+            hudGO = Instantiate(hud4_3);
         }
         else if (defaultAspectRatio == "16_9")
         {
-            Instantiate(hud16_9);
+            hudGO = Instantiate(hud16_9);
         }
+
+        gameObjects = GameObject.FindGameObjectsWithTag(scoreTag);
+        foreach (GameObject go in gameObjects)
+        {
+            scoreTMP = go.GetComponentInChildren<TextMeshProUGUI>();
+        }
+    }
+
+    private void Update()
+    {
+        scoreTMP.text = scoreText + scoreValue;
+    }
+
+    /// <summary>
+    /// Add points to score
+    /// </summary>
+    /// <param name="point"></param>
+    public static void AddPoints(Points point)
+    {
+        scoreValue += (int)point;
     }
 }

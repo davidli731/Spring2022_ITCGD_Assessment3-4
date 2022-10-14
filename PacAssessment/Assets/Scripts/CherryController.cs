@@ -8,9 +8,9 @@ public class CherryController : MonoBehaviour
     private const float durationOfTravel = 10.0f;
 
     [SerializeField] private GameObject bonusGOPrefab;
-    [SerializeField] private Transform parent;
 
     private bool spawnBonus = false;
+    private float spawnTime = 0.0f;
     private Direction directionOfSpawn;
     private Direction directionOfTravel;
     private Vector3 startPos;
@@ -30,8 +30,9 @@ public class CherryController : MonoBehaviour
     /// </summary>
     private void createBonus()
     {
-        if (Time.timeSinceLevelLoad % waitUntilSpawn >= 0.0f && !spawnBonus)
+        if ((Time.time < waitUntilSpawn || Time.time - spawnTime >= waitUntilSpawn) && !spawnBonus)
         {
+            spawnTime = Time.time;
             spawnBonus = true;
             directionOfSpawn = (Direction)Random.Range(0, 4);
 
@@ -60,7 +61,7 @@ public class CherryController : MonoBehaviour
                 endPos = new Vector3(18.0f, 0.0f, 0.0f);
             }
 
-            bonusGO = Instantiate(bonusGOPrefab, Vector3.zero, Quaternion.identity, parent);
+            bonusGO = Instantiate(bonusGOPrefab, Vector3.zero, Quaternion.identity);
             bonusGO.transform.position = startPos;
 
             if (bonusTween == null)
@@ -75,18 +76,26 @@ public class CherryController : MonoBehaviour
     /// </summary>
     private void handleMovement()
     {
-        if (bonusTween != null)
+        if (bonusGO != null)
         {
-            if (bonusGO.transform.position != endPos)
+            if (bonusTween != null)
             {
-                bonusGO.transform.position = Vector3.Lerp(bonusTween.StartPos, bonusTween.DestPos, (Time.timeSinceLevelLoad - bonusTween.StartTime) / durationOfTravel);
+                if (bonusGO.transform.position != endPos)
+                {
+                    bonusGO.transform.position = Vector3.Lerp(bonusTween.StartPos, bonusTween.DestPos, (Time.timeSinceLevelLoad - bonusTween.StartTime) / durationOfTravel);
+                }
+                else
+                {
+                    spawnBonus = false;
+                    Destroy(bonusGO);
+                    bonusTween = null;
+                }
             }
-            else
-            {
-                spawnBonus = false;
-                Destroy(bonusGO);
-                bonusTween = null;
-            }
+        }
+        else
+        {
+            spawnBonus = false;
+            bonusTween = null;
         }
     }
 }

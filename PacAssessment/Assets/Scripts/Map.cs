@@ -39,7 +39,7 @@ public class Map : MonoBehaviour
     /// </summary>
     /// <param name="name">Name of gameobject</param>
     /// <returns>index</returns>
-    private int GetIndexFromString(string name)
+    public int GetIndexFromString(string name)
     {
         foreach (MapItems item in mapItems)
         {
@@ -120,6 +120,23 @@ public class Map : MonoBehaviour
         foreach (MapItems item in mapItems)
         {
             if (position == item.MapGO.transform.position)
+            {
+                return item.Type;
+            }
+        }
+        return Legend.Null;
+    }
+
+    /// <summary>
+    /// Get the current state of the position from name
+    /// </summary>
+    /// <param name="position"></param>
+    /// <returns></returns>
+    public Legend GetLegendFromName(string name)
+    {
+        foreach (MapItems item in mapItems)
+        {
+            if (name == item.MapGO.name)
             {
                 return item.Type;
             }

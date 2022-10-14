@@ -108,7 +108,7 @@ public class PacStudentController : MonoBehaviour
                 if (!map.IsWallTypeFromPosition(destPos))
                 {
                     tween = new PacStudentTween(transform.position, destPos, Time.time);
-                    handleRotateAndFlip(currentDirection);
+                    handleRotateAndFlip();
                 }
                 else
                 {
@@ -116,7 +116,7 @@ public class PacStudentController : MonoBehaviour
                 }
 
                 // if pacStudent is not walking, then it has hit a wall
-                playAudio(!isWalking);
+                //playAudio(!isWalking);
             }
         }
     }
@@ -159,10 +159,10 @@ public class PacStudentController : MonoBehaviour
                 currentDirection = getDirectionFromInput(lastInput);
                 transform.position = tween.DestPos;
 
+                teleport();
+
                 currentPosName = map.GetNameFromPosition(transform.position);
                 currentPos = map.GetPositionFromName(currentPosName);
-
-                //changeMoveDirection(currentPosName);
 
                 nextPos = map.GetNeighbourPosition(currentPosName, currentDirection);
 
@@ -173,7 +173,7 @@ public class PacStudentController : MonoBehaviour
                         // If next position in the given direction is walkable then create new tween
                         currentInput = lastInput;
                         tween = new PacStudentTween(currentPos, nextPos, Time.time);
-                        handleRotateAndFlip(currentDirection);
+                        handleRotateAndFlip();
                     }
                     else
                     {
@@ -184,7 +184,7 @@ public class PacStudentController : MonoBehaviour
                             if (nextPos != Vector3.zero && !map.IsWallTypeFromPosition(nextPos))
                             {
                                 tween = new PacStudentTween(currentPos, nextPos, Time.time);
-                                handleRotateAndFlip(currentDirection);
+                                handleRotateAndFlip();
                             }
                             else
                             {
@@ -198,9 +198,35 @@ public class PacStudentController : MonoBehaviour
                     }
 
                     // if pacStudent is not walking, then it has hit a wall
-                    playAudio(!isWalking);
+                    //playAudio(!isWalking);
+
+                    if (!isWalking)
+                    {
+                        Vector3 neighbourPosition = map.GetNeighbourPosition(map.GetNameFromPosition(transform.position), currentDirection);
+                        ParticleSystem ps = map.GetWallParticleSystemFromPosition(neighbourPosition);
+                        ps.Play();
+                        audioSource.clip = audioArray[(int)PacStudentState.HitWall];
+                        audioSource.Play();
+                    }
                 }
             }
+        }
+    }
+
+    /// <summary>
+    /// Teleport if in middle left edge or middle right positions
+    /// </summary>
+    private void teleport()
+    {
+        if (transform.position == map.GetPositionFromName("TopLeft_14_0"))
+        {
+            currentDirection = Direction.Left;
+            transform.position = map.GetPositionFromName("TopRight_14_0");
+        }
+        else if (transform.position == map.GetPositionFromName("TopRight_14_0"))
+        {
+            currentDirection = Direction.Right;
+            transform.position = map.GetPositionFromName("TopLeft_14_0");
         }
     }
 
@@ -265,19 +291,19 @@ public class PacStudentController : MonoBehaviour
     /// <summary>
     /// Rotate and flip the pacStudent sprite given the direction
     /// </summary>
-    private void handleRotateAndFlip(Direction direction)
+    private void handleRotateAndFlip()
     {
         resetPacStudent();
 
-        if (direction == Direction.Up)
+        if (currentDirection == Direction.Up)
         {
             transform.Rotate(new Vector3(0.0f, 0.0f, 90.0f));
         }
-        else if (direction == Direction.Down)
+        else if (currentDirection == Direction.Down)
         {
             transform.Rotate(new Vector3(0.0f, 0.0f, -90.0f));
         }
-        else if (direction == Direction.Left)
+        else if (currentDirection == Direction.Left)
         {
             pacStudentSpriteRenderer.flipX = true;
         }
@@ -349,8 +375,40 @@ public class PacStudentController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// OnTriggerEnter collider method
+    /// </summary>
+    /// <param name="collider"></param>
     private void OnTriggerEnter(Collider collider)
     {
-        Debug.Log("Trigger Enter: " + collider.gameObject.name + " : " + collider.gameObject.transform.position);
+        //Debug.Log("Trigger Enter: " + collider.gameObject.name + " : " + collider.gameObject.transform.position);
+
+        int mapIndex = map.GetIndexFromString(collider.gameObject.name);
+
+        if (collider.gameObject.tag != "BonusCherry")
+        {
+            if (mapIndex >= 0)
+            {
+                if (map.mapItems[mapIndex].Type == Legend.StandardPellet)
+                {
+                    SpriteRenderer spriteRenderer = map.mapItems[mapIndex].SpriteGO.GetComponent<SpriteRenderer>();
+                    spriteRenderer.sprite = null;
+                    audioSource.clip = audioArray[(int)PacStudentState.EatingPellet];
+                    audioSource.Play();
+                    map.mapItems[mapIndex].Type = Legend.Empty;
+                    HUDAspect.AddPoints(Points.StandardPellet);
+                }
+                else if (map.mapItems[mapIndex].Type == Legend.Empty)
+                {
+                    audioSource.clip = audioArray[(int)PacStudentState.Walking];
+                    audioSource.Play();
+                }
+            }
+        }
+        else
+        {
+            Destroy(collider.gameObject);
+            HUDAspect.AddPoints(Points.BonusCherry);
+        }
     }
 }
