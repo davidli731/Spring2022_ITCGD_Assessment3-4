@@ -9,6 +9,10 @@ TagManager:
   - BonusCherry
   - HUDScore
   - HUDScaredTimer
+  - Ghost
+  - Live1
+  - Live3
+  - Live2
   layers:
   - Default
   - TransparentFX
@@ -57,4 +61,7 @@ TagManager:
     locked: 0
   - name: Ghost
     uniqueID: 3087369903
+    locked: 0
+  - name: HUD
+    uniqueID: 1887427597
     locked: 0

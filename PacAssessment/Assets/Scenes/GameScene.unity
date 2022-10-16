@@ -181,8 +181,8 @@ MonoBehaviour:
   - {fileID: 568138815}
   - {fileID: 1412999178}
   - {fileID: 470364519}
-  IsScared: 0
-  IsDead: 0
+  IsScared: 
+  IsDead: 
 --- !u!1 &2266161
 GameObject:
   m_ObjectHideFlags: 0
@@ -1522,6 +1522,14 @@ PrefabInstance:
     - target: {fileID: 1672678354684422870, guid: 3646ebc973967c94dba08ebe910cf61b, type: 3}
       propertyPath: m_Name
       value: HUD(4_3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3210575014888704278, guid: 3646ebc973967c94dba08ebe910cf61b, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 3799399828253540670, guid: 3646ebc973967c94dba08ebe910cf61b, type: 3}
+      propertyPath: m_SortingLayer
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5675910286449132283, guid: 3646ebc973967c94dba08ebe910cf61b, type: 3}
       propertyPath: camera
@@ -4878,8 +4886,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Ghosts: []
-  IsScared: 0
-  IsDead: 0
+  IsScared: 
+  IsDead: 
 --- !u!1 &74512127
 GameObject:
   m_ObjectHideFlags: 0
@@ -14586,8 +14594,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Ghosts: []
-  IsScared: 0
-  IsDead: 0
+  IsScared: 
+  IsDead: 
 --- !u!1 &237037566
 GameObject:
   m_ObjectHideFlags: 0
@@ -17169,8 +17177,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Ghosts: []
-  IsScared: 0
-  IsDead: 0
+  IsScared: 
+  IsDead: 
 --- !u!1 &271165142
 GameObject:
   m_ObjectHideFlags: 0
@@ -49612,7 +49620,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: f2fa4f91981204148966ba7a9a609445, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 1
@@ -87750,8 +87758,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Ghosts: []
-  IsScared: 0
-  IsDead: 0
+  IsScared: 
+  IsDead: 
 --- !u!1 &1203453375
 GameObject:
   m_ObjectHideFlags: 0
@@ -96113,8 +96121,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Ghosts: []
-  IsScared: 0
-  IsDead: 0
+  IsScared: 
+  IsDead: 
 --- !u!1 &1334726016
 GameObject:
   m_ObjectHideFlags: 0
@@ -116724,8 +116732,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Ghosts: []
-  IsScared: 0
-  IsDead: 0
+  IsScared: 
+  IsDead: 
 --- !u!1 &1659012934
 GameObject:
   m_ObjectHideFlags: 0
@@ -123798,8 +123806,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Ghosts: []
-  IsScared: 0
-  IsDead: 0
+  IsScared: 
+  IsDead: 
 --- !u!1 &1777877972
 GameObject:
   m_ObjectHideFlags: 0
@@ -124642,8 +124650,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Ghosts: []
-  IsScared: 0
-  IsDead: 0
+  IsScared: 
+  IsDead: 
 --- !u!1 &1789526180
 GameObject:
   m_ObjectHideFlags: 0
@@ -137931,8 +137939,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Ghosts: []
-  IsScared: 0
-  IsDead: 0
+  IsScared: 
+  IsDead: 
 --- !u!1 &1992340783
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,7 +10,11 @@ public class HUDAspect : MonoBehaviour
     private const string scoreTag = "HUDScore";
     private const string scoreText = "Score: ";
     private const string ghostTimerTag = "HUDScaredTimer";
+    private const string startTextTag = "HUDStartText";
+    private const string timerTag = "HUDTimer";
     private const string ghostTimerText = "Scared Timer: ";
+    private const string timerText = "Timer: ";
+    public const float startTimerCountdownDelay = 1.0f;
 
     // set this to 4_3 or 16_9 to change aspect ratio
     private string defaultAspectRatio = "16_9";
@@ -18,7 +22,14 @@ public class HUDAspect : MonoBehaviour
     private GameObject hudGO;
     private GameObject[] LivesGO;
     private TextMeshProUGUI scoreTMP;
-    private TextMeshProUGUI GhostScaredTimerTMP;
+    private TextMeshProUGUI ghostScaredTimerTMP;
+    private TextMeshProUGUI startTextTMP;
+    private TextMeshProUGUI timerTMP;
+    private Coroutine startTextCoroutine;
+    private Coroutine timerCoroutine;
+    private string[] startText = { "GO!", "1", "2", "3" };
+    private string hoursText, minutesText, secondsText;
+    private int hours, minutes, seconds, totalTime;
 
     private static int scoreValue = 0;
 
@@ -26,6 +37,7 @@ public class HUDAspect : MonoBehaviour
     [SerializeField] private GameObject hud16_9;
 
     public static bool IsTimerActive = false;
+    public static bool IsStartTextActive = false;
     public static int GhostTimerValue = 0;
     public static int LifeCount = 3;
 
@@ -59,7 +71,7 @@ public class HUDAspect : MonoBehaviour
         gameObjects = GameObject.FindGameObjectsWithTag(ghostTimerTag);
         foreach (GameObject go in gameObjects)
         {
-            GhostScaredTimerTMP = go.GetComponentInChildren<TextMeshProUGUI>();
+            ghostScaredTimerTMP = go.GetComponentInChildren<TextMeshProUGUI>();
         }
 
         LivesGO = new GameObject[LifeCount];
@@ -71,20 +83,61 @@ public class HUDAspect : MonoBehaviour
                 LivesGO[i - 1] = go;
             }
         }
+
+        gameObjects = GameObject.FindGameObjectsWithTag(startTextTag);
+        foreach (GameObject go in gameObjects)
+        {
+            startTextTMP = go.GetComponentInChildren<TextMeshProUGUI>();
+        }
+
+        gameObjects = GameObject.FindGameObjectsWithTag(timerTag);
+        foreach (GameObject go in gameObjects)
+        {
+            timerTMP = go.GetComponentInChildren<TextMeshProUGUI>();
+        }
+
+        if (startTextCoroutine == null)
+        {
+            startTextCoroutine = StartCoroutine(startTextCountdown());
+        }
     }
 
     private void Update()
     {
         scoreTMP.text = scoreText + scoreValue;
 
+        seconds = totalTime % 60;
+        secondsText = seconds.ToString();
+        minutes = totalTime / 60;
+        minutesText = minutes.ToString();
+        hours = totalTime / 3600;
+        hoursText = hours.ToString();
+
+        if (seconds < 10)
+        {
+            secondsText = 0 + secondsText;
+        }
+        
+        if (minutes < 10)
+        {
+            minutesText = 0 + minutesText;
+        }
+        
+        if (hours < 10)
+        {
+            hoursText = 0 + hoursText;
+        }
+
+        timerTMP.text = timerText + hoursText + ":" + minutesText + ":" + secondsText;
+
         if (IsTimerActive)
         {
-            GhostScaredTimerTMP.gameObject.SetActive(true);
-            GhostScaredTimerTMP.text = ghostTimerText + GhostTimerValue;
+            ghostScaredTimerTMP.gameObject.SetActive(true);
+            ghostScaredTimerTMP.text = ghostTimerText + GhostTimerValue;
         }
         else
         {
-            GhostScaredTimerTMP.gameObject.SetActive(false);
+            ghostScaredTimerTMP.gameObject.SetActive(false);
         }
 
         if (LifeCount <= 2)
@@ -99,6 +152,14 @@ public class HUDAspect : MonoBehaviour
                 {
                     checkAndUpdateLife(0);
                 }
+            }
+        }
+
+        if (!IsStartTextActive)
+        {
+            if (timerCoroutine == null)
+            {
+                timerCoroutine = StartCoroutine(startTimer());
             }
         }
     }
@@ -118,5 +179,35 @@ public class HUDAspect : MonoBehaviour
     public static void AddPoints(Points point)
     {
         scoreValue += (int)point;
+    }
+
+    /// <summary>
+    /// Countdown of timer when game initially starts
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator startTextCountdown()
+    {
+        IsStartTextActive = true;
+
+        for (int i = startText.Length - 1; i >= 0; i--)
+        {
+            startTextTMP.text = startText[i];
+            yield return new WaitForSeconds(startTimerCountdownDelay);
+        }
+
+        startTextTMP.gameObject.SetActive(false);
+        IsStartTextActive = false;
+
+        StopCoroutine(startTextCoroutine);
+        startTextCoroutine = null;
+    }
+
+    private IEnumerator startTimer()
+    {
+        totalTime++;
+        yield return new WaitForSeconds(1.0f);
+
+        StopCoroutine(timerCoroutine);
+        timerCoroutine = null;
     }
 }

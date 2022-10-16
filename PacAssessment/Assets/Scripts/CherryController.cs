@@ -21,8 +21,11 @@ public class CherryController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        createBonus();
-        handleMovement();
+        if (!HUDAspect.IsStartTextActive)
+        {
+            createBonus();
+            handleMovement();
+        }
     }
 
     /// <summary>

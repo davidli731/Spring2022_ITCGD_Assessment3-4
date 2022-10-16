@@ -39,7 +39,7 @@ public class PacStudentController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isDead)
+        if (!isDead && !HUDAspect.IsStartTextActive)
         {
             getPlayerInput();
         }
@@ -51,7 +51,8 @@ public class PacStudentController : MonoBehaviour
 
             animatorController.speed = 1;
             handleMovement();
-        } else
+        }
+        else
         {
             stopWalkingParticleEffect();
 
@@ -198,9 +199,6 @@ public class PacStudentController : MonoBehaviour
                             isWalking = false;
                         }
                     }
-
-                    // if pacStudent is not walking, then it has hit a wall
-                    //playAudio(!isWalking);
 
                     if (!isWalking)
                     {

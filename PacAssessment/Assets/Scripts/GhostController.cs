@@ -18,6 +18,7 @@ public class GhostController : MonoBehaviour
     private Direction currentDirection;
     private Coroutine scaredCoroutine = null;
     private Coroutine[] deadCoroutine;
+    private bool gameStart;
 
     public bool[] IsScared;
     public bool[] IsDead;
@@ -25,6 +26,7 @@ public class GhostController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gameStart = true;
         IsScared = new bool[Ghosts.Length];
         IsDead = new bool[Ghosts.Length];
         deadCoroutine = new Coroutine[Ghosts.Length];
@@ -34,18 +36,25 @@ public class GhostController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*if (IsScared)
+        if (gameStart)
         {
-            foreach (Animator animator in animatorController)
+            if (HUDAspect.IsStartTextActive)
             {
-                animator.SetTrigger("ScaredTrigger");
+                foreach (Animator animator in animatorController)
+                {
+                    animator.speed = 0.0f;
+                }
+            }
+            else
+            {
+                foreach (Animator animator in animatorController)
+                {
+                    animator.speed = 1.0f;
+                }
+
+                gameStart = false;
             }
         }
-
-        if (IsDead)
-        {
-            //animatorController.SetTrigger("DeadTrigger");
-        }*/
     }
 
     private void init()

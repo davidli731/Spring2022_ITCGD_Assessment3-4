@@ -5,6 +5,7 @@ using UnityEngine;
 public class BackgroundMusic : MonoBehaviour
 {
     private AudioSource audioSource;
+    private bool gameStart;
     private static float fadeTime = 0.2f;
 
     public AudioClip[] clips;
@@ -16,11 +17,18 @@ public class BackgroundMusic : MonoBehaviour
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
+        gameStart = true;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (gameStart && !HUDAspect.IsStartTextActive)
+        {
+            audioSource.Play();
+            gameStart = false;
+        }
+
         if (playScaredMusic)
         {
             PlayMusic(MusicClips.Scared);
