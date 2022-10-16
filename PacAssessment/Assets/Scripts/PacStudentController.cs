@@ -28,6 +28,7 @@ public class PacStudentController : MonoBehaviour
 
     public bool isWalking = false;
     public bool isDead = false;
+    private bool endGame = false;
 
     // Start is called before the first frame update
     void Start()
@@ -39,7 +40,7 @@ public class PacStudentController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isDead && !HUDAspect.IsStartTextActive)
+        if (!isDead && !HUDAspect.IsStartTextActive && !endGame)
         {
             getPlayerInput();
         }
@@ -436,6 +437,12 @@ public class PacStudentController : MonoBehaviour
                     {
                         pacStudentDeadCoroutine = StartCoroutine(startPacStudentRespawn());
                     }
+                }
+                else
+                {
+                    // End Game here
+                    HUDAspect.SaveScore();
+                    HUDAspect.SaveTime();
                 }
             }
             else

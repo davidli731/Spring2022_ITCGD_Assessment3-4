@@ -639,5 +639,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a54c776a639bce4291cfc01f6b1d4ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  highScoreTMP: {fileID: 0}
+  timeTMP: {fileID: 0}
   startCanvas4_3: {fileID: 4524949649496698953, guid: 4dcbdab98e5dbcf42aefbb93dc51a2a4, type: 3}
   startCanvas16_9: {fileID: 4524949649496698953, guid: a1c85b8b7a3914343a9c848974b5e8f9, type: 3}

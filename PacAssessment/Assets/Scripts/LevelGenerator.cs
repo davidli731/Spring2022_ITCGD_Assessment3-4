@@ -21,6 +21,8 @@ public class LevelGenerator : MonoBehaviour
     public int tileArraySizeX;
     public int tileArraySizeY;
 
+    public static int NumOfPellets = 0;
+
     private string[] quadrant = { "TopLeft", "TopRight", "BotLeft", "BotRight" };
 
     [SerializeField] private GameObject squareTileGO;
@@ -191,13 +193,12 @@ public class LevelGenerator : MonoBehaviour
                 newTileGO.name = quadrant + "_" + i + "_" + j;
 
                 particleSystem = newTileGO.GetComponentInChildren<ParticleSystem>();
-
-                if (levelMap[i, j] == (int)Legend.OutsideWall || levelMap[i, j] == (int)Legend.InsideWall)
-                {
-
-                }
-
                 newSpriteGO = addSprite(levelMap[i, j], newTileGO);
+
+                if ((Legend)levelMap[i, j] == Legend.StandardPellet || (Legend)levelMap[i, j] == Legend.PowerPellet)
+                {
+                    NumOfPellets++;
+                }
 
                 neighbourPositions = getNeighbourPositions(i, j, quadrant);
                 map.mapItems[arrayIndex] = new MapItems(

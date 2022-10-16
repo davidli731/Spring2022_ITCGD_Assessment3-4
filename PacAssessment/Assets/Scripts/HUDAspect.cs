@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class HUDAspect : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class HUDAspect : MonoBehaviour
     private const string timerTag = "HUDTimer";
     private const string ghostTimerText = "Scared Timer: ";
     private const string timerText = "Timer: ";
+    private const string saveScoreKey = "SaveScoreKey";
+    private const string saveTotalTimeKey = "SaveTotalTimeKey";
     public const float startTimerCountdownDelay = 1.0f;
 
     // set this to 4_3 or 16_9 to change aspect ratio
@@ -29,21 +32,29 @@ public class HUDAspect : MonoBehaviour
     private Coroutine timerCoroutine;
     private string[] startText = { "GO!", "1", "2", "3" };
     private string hoursText, minutesText, secondsText;
-    private int hours, minutes, seconds, totalTime;
+    private int hours, minutes, seconds;
 
-    private static int scoreValue = 0;
+    private static int scoreValue;
+    private static int totalTime = 0;
 
     [SerializeField] private GameObject hud4_3;
     [SerializeField] private GameObject hud16_9;
 
-    public static bool IsTimerActive = false;
-    public static bool IsStartTextActive = false;
-    public static int GhostTimerValue = 0;
-    public static int LifeCount = 3;
+    public static bool IsTimerActive;
+    public static bool IsStartTextActive;
+    public static int GhostTimerValue;
+    public static int LifeCount;
 
     // Start is called before the first frame update
     void Start()
     {
+        scoreValue = 0;
+        totalTime = 0;
+        GhostTimerValue = 0;
+        LifeCount = 3;
+        IsTimerActive = false;
+        IsStartTextActive = false;
+
         GameObject[] gameObjects = GameObject.FindGameObjectsWithTag(hudTag);
 
         // Remove existing canvas
@@ -164,6 +175,10 @@ public class HUDAspect : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Update lives
+    /// </summary>
+    /// <param name="i"></param>
     private void checkAndUpdateLife(int i)
     {
         if (LivesGO[i].activeSelf)
@@ -202,6 +217,10 @@ public class HUDAspect : MonoBehaviour
         startTextCoroutine = null;
     }
 
+    /// <summary>
+    /// Update game timer
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator startTimer()
     {
         totalTime++;
@@ -209,5 +228,31 @@ public class HUDAspect : MonoBehaviour
 
         StopCoroutine(timerCoroutine);
         timerCoroutine = null;
+    }
+
+    /// <summary>
+    /// Save the score
+    /// </summary>
+    public static void SaveScore()
+    {
+        int getPreviousHighScore = PlayerPrefs.GetInt(saveScoreKey);
+
+        if (scoreValue > getPreviousHighScore)
+        {
+            PlayerPrefs.SetInt(saveScoreKey, scoreValue);
+        }
+    }
+
+    /// <summary>
+    /// Save the time
+    /// </summary>
+    public static void SaveTime()
+    {
+        int getPreviousTime = PlayerPrefs.GetInt(saveTotalTimeKey);
+
+        if (totalTime < getPreviousTime)
+        {
+            PlayerPrefs.SetInt(saveTotalTimeKey, totalTime);
+        }
     }
 }

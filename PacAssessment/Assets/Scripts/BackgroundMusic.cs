@@ -6,12 +6,12 @@ public class BackgroundMusic : MonoBehaviour
 {
     private AudioSource audioSource;
     private bool gameStart;
-    private static float fadeTime = 0.2f;
+    private const float fadeTime = 0.2f;
 
     public AudioClip[] clips;
-    public static bool playScaredMusic = false;
-    public static bool playDeadMusic = false;
-    public static bool playNormalMusic = true;
+    public static bool playScaredMusic;
+    public static bool playDeadMusic;
+    public static bool playNormalMusic;
 
     // Start is called before the first frame update
     void Start()
@@ -25,6 +25,10 @@ public class BackgroundMusic : MonoBehaviour
     {
         if (gameStart && !HUDAspect.IsStartTextActive)
         {
+            playScaredMusic = false;
+            playDeadMusic = false;
+            playNormalMusic = true;
+            audioSource.clip = clips[(int)MusicClips.Calm];
             audioSource.Play();
             gameStart = false;
         }

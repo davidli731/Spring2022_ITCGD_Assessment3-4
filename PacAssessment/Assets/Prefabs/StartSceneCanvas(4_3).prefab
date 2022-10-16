@@ -916,7 +916,7 @@ GameObject:
   - component: {fileID: 4524949648851789827}
   m_Layer: 5
   m_Name: TimeText
-  m_TagString: Untagged
+  m_TagString: StartSceneTime
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1524,7 +1524,7 @@ RectTransform:
   m_Children:
   - {fileID: 4524949648162672118}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1618,7 +1618,7 @@ GameObject:
   - component: {fileID: 4524949649637042355}
   m_Layer: 5
   m_Name: HighScoreText
-  m_TagString: Untagged
+  m_TagString: StartSceneHighScore
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
