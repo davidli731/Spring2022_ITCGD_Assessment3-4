@@ -42,7 +42,7 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField] private PacStudentController pacStudent;
 
     // Ghost
-    [SerializeField] private Ghost ghost;
+    [SerializeField] private GhostController ghost;
 
     /* Level map index
     * 0 – Empty (do not put anything here, no sprite needed)

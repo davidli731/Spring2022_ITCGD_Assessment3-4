@@ -26,6 +26,14 @@ public enum Legend
     TJunction
 }
 
+public enum MusicClips
+{
+    Intro,
+    Calm,
+    Scared,
+    Dead
+}
+
 public enum PacStudentState
 {
     Null = -1,

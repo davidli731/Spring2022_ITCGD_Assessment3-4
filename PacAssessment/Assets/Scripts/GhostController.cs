@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ghost : MonoBehaviour
+public class GhostController : MonoBehaviour
 {
     
     [SerializeField] private GameObject[] Ghosts;
@@ -12,9 +12,10 @@ public class Ghost : MonoBehaviour
     private SpriteRenderer[] spriteRenderer;
     private Map map;
     private Direction currentDirection;
+    private Coroutine scaredCoroutine = null;
 
-    public bool isScared = false;
-    public bool isDead = false;
+    public bool IsScared = false;
+    public bool IsDead = false;
 
     // Start is called before the first frame update
     void Start()
@@ -25,12 +26,15 @@ public class Ghost : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isScared)
+        if (IsScared)
         {
-            //animatorController.SetTrigger("ScaredTrigger");
+            /*foreach (Animator animator in animatorController)
+            {
+                animator.SetTrigger("ScaredTrigger");
+            }*/
         }
 
-        if (isDead)
+        if (IsDead)
         {
             //animatorController.SetTrigger("DeadTrigger");
         }
@@ -113,5 +117,45 @@ public class Ghost : MonoBehaviour
     public void SetMap(Map map)
     {
         this.map = map;
+    }
+
+    /// <summary>
+    /// Start coroutine for scared mode for ghosts
+    /// </summary>
+    public void TriggerScaredMode()
+    {
+        if (scaredCoroutine == null)
+        {
+            scaredCoroutine = StartCoroutine(scared());
+        }
+    }
+
+    private IEnumerator scared()
+    {
+        IsScared = true;
+
+        foreach (Animator animator in animatorController)
+        {
+            animator.SetTrigger("ScaredTrigger");
+        }
+
+        yield return new WaitForSeconds(7.0f);
+
+        foreach (Animator animator in animatorController)
+        {
+            animator.SetTrigger("TransitionToRecoverTrigger");
+        }
+
+        yield return new WaitForSeconds(3.0f);
+
+        foreach (Animator animator in animatorController)
+        {
+            animator.SetTrigger("TransitionToNormalTrigger");
+        }
+
+        IsScared = false;
+
+        StopCoroutine(scaredCoroutine);
+        scaredCoroutine = null;
     }
 }

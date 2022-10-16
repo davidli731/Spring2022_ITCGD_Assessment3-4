@@ -15,12 +15,16 @@ public class PacStudentController : MonoBehaviour
     private KeyCode lastInput;
     private KeyCode currentInput;
     private Direction currentDirection;
+    private Coroutine ghostScaredCoroutine;
+    private Coroutine pacStudentDeadCoroutine;
 
+    [SerializeField] private GhostController ghostController;
     [SerializeField] private GameObject PacStudentSpriteGO;
     [SerializeField] private Sprite idleSprite;
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip[] audioArray;
     [SerializeField] private ParticleSystem walkingParticleSystem;
+    [SerializeField] private ParticleSystem deathParticleSystem;
 
     public bool isWalking = false;
     public bool isDead = false;
@@ -35,7 +39,10 @@ public class PacStudentController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        getPlayerInput();
+        if (!isDead)
+        {
+            getPlayerInput();
+        }
 
         // Handle Animations
         if (isWalking)
@@ -50,11 +57,6 @@ public class PacStudentController : MonoBehaviour
 
             if (pacStudentSpriteRenderer.sprite == idleSprite)
                 animatorController.speed = 0;
-        }
-
-        if (isDead)
-        {
-            animatorController.SetTrigger("DeadTrigger");
         }
     }
 
@@ -310,39 +312,6 @@ public class PacStudentController : MonoBehaviour
     }
 
     /// <summary>
-    /// Play sound fx for pacStudent
-    /// </summary>
-    private void playAudio(bool isWall = false)
-    {
-        // play sound fx
-        if (isWalking)
-        {
-            if (map.GetLegendFromPosition(transform.position) == Legend.Empty)
-            {
-                audioSource.clip = audioArray[(int)PacStudentState.Walking];
-                audioSource.Play();
-            }
-            else if (map.GetLegendFromPosition(transform.position) == Legend.StandardPellet ||
-                map.GetLegendFromPosition(transform.position) == Legend.PowerPellet)
-            {
-                audioSource.clip = audioArray[(int)PacStudentState.EatingPellet];
-                audioSource.Play();
-            }
-        }
-        else
-        {
-            if (isWall)
-            {
-                Vector3 neighbourPosition = map.GetNeighbourPosition(map.GetNameFromPosition(transform.position), currentDirection);
-                ParticleSystem ps = map.GetWallParticleSystemFromPosition(neighbourPosition);
-                ps.Play();
-                audioSource.clip = audioArray[(int)PacStudentState.HitWall];
-                audioSource.Play();
-            }
-        }
-    }
-
-    /// <summary>
     /// Play walking particle system effect for pacStudent
     /// </summary>
     private void playWalkingParticleEffect()
@@ -376,27 +345,129 @@ public class PacStudentController : MonoBehaviour
     }
 
     /// <summary>
+    /// IEnumerator to start ghost scared state
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator startGhostTimer()
+    {
+        int counter = 10;
+        HUDAspect.IsTimerActive = true;
+        HUDAspect.GhostTimerValue = counter;
+        BackgroundMusic.playScaredMusic = true;
+        BackgroundMusic.playNormalMusic = false;
+
+        ghostController.TriggerScaredMode();
+
+        for (int i = counter; i >= 0; i--)
+        {
+            yield return new WaitForSeconds(1.0f);
+            HUDAspect.GhostTimerValue--;
+        }
+
+        HUDAspect.IsTimerActive = false;
+        BackgroundMusic.playScaredMusic = false;
+        BackgroundMusic.playNormalMusic = true;
+
+        StopCoroutine(ghostScaredCoroutine);
+        ghostScaredCoroutine = null;
+    }
+
+    /// <summary>
+    /// IEnumerator to respawn pacStudent after dead
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator startPacStudentRespawn()
+    {
+        yield return new WaitForSeconds(2.0f);
+
+        resetAndRespawn();
+
+        StopCoroutine(pacStudentDeadCoroutine);
+        pacStudentDeadCoroutine = null;
+    }
+
+    /// <summary>
+    /// Reset and respawn pacStudent to the initial starting position
+    /// </summary>
+    private void resetAndRespawn()
+    {
+        Setup();
+        isDead = false;
+        pacStudentSpriteRenderer.sprite = idleSprite;
+        animatorController.SetTrigger("NormalTrigger");
+    }
+
+    /// <summary>
     /// OnTriggerEnter collider method
     /// </summary>
     /// <param name="collider"></param>
     private void OnTriggerEnter(Collider collider)
     {
-        //Debug.Log("Trigger Enter: " + collider.gameObject.name + " : " + collider.gameObject.transform.position);
-
         int mapIndex = map.GetIndexFromString(collider.gameObject.name);
 
-        if (collider.gameObject.tag != "BonusCherry")
+        if (collider.gameObject.tag == "Ghost")
+        {
+            if (!ghostController.IsScared)
+            {
+                tween = null;
+                isWalking = false;
+                isDead = true;
+
+                animatorController.SetTrigger("DeadTrigger");
+                deathParticleSystem.Play();
+
+                audioSource.clip = audioArray[(int)PacStudentState.Death];
+                audioSource.Play();
+
+                if (HUDAspect.LifeCount > 0)
+                {
+                    HUDAspect.LifeCount--;
+                }
+
+                if (HUDAspect.LifeCount > 0)
+                {
+                    if (pacStudentDeadCoroutine == null)
+                    {
+                        pacStudentDeadCoroutine = StartCoroutine(startPacStudentRespawn());
+                    }
+                }
+            }
+        }
+        else if (collider.gameObject.tag == "BonusCherry")
+        {
+            audioSource.clip = audioArray[(int)PacStudentState.EatingPellet];
+            audioSource.Play();
+            Destroy(collider.gameObject);
+            HUDAspect.AddPoints(Points.BonusCherry);
+        }
+        else
         {
             if (mapIndex >= 0)
             {
-                if (map.mapItems[mapIndex].Type == Legend.StandardPellet)
+                if (map.mapItems[mapIndex].Type == Legend.StandardPellet ||
+                    map.mapItems[mapIndex].Type == Legend.PowerPellet)
                 {
+
+                    if (map.mapItems[mapIndex].Type == Legend.StandardPellet)
+                    {
+                        HUDAspect.AddPoints(Points.StandardPellet);
+                    }
+                    else
+                    {
+                        Animator animator = map.mapItems[mapIndex].SpriteGO.GetComponent<Animator>();
+                        animator.enabled = false;
+
+                        if (ghostScaredCoroutine == null)
+                        {
+                            ghostScaredCoroutine = StartCoroutine(startGhostTimer());
+                        }
+                    }
+
                     SpriteRenderer spriteRenderer = map.mapItems[mapIndex].SpriteGO.GetComponent<SpriteRenderer>();
                     spriteRenderer.sprite = null;
                     audioSource.clip = audioArray[(int)PacStudentState.EatingPellet];
                     audioSource.Play();
                     map.mapItems[mapIndex].Type = Legend.Empty;
-                    HUDAspect.AddPoints(Points.StandardPellet);
                 }
                 else if (map.mapItems[mapIndex].Type == Legend.Empty)
                 {
@@ -404,11 +475,6 @@ public class PacStudentController : MonoBehaviour
                     audioSource.Play();
                 }
             }
-        }
-        else
-        {
-            Destroy(collider.gameObject);
-            HUDAspect.AddPoints(Points.BonusCherry);
         }
     }
 }
