@@ -22,7 +22,6 @@ public class LevelGenerator : MonoBehaviour
     public int tileArraySizeY;
 
     private string[] quadrant = { "TopLeft", "TopRight", "BotLeft", "BotRight" };
-    //private string[] legendString = { "Empty", "OutsideCorner", "OutsideWall", "InsideCorner", "InsideWall", "StandardPellet", "PowerPellet", "TJunction" };
 
     [SerializeField] private GameObject squareTileGO;
 

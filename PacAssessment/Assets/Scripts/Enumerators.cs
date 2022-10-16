@@ -47,5 +47,6 @@ public enum Points : int
 {
     None = 0,
     StandardPellet = 10,
-    BonusCherry = 100
+    BonusCherry = 100,
+    Ghost = 300
 }

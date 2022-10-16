@@ -350,11 +350,12 @@ public class PacStudentController : MonoBehaviour
     /// <returns></returns>
     private IEnumerator startGhostTimer()
     {
-        int counter = 10;
+        int counter = (int)GhostController.ScaredTimer;
         HUDAspect.IsTimerActive = true;
         HUDAspect.GhostTimerValue = counter;
         BackgroundMusic.playScaredMusic = true;
         BackgroundMusic.playNormalMusic = false;
+        BackgroundMusic.playDeadMusic = false;
 
         ghostController.TriggerScaredMode();
 
@@ -366,6 +367,7 @@ public class PacStudentController : MonoBehaviour
 
         HUDAspect.IsTimerActive = false;
         BackgroundMusic.playScaredMusic = false;
+        BackgroundMusic.playDeadMusic = false;
         BackgroundMusic.playNormalMusic = true;
 
         StopCoroutine(ghostScaredCoroutine);
@@ -403,17 +405,23 @@ public class PacStudentController : MonoBehaviour
     /// <param name="collider"></param>
     private void OnTriggerEnter(Collider collider)
     {
-        int mapIndex = map.GetIndexFromString(collider.gameObject.name);
-
         if (collider.gameObject.tag == "Ghost")
         {
-            if (!ghostController.IsScared)
+            int ghostIndex = ghostController.GetIndexFromGameObject(collider.gameObject);
+
+            if (!ghostController.IsScared[ghostIndex])
             {
                 tween = null;
                 isWalking = false;
                 isDead = true;
 
+                if (!animatorController.GetCurrentAnimatorStateInfo(0).IsName("PacStudentWalking"))
+                {
+                    animatorController.SetTrigger("NormalTrigger");
+                }
+
                 animatorController.SetTrigger("DeadTrigger");
+                
                 deathParticleSystem.Play();
 
                 audioSource.clip = audioArray[(int)PacStudentState.Death];
@@ -432,6 +440,14 @@ public class PacStudentController : MonoBehaviour
                     }
                 }
             }
+            else
+            {
+                ghostController.KillGhost(ghostIndex);
+                HUDAspect.AddPoints(Points.Ghost);
+                BackgroundMusic.playScaredMusic = false;
+                BackgroundMusic.playNormalMusic = false;
+                BackgroundMusic.playDeadMusic = true;
+            }
         }
         else if (collider.gameObject.tag == "BonusCherry")
         {
@@ -442,6 +458,8 @@ public class PacStudentController : MonoBehaviour
         }
         else
         {
+            int mapIndex = map.GetIndexFromString(collider.gameObject.name);
+
             if (mapIndex >= 0)
             {
                 if (map.mapItems[mapIndex].Type == Legend.StandardPellet ||
@@ -457,10 +475,13 @@ public class PacStudentController : MonoBehaviour
                         Animator animator = map.mapItems[mapIndex].SpriteGO.GetComponent<Animator>();
                         animator.enabled = false;
 
-                        if (ghostScaredCoroutine == null)
+                        if (ghostScaredCoroutine != null)
                         {
-                            ghostScaredCoroutine = StartCoroutine(startGhostTimer());
+                            StopCoroutine(ghostScaredCoroutine);
+                            ghostScaredCoroutine = null;
                         }
+
+                        ghostScaredCoroutine = StartCoroutine(startGhostTimer());
                     }
 
                     SpriteRenderer spriteRenderer = map.mapItems[mapIndex].SpriteGO.GetComponent<SpriteRenderer>();

@@ -4,8 +4,12 @@ using UnityEngine;
 
 public class GhostController : MonoBehaviour
 {
-    
-    [SerializeField] private GameObject[] Ghosts;
+    public const float ScaredTimer = 10.0f;
+    private const float recoverTimer = 3.0f;
+    private const float deadTimer = 5.0f;
+    private string[] ghostPositions = { "TopLeft_13_11", "TopRight_13_11", "BotLeft_13_11", "BotRight_13_11" };
+
+    [SerializeField] private GameObject[] Ghosts = new GameObject[4];
 
     private Animator[] animatorController;
     private GameObject[] GhostSpriteGO;
@@ -13,31 +17,35 @@ public class GhostController : MonoBehaviour
     private Map map;
     private Direction currentDirection;
     private Coroutine scaredCoroutine = null;
+    private Coroutine[] deadCoroutine;
 
-    public bool IsScared = false;
-    public bool IsDead = false;
+    public bool[] IsScared;
+    public bool[] IsDead;
 
     // Start is called before the first frame update
     void Start()
     {
+        IsScared = new bool[Ghosts.Length];
+        IsDead = new bool[Ghosts.Length];
+        deadCoroutine = new Coroutine[Ghosts.Length];
         init();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (IsScared)
+        /*if (IsScared)
         {
-            /*foreach (Animator animator in animatorController)
+            foreach (Animator animator in animatorController)
             {
                 animator.SetTrigger("ScaredTrigger");
-            }*/
+            }
         }
 
         if (IsDead)
         {
             //animatorController.SetTrigger("DeadTrigger");
-        }
+        }*/
     }
 
     private void init()
@@ -91,24 +99,23 @@ public class GhostController : MonoBehaviour
     /// </summary>
     private void allGhostsReset()
     {
-        string startPosName;
-        Vector3 startPos;
+        for (int i = 0; i < Ghosts.Length; i++)
+        {
+            resetGhost(ghostPositions[i], i);
+        }
+    }
 
-        startPosName = "TopLeft_13_11";
-        startPos = map.GetPositionFromName(startPosName);
-        Ghosts[0].transform.position = startPos;
-
-        startPosName = "TopRight_13_11";
-        startPos = map.GetPositionFromName(startPosName);
-        Ghosts[1].transform.position = startPos;
-
-        startPosName = "BotLeft_13_11";
-        startPos = map.GetPositionFromName(startPosName);
-        Ghosts[2].transform.position = startPos;
-
-        startPosName = "BotRight_13_11";
-        startPos = map.GetPositionFromName(startPosName);
-        Ghosts[3].transform.position = startPos;
+    /// <summary>
+    /// Set ghost at given position
+    /// </summary>
+    /// <param name="pos"></param>
+    /// <param name="i"></param>
+    private void resetGhost(string pos, int i)
+    {
+        Vector3 startPos = map.GetPositionFromName(pos);
+        Ghosts[i].transform.position = startPos;
+        IsScared[i] = false;
+        IsDead[i] = false;
     }
 
     /// <summary>
@@ -124,38 +131,92 @@ public class GhostController : MonoBehaviour
     /// </summary>
     public void TriggerScaredMode()
     {
-        if (scaredCoroutine == null)
+        if (scaredCoroutine != null)
         {
-            scaredCoroutine = StartCoroutine(scared());
+            StopCoroutine(scaredCoroutine);
+            scaredCoroutine = null;
         }
+
+        scaredCoroutine = StartCoroutine(scared());
     }
 
     private IEnumerator scared()
     {
-        IsScared = true;
+        for (int i = 0; i < Ghosts.Length; i++)
+        {
+            IsScared[i] = true;
+        }
 
         foreach (Animator animator in animatorController)
         {
             animator.SetTrigger("ScaredTrigger");
         }
 
-        yield return new WaitForSeconds(7.0f);
+        yield return new WaitForSeconds(ScaredTimer - recoverTimer);
 
         foreach (Animator animator in animatorController)
         {
             animator.SetTrigger("TransitionToRecoverTrigger");
         }
 
-        yield return new WaitForSeconds(3.0f);
+        yield return new WaitForSeconds(recoverTimer);
 
         foreach (Animator animator in animatorController)
         {
             animator.SetTrigger("TransitionToNormalTrigger");
         }
 
-        IsScared = false;
+        for (int i = 0; i < Ghosts.Length; i++)
+        {
+            IsScared[i] = false;
+        }
 
         StopCoroutine(scaredCoroutine);
         scaredCoroutine = null;
+    }
+
+    /// <summary>
+    /// Get index of ghost gameobject from array
+    /// </summary>
+    /// <param name="go"></param>
+    /// <returns></returns>
+    public int GetIndexFromGameObject(GameObject go)
+    {
+        for (int i = 0; i < Ghosts.Length; i++)
+        {
+            if (Ghosts[i] == go)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    /// <summary>
+    /// Transition ghost to dead state given index
+    /// </summary>
+    /// <param name="i"></param>
+    public void KillGhost(int i)
+    {
+        if (deadCoroutine[i] == null)
+        {
+            deadCoroutine[i] = StartCoroutine(kill(i));
+        }
+    }
+
+    /// <summary>
+    /// IEnumerator to transition ghost to dead state
+    /// </summary>
+    /// <param name="i"></param>
+    /// <returns></returns>
+    private IEnumerator kill(int i)
+    {
+        animatorController[i].SetTrigger("DeadTrigger");
+
+        yield return new WaitForSeconds(deadTimer);
+
+        resetGhost(ghostPositions[i], i);
+
+        animatorController[i].SetTrigger("TransitionToNormalTrigger");
     }
 }
