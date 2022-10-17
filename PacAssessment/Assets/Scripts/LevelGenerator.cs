@@ -21,7 +21,7 @@ public class LevelGenerator : MonoBehaviour
     public int tileArraySizeX;
     public int tileArraySizeY;
 
-    public static int NumOfPellets = 0;
+    public static int NumOfPellets;
 
     private string[] quadrant = { "TopLeft", "TopRight", "BotLeft", "BotRight" };
 
@@ -79,6 +79,8 @@ public class LevelGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        NumOfPellets = 0;
+
         reset();
         calculateMaths();
         createLevel();

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
+using UnityEngine.SceneManagement;
 
 public class HUDAspect : MonoBehaviour
 {
@@ -12,12 +12,14 @@ public class HUDAspect : MonoBehaviour
     private const string scoreText = "Score: ";
     private const string ghostTimerTag = "HUDScaredTimer";
     private const string startTextTag = "HUDStartText";
+    private const string endTextTag = "HUDEndText";
     private const string timerTag = "HUDTimer";
     private const string ghostTimerText = "Scared Timer: ";
     private const string timerText = "Timer: ";
     private const string saveScoreKey = "SaveScoreKey";
     private const string saveTotalTimeKey = "SaveTotalTimeKey";
     public const float startTimerCountdownDelay = 1.0f;
+    private const float gameOverDelay = 3.0f;
 
     // set this to 4_3 or 16_9 to change aspect ratio
     private string defaultAspectRatio = "16_9";
@@ -27,21 +29,24 @@ public class HUDAspect : MonoBehaviour
     private TextMeshProUGUI scoreTMP;
     private TextMeshProUGUI ghostScaredTimerTMP;
     private TextMeshProUGUI startTextTMP;
+    private TextMeshProUGUI endTextTMP;
     private TextMeshProUGUI timerTMP;
     private Coroutine startTextCoroutine;
+    private Coroutine endTextCoroutine;
     private Coroutine timerCoroutine;
     private string[] startText = { "GO!", "1", "2", "3" };
     private string hoursText, minutesText, secondsText;
     private int hours, minutes, seconds;
 
     private static int scoreValue;
-    private static int totalTime = 0;
+    private static int totalTime;
 
     [SerializeField] private GameObject hud4_3;
     [SerializeField] private GameObject hud16_9;
 
     public static bool IsTimerActive;
     public static bool IsStartTextActive;
+    public static bool IsEndGame;
     public static int GhostTimerValue;
     public static int LifeCount;
 
@@ -54,6 +59,7 @@ public class HUDAspect : MonoBehaviour
         LifeCount = 3;
         IsTimerActive = false;
         IsStartTextActive = false;
+        IsEndGame = false;
 
         GameObject[] gameObjects = GameObject.FindGameObjectsWithTag(hudTag);
 
@@ -98,7 +104,13 @@ public class HUDAspect : MonoBehaviour
         gameObjects = GameObject.FindGameObjectsWithTag(startTextTag);
         foreach (GameObject go in gameObjects)
         {
-            startTextTMP = go.GetComponentInChildren<TextMeshProUGUI>();
+            startTextTMP = go.GetComponent<TextMeshProUGUI>();
+        }
+
+        gameObjects = GameObject.FindGameObjectsWithTag(endTextTag);
+        foreach (GameObject go in gameObjects)
+        {
+            endTextTMP = go.GetComponent<TextMeshProUGUI>();
         }
 
         gameObjects = GameObject.FindGameObjectsWithTag(timerTag);
@@ -166,11 +178,19 @@ public class HUDAspect : MonoBehaviour
             }
         }
 
-        if (!IsStartTextActive)
+        if (!IsStartTextActive && !IsEndGame)
         {
             if (timerCoroutine == null)
             {
                 timerCoroutine = StartCoroutine(startTimer());
+            }
+        }
+
+        if (IsEndGame)
+        {
+            if (endTextCoroutine == null)
+            {
+                endTextCoroutine = StartCoroutine(showGameOver());
             }
         }
     }
@@ -218,7 +238,7 @@ public class HUDAspect : MonoBehaviour
     }
 
     /// <summary>
-    /// Update game timer
+    /// Update game timer by 1 second
     /// </summary>
     /// <returns></returns>
     private IEnumerator startTimer()
@@ -231,27 +251,35 @@ public class HUDAspect : MonoBehaviour
     }
 
     /// <summary>
-    /// Save the score
+    /// show game over text
     /// </summary>
-    public static void SaveScore()
+    /// <returns></returns>
+    private IEnumerator showGameOver()
     {
-        int getPreviousHighScore = PlayerPrefs.GetInt(saveScoreKey);
+        updateScoreAndTime();
+        endTextTMP.enabled = true;
 
-        if (scoreValue > getPreviousHighScore)
-        {
-            PlayerPrefs.SetInt(saveScoreKey, scoreValue);
-        }
+        yield return new WaitForSeconds(gameOverDelay);
+
+        StopCoroutine(endTextCoroutine);
+        endTextCoroutine = null;
+
+        SceneManager.LoadScene((int)GameState.StartScene);
     }
 
     /// <summary>
-    /// Save the time
+    /// Update score and time
     /// </summary>
-    public static void SaveTime()
+    private void updateScoreAndTime()
     {
+        int getPreviousHighScore = PlayerPrefs.GetInt(saveScoreKey);
         int getPreviousTime = PlayerPrefs.GetInt(saveTotalTimeKey);
 
-        if (totalTime < getPreviousTime)
+        if (getPreviousTime == 0 ||
+            scoreValue > getPreviousHighScore ||
+            (scoreValue == getPreviousHighScore && totalTime < getPreviousTime))
         {
+            PlayerPrefs.SetInt(saveScoreKey, scoreValue);
             PlayerPrefs.SetInt(saveTotalTimeKey, totalTime);
         }
     }

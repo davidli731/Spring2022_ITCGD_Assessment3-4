@@ -28,7 +28,6 @@ public class PacStudentController : MonoBehaviour
 
     public bool isWalking = false;
     public bool isDead = false;
-    private bool endGame = false;
 
     // Start is called before the first frame update
     void Start()
@@ -40,13 +39,13 @@ public class PacStudentController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isDead && !HUDAspect.IsStartTextActive && !endGame)
+        if (!isDead && !HUDAspect.IsStartTextActive && !HUDAspect.IsEndGame)
         {
             getPlayerInput();
         }
 
         // Handle Animations
-        if (isWalking)
+        if (isWalking && !HUDAspect.IsEndGame)
         {
             playWalkingParticleEffect();
 
@@ -414,13 +413,7 @@ public class PacStudentController : MonoBehaviour
                 isWalking = false;
                 isDead = true;
 
-                if (!animatorController.GetCurrentAnimatorStateInfo(0).IsName("PacStudentWalking"))
-                {
-                    animatorController.SetTrigger("NormalTrigger");
-                }
-
                 animatorController.SetTrigger("DeadTrigger");
-                
                 deathParticleSystem.Play();
 
                 audioSource.clip = audioArray[(int)PacStudentState.Death];
@@ -440,9 +433,7 @@ public class PacStudentController : MonoBehaviour
                 }
                 else
                 {
-                    // End Game here
-                    HUDAspect.SaveScore();
-                    HUDAspect.SaveTime();
+                    endGame();
                 }
             }
             else
@@ -494,6 +485,13 @@ public class PacStudentController : MonoBehaviour
                     audioSource.clip = audioArray[(int)PacStudentState.EatingPellet];
                     audioSource.Play();
                     map.mapItems[mapIndex].Type = Legend.Empty;
+
+                    LevelGenerator.NumOfPellets--;
+
+                    if (LevelGenerator.NumOfPellets == 0)
+                    {
+                        endGame();
+                    }
                 }
                 else if (map.mapItems[mapIndex].Type == Legend.Empty)
                 {
@@ -502,5 +500,17 @@ public class PacStudentController : MonoBehaviour
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// All pellets eaten
+    /// End Game here
+    /// Note: end tween for ghosts as well
+    /// </summary>
+    private void endGame()
+    {
+        tween = null;
+        isWalking = false;
+        HUDAspect.IsEndGame = true;
     }
 }

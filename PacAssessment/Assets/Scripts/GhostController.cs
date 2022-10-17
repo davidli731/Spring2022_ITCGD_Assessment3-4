@@ -40,10 +40,7 @@ public class GhostController : MonoBehaviour
         {
             if (HUDAspect.IsStartTextActive)
             {
-                foreach (Animator animator in animatorController)
-                {
-                    animator.speed = 0.0f;
-                }
+                stopGhostWalking();
             }
             else
             {
@@ -54,6 +51,11 @@ public class GhostController : MonoBehaviour
 
                 gameStart = false;
             }
+        }
+
+        if (HUDAspect.IsEndGame)
+        {
+            stopGhostWalking();
         }
     }
 
@@ -227,5 +229,16 @@ public class GhostController : MonoBehaviour
         resetGhost(ghostPositions[i], i);
 
         animatorController[i].SetTrigger("TransitionToNormalTrigger");
+    }
+
+    /// <summary>
+    /// Stop ghost animator speed
+    /// </summary>
+    private void stopGhostWalking()
+    {
+        foreach (Animator animator in animatorController)
+        {
+            animator.speed = 0.0f;
+        }
     }
 }
