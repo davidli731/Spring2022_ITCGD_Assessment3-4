@@ -181,6 +181,7 @@ MonoBehaviour:
   - {fileID: 568138815}
   - {fileID: 1412999178}
   - {fileID: 470364519}
+  pacStudentController: {fileID: 301038740}
   IsScared: 
   IsDead: 
 --- !u!1 &2266161
@@ -4886,6 +4887,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Ghosts: []
+  pacStudentController: {fileID: 0}
   IsScared: 
   IsDead: 
 --- !u!1 &74512127
@@ -14594,6 +14596,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Ghosts: []
+  pacStudentController: {fileID: 0}
   IsScared: 
   IsDead: 
 --- !u!1 &237037566
@@ -17177,6 +17180,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Ghosts: []
+  pacStudentController: {fileID: 0}
   IsScared: 
   IsDead: 
 --- !u!1 &271165142
@@ -87758,6 +87762,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Ghosts: []
+  pacStudentController: {fileID: 0}
   IsScared: 
   IsDead: 
 --- !u!1 &1203453375
@@ -96121,6 +96126,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Ghosts: []
+  pacStudentController: {fileID: 0}
   IsScared: 
   IsDead: 
 --- !u!1 &1334726016
@@ -116732,6 +116738,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Ghosts: []
+  pacStudentController: {fileID: 0}
   IsScared: 
   IsDead: 
 --- !u!1 &1659012934
@@ -123806,6 +123813,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Ghosts: []
+  pacStudentController: {fileID: 0}
   IsScared: 
   IsDead: 
 --- !u!1 &1777877972
@@ -124650,6 +124658,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Ghosts: []
+  pacStudentController: {fileID: 0}
   IsScared: 
   IsDead: 
 --- !u!1 &1789526180
@@ -137939,6 +137948,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Ghosts: []
+  pacStudentController: {fileID: 0}
   IsScared: 
   IsDead: 
 --- !u!1 &1992340783

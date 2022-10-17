@@ -13,6 +13,14 @@ public enum GameState
     GameScene
 }
 
+public enum Ghost : int
+{
+    ONE = 0,
+    TWO = 1,
+    THREE = 2,
+    FOUR = 3
+}
+
 public enum Legend
 {
     Null = -1,
