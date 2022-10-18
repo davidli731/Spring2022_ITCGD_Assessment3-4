@@ -12,10 +12,10 @@ public class GhostController : MonoBehaviour
     private string[] ghostPositions = { "TopLeft_13_11", "TopRight_13_11", "BotLeft_13_11", "BotRight_13_11" };
     private string[] sectors = { "TopLeft", "TopRight", "BotLeft", "BotRight" };
     private string[] spawnGrids = { "14_13", "14_12", "14_11", "13_13", "13_12", "13_11" };
-    private string[] spawnAreaPositions;
 
     [SerializeField] private GameObject[] Ghosts = new GameObject[4];
     [SerializeField] private PacStudentController pacStudentController;
+    [SerializeField] private SpawnAreaPositions spawnAreaPositions;
 
     private Animator[] animatorController;
     private GameObject[] GhostSpriteGO;
@@ -29,6 +29,7 @@ public class GhostController : MonoBehaviour
     private float ghost1InitialDistance;
     private float ghost2InitialDistance;
     private GhostTween[] tween;
+    private GhostFourInstructions instructions;
 
     public bool[] IsScared;
     public bool[] IsDead;
@@ -68,6 +69,9 @@ public class GhostController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Initialise variables
+    /// </summary>
     private void init()
     {
         gameStart = true;
@@ -89,26 +93,7 @@ public class GhostController : MonoBehaviour
             spriteRenderer[i] = GhostSpriteGO[i].GetComponent<SpriteRenderer>();
         }
 
-        initSpawnPositions();
-    }
-
-    /// <summary>
-    /// Set an array of spawn positions
-    /// </summary>
-    private void initSpawnPositions()
-    {
-        spawnAreaPositions = new string[24];
-
-        for (int i = 0; i < spawnAreaPositions.Length; i++)
-        {
-            for (int j = 0; j < sectors.Length; j++)
-            {
-                for (int k = 0; k < spawnGrids.Length; k++)
-                {
-                    spawnAreaPositions[i] = sectors[j] + "_" + spawnGrids[k];
-                }
-            }
-        }
+        instructions = Ghosts[(int)Ghost.FOUR].GetComponent<GhostFourInstructions>();
     }
 
     /// <summary>
@@ -118,28 +103,68 @@ public class GhostController : MonoBehaviour
     {
         for (int i = 0; i < Ghosts.Length; i++)
         {
-            if ((int)Ghost.THREE == i)
+            if (!IsDead[i])
             {
-                if (tween[i] == null)
+                if ((int)Ghost.ONE == i || (int)Ghost.TWO == i || (int)Ghost.THREE == i)
                 {
-                    findDirectionForGhost(i);
-                }
-                else
-                {
-                    float distance = Vector3.Distance(Ghosts[i].transform.position, tween[i].DestPos);
-
-                    if (distance > marginalDistance)
+                    if (tween[i] == null)
                     {
-                        Ghosts[i].transform.position = Vector3.Lerp(tween[i].StartPos, tween[i].DestPos, (Time.time - tween[i].StartTime) / duration);
+                        findDirectionForGhost(i);
                     }
                     else
                     {
-                        Ghosts[i].transform.position = tween[i].DestPos;
-                        tween[i] = null;
+                        handleLerping(i);
+                    }
+                }
+                else
+                {
+                    if (tween[i] == null)
+                    {
+                        handleGhostFourRoute();
+                    }
+                    else
+                    {
+                        handleLerping(i);
                     }
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// Handle lerping of ghosts
+    /// </summary>
+    private void handleLerping(int i)
+    {
+        float distance = Vector3.Distance(Ghosts[i].transform.position, tween[i].DestPos);
+
+        if (distance > marginalDistance)
+        {
+            Ghosts[i].transform.position = Vector3.Lerp(tween[i].StartPos, tween[i].DestPos, (Time.time - tween[i].StartTime) / duration);
+        }
+        else
+        {
+            Ghosts[i].transform.position = tween[i].DestPos;
+            tween[i] = null;
+        }
+    }
+
+    /// <summary>
+    /// Set the route for ghost4
+    /// </summary>
+    private void handleGhostFourRoute()
+    {
+        string currentPosName = map.GetNameFromPosition(Ghosts[(int)Ghost.FOUR].transform.position);
+        GhostFourInstruction instruction = instructions.GetInstruction(currentPosName);
+
+        if (instruction.PositionName != null)
+        {
+            currentDirection[(int)Ghost.FOUR] = instruction.Direction;
+        }
+
+        Vector3 destPos = map.GetNeighbourPosition(currentPosName, currentDirection[(int)Ghost.FOUR]);
+        tween[(int)Ghost.FOUR] = new GhostTween(Ghosts[(int)Ghost.FOUR].transform.position, destPos, Time.time);
+        handleRotateAndFlip((int)Ghost.FOUR);
     }
 
     /// <summary>
@@ -169,6 +194,9 @@ public class GhostController : MonoBehaviour
                 {
                     currentDirection[i] = getRandomDirection();
                 }
+
+                controlGhostOneMovement(currentPosName);
+                controlGhostTwoMovement(currentPosName);
             }
         }
         else
@@ -179,6 +207,96 @@ public class GhostController : MonoBehaviour
         Vector3 destPos = map.GetNeighbourPosition(currentPosName, currentDirection[i]);
         tween[i] = new GhostTween(Ghosts[i].transform.position, destPos, Time.time);
         handleRotateAndFlip(i);
+    }
+
+    /// <summary>
+    /// Check if the distance between position the ghost is moving to and pacStudent is greater than the initial distance
+    /// If condition is true, ghost can move freely, else, move away from pacStudent in a random direction
+    /// </summary>
+    private void controlGhostOneMovement(string currentPosName)
+    {
+        float distanceFromGhostToPacStudent = Vector3.Distance(Ghosts[(int)Ghost.ONE].transform.position, pacStudentController.transform.position);
+        Vector3 DestPos = map.GetNeighbourPosition(currentPosName, currentDirection[(int)Ghost.ONE]);
+        float distanceFromDestPosToPacStudent = Vector3.Distance(DestPos, pacStudentController.transform.position);
+
+        if (distanceFromGhostToPacStudent < ghost1InitialDistance && distanceFromDestPosToPacStudent < distanceFromGhostToPacStudent)
+        {
+            Direction[] validDirections = getValidDirections(currentPosName);
+            int randomPick;
+
+            bool flag = false;
+            Vector3 samplePos;
+            float sampleDistance;
+
+            foreach (Direction direction in validDirections)
+            {
+                samplePos = map.GetNeighbourPosition(currentPosName, direction);
+                sampleDistance = Vector3.Distance(samplePos, pacStudentController.transform.position);
+
+                if (sampleDistance > distanceFromGhostToPacStudent)
+                {
+                    flag = true;
+                }
+            }
+
+            if (flag)
+            {
+                while (distanceFromDestPosToPacStudent <= distanceFromGhostToPacStudent)
+                {
+                    randomPick = Random.Range(0, validDirections.Length);
+                    currentDirection[(int)Ghost.ONE] = validDirections[randomPick];
+                    DestPos = map.GetNeighbourPosition(currentPosName, currentDirection[(int)Ghost.ONE]);
+                    distanceFromDestPosToPacStudent = Vector3.Distance(DestPos, pacStudentController.transform.position);
+                }
+            }
+        }
+
+        ghost1InitialDistance = distanceFromGhostToPacStudent;
+    }
+
+    /// <summary>
+    /// Check if the distance between position the ghost is moving to and pacStudent is less than the initial distance
+    /// Ghost will try to move closer towards PacStudent
+    /// </summary>
+    private void controlGhostTwoMovement(string currentPosName)
+    {
+        float distanceFromGhostToPacStudent = Vector3.Distance(Ghosts[(int)Ghost.TWO].transform.position, pacStudentController.transform.position);
+        Vector3 DestPos = map.GetNeighbourPosition(currentPosName, currentDirection[(int)Ghost.TWO]);
+        float distanceFromDestPosToPacStudent = Vector3.Distance(DestPos, pacStudentController.transform.position);
+
+        if (distanceFromGhostToPacStudent > ghost2InitialDistance && distanceFromDestPosToPacStudent > distanceFromGhostToPacStudent)
+        {
+            Direction[] validDirections = getValidDirections(currentPosName);
+            int randomPick;
+
+            bool flag = false;
+            Vector3 samplePos;
+            float sampleDistance;
+
+            foreach (Direction direction in validDirections)
+            {
+                samplePos = map.GetNeighbourPosition(currentPosName, direction);
+                sampleDistance = Vector3.Distance(samplePos, pacStudentController.transform.position);
+
+                if (sampleDistance < distanceFromGhostToPacStudent)
+                {
+                    flag = true;
+                }
+            }
+
+            if (flag)
+            {
+                while (distanceFromDestPosToPacStudent >= distanceFromGhostToPacStudent)
+                {
+                    randomPick = Random.Range(0, validDirections.Length);
+                    currentDirection[(int)Ghost.TWO] = validDirections[randomPick];
+                    DestPos = map.GetNeighbourPosition(currentPosName, currentDirection[(int)Ghost.TWO]);
+                    distanceFromDestPosToPacStudent = Vector3.Distance(DestPos, pacStudentController.transform.position);
+                }
+            }
+        }
+
+        ghost2InitialDistance = distanceFromGhostToPacStudent;
     }
 
     /// <summary>
@@ -235,6 +353,43 @@ public class GhostController : MonoBehaviour
         if (isDirectionValid(posName, Direction.Up)) counter++;
         if (isDirectionValid(posName, Direction.Down)) counter++;
         return counter;
+    }
+
+    /// <summary>
+    /// Return an array of valid directions
+    /// </summary>
+    /// <param name="posName"></param>
+    /// <returns></returns>
+    private Direction[] getValidDirections(string posName)
+    {
+        int counter = 0;
+        Direction[] result = new Direction[numOfValidDirections(posName)];
+
+        if (isDirectionValid(posName, Direction.Left))
+        {
+            result[counter] = Direction.Left;
+            counter++;
+        }
+
+        if (isDirectionValid(posName, Direction.Right))
+        {
+            result[counter] = Direction.Right;
+            counter++;
+        }
+
+        if (isDirectionValid(posName, Direction.Up))
+        {
+            result[counter] = Direction.Up;
+            counter++;
+        }
+
+        if (isDirectionValid(posName, Direction.Down))
+        {
+            result[counter] = Direction.Down;
+            counter++;
+        }
+
+        return result;
     }
 
     /// <summary>
@@ -337,7 +492,6 @@ public class GhostController : MonoBehaviour
     {
         Vector3 startPos = map.GetPositionFromName(pos);
         Ghosts[i].transform.position = startPos;
-        IsScared[i] = false;
         IsDead[i] = false;
 
         if (i == (int)Ghost.ONE)
@@ -444,12 +598,48 @@ public class GhostController : MonoBehaviour
     private IEnumerator kill(int i)
     {
         animatorController[i].SetTrigger("DeadTrigger");
+        bool inSpawn = false;
+        float timer = deadTimer;
 
-        yield return new WaitForSeconds(deadTimer);
+        //if (isInSpawnArea(tween[i].StartPos) || isInSpawnArea(tween[i].DestPos))
+        if (spawnAreaPositions.IsInSpawn(map.GetNameFromPosition(Ghosts[i].transform.position)))
+        {
+            inSpawn = true;
+            timer = 0.0f;
+        }
+
+        tween[i] = null;
+        IsDead[i] = true;
+
+        yield return new WaitForSeconds(timer);
 
         resetGhost(ghostPositions[i], i);
 
-        animatorController[i].SetTrigger("TransitionToNormalTrigger");
+        if (inSpawn)
+        {
+            if (IsScared[i])
+            {
+                if (HUDAspect.GhostTimerValue > 0 && HUDAspect.GhostTimerValue <= 3)
+                {
+                    animatorController[i].SetTrigger("TransitionToRecoverTrigger");
+                }
+                else
+                {
+                    animatorController[i].SetTrigger("ScaredTrigger");
+                }
+            }
+            else
+            {
+                animatorController[i].SetTrigger("TransitionToNormalTrigger");
+            }
+        }
+        else
+        {
+            animatorController[i].SetTrigger("TransitionToNormalTrigger");
+        }
+
+        StopCoroutine(deadCoroutine[i]);
+        deadCoroutine[i] = null;
     }
 
     /// <summary>

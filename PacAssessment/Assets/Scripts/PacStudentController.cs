@@ -56,8 +56,14 @@ public class PacStudentController : MonoBehaviour
         {
             stopWalkingParticleEffect();
 
-            if (pacStudentSpriteRenderer.sprite == idleSprite)
+            if (isDead)
+            {
+                animatorController.speed = 1;
+            }
+            else if (pacStudentSpriteRenderer.sprite == idleSprite)
+            {
                 animatorController.speed = 0;
+            }
         }
     }
 
@@ -403,7 +409,7 @@ public class PacStudentController : MonoBehaviour
     /// <param name="collider"></param>
     private void OnTriggerEnter(Collider collider)
     {
-        if (collider.gameObject.tag == "Ghost")
+        if (collider.gameObject.tag == "Ghost" && !isDead)
         {
             int ghostIndex = ghostController.GetIndexFromGameObject(collider.gameObject);
 

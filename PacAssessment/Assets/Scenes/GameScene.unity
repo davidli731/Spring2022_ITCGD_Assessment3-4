@@ -182,6 +182,8 @@ MonoBehaviour:
   - {fileID: 1412999178}
   - {fileID: 470364519}
   pacStudentController: {fileID: 301038740}
+  spawnAreaPositions: {fileID: 1694097199}
+  spriteRenderer: []
   IsScared: 
   IsDead: 
 --- !u!1 &2266161
@@ -4888,6 +4890,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Ghosts: []
   pacStudentController: {fileID: 0}
+  spawnAreaPositions: {fileID: 0}
+  spriteRenderer: []
   IsScared: 
   IsDead: 
 --- !u!1 &74512127
@@ -14597,6 +14601,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Ghosts: []
   pacStudentController: {fileID: 0}
+  spawnAreaPositions: {fileID: 0}
+  spriteRenderer: []
   IsScared: 
   IsDead: 
 --- !u!1 &237037566
@@ -17181,6 +17187,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Ghosts: []
   pacStudentController: {fileID: 0}
+  spawnAreaPositions: {fileID: 0}
+  spriteRenderer: []
   IsScared: 
   IsDead: 
 --- !u!1 &271165142
@@ -29845,6 +29853,7 @@ GameObject:
   m_Component:
   - component: {fileID: 470364520}
   - component: {fileID: 470364521}
+  - component: {fileID: 470364522}
   m_Layer: 5
   m_Name: Ghost4
   m_TagString: Ghost
@@ -29887,6 +29896,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 14, y: 14, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &470364522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 470364519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5cb7925ccaac064da0ce47bd3efb59d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &471376187
 GameObject:
   m_ObjectHideFlags: 0
@@ -87763,6 +87784,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Ghosts: []
   pacStudentController: {fileID: 0}
+  spawnAreaPositions: {fileID: 0}
+  spriteRenderer: []
   IsScared: 
   IsDead: 
 --- !u!1 &1203453375
@@ -96127,6 +96150,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Ghosts: []
   pacStudentController: {fileID: 0}
+  spawnAreaPositions: {fileID: 0}
+  spriteRenderer: []
   IsScared: 
   IsDead: 
 --- !u!1 &1334726016
@@ -116739,6 +116764,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Ghosts: []
   pacStudentController: {fileID: 0}
+  spawnAreaPositions: {fileID: 0}
+  spriteRenderer: []
   IsScared: 
   IsDead: 
 --- !u!1 &1659012934
@@ -118715,6 +118742,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1694097197}
   - component: {fileID: 1694097198}
+  - component: {fileID: 1694097199}
   m_Layer: 5
   m_Name: Grid
   m_TagString: Untagged
@@ -118767,6 +118795,18 @@ MonoBehaviour:
   powerPelletController: {fileID: 9100000, guid: 6d6ee0ba375b17d45bb14dc60ed5b1e3, type: 2}
   pacStudent: {fileID: 301038740}
   ghost: {fileID: 1833921}
+--- !u!114 &1694097199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1694097196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49322a42e4f1cc148b83ebfc453e1d5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1696699246
 GameObject:
   m_ObjectHideFlags: 0
@@ -123814,6 +123854,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Ghosts: []
   pacStudentController: {fileID: 0}
+  spawnAreaPositions: {fileID: 0}
+  spriteRenderer: []
   IsScared: 
   IsDead: 
 --- !u!1 &1777877972
@@ -124659,6 +124701,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Ghosts: []
   pacStudentController: {fileID: 0}
+  spawnAreaPositions: {fileID: 0}
+  spriteRenderer: []
   IsScared: 
   IsDead: 
 --- !u!1 &1789526180
@@ -137949,6 +137993,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Ghosts: []
   pacStudentController: {fileID: 0}
+  spawnAreaPositions: {fileID: 0}
+  spriteRenderer: []
   IsScared: 
   IsDead: 
 --- !u!1 &1992340783
