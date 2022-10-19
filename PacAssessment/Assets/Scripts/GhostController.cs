@@ -744,15 +744,14 @@ public class GhostController : MonoBehaviour
     /// <returns></returns>
     private IEnumerator kill(int i)
     {
-        animatorController[i].SetTrigger("DeadTrigger");
         bool inSpawn = false;
+        animatorController[i].SetTrigger("DeadTrigger");
 
         if ((tween[i] != null &&
             (spawnAreaPositions.IsInSpawn(map.GetNameFromPosition(tween[i].StartPos)) ||
             spawnAreaPositions.IsInSpawn(map.GetNameFromPosition(tween[i].DestPos)))) ||
             spawnAreaPositions.IsInSpawn(map.GetNameFromPosition(Ghosts[i].transform.position)))
         {
-            inSpawn = true;
             deadTimer[i] = 0.0f;
         }
         else
@@ -765,53 +764,12 @@ public class GhostController : MonoBehaviour
 
         tween[i] = new GhostTween(Ghosts[i].transform.position, map.GetPositionFromName(ghostPositions[i]), Time.time);
 
-        if (inSpawn)
-        {
-            if (!areAnyOtherGhostsDead(i))
-            {
-                if (HUDAspect.GhostTimerValue > 0)
-                {
-                    BackgroundMusic.playScaredMusic = true;
-                    BackgroundMusic.playNormalMusic = false;
-                }
-                else
-                {
-                    BackgroundMusic.playNormalMusic = true;
-                    BackgroundMusic.playScaredMusic = false;
-                }
-                BackgroundMusic.playDeadMusic = false;
-            }
-            else
-            {
-                BackgroundMusic.playDeadMusic = true;
-                BackgroundMusic.playNormalMusic = false;
-                BackgroundMusic.playScaredMusic = false;
-            }
+        setMusicForDeadMode(inSpawn, i);
 
-            if (IsScared[i])
-            {
-                if (HUDAspect.GhostTimerValue > 0 && HUDAspect.GhostTimerValue <= 3)
-                {
-                    animatorController[i].SetTrigger("TransitionToRecoverTrigger");
-                }
-                else
-                {
-                    animatorController[i].SetTrigger("ScaredTrigger");
-                }
-            }
-            else
-            {
-                animatorController[i].SetTrigger("TransitionToNormalTrigger");
-            }
-        }
-        else
-        {
-            yield return new WaitForSeconds(deadTimer[i]);
+        yield return new WaitForSeconds(deadTimer[i]);
 
-            setMusicForScaredMode(i);
-            IsScared[i] = false;
-            animatorController[i].SetTrigger("TransitionToNormalTrigger");
-        }
+        setMusicForScaredMode(i);
+        setAnimatorForGhost(i);
 
         IsDead[i] = false;
 
@@ -865,22 +823,86 @@ public class GhostController : MonoBehaviour
     }
 
     /// <summary>
+    /// Handle music if in spawn, else play dead music
+    /// </summary>
+    /// <param name="inSpawn"></param>
+    /// <param name="i"></param>
+    private void setMusicForDeadMode(bool inSpawn, int i)
+    {
+        if (inSpawn)
+        {
+            if (!areAnyOtherGhostsDead(i))
+            {
+                if (HUDAspect.GhostTimerValue > 0)
+                {
+                    BackgroundMusic.playScaredMusic = true;
+                    BackgroundMusic.playNormalMusic = false;
+                }
+                else
+                {
+                    BackgroundMusic.playNormalMusic = true;
+                    BackgroundMusic.playScaredMusic = false;
+                }
+                BackgroundMusic.playDeadMusic = false;
+            }
+            else
+            {
+                BackgroundMusic.playDeadMusic = true;
+                BackgroundMusic.playNormalMusic = false;
+                BackgroundMusic.playScaredMusic = false;
+            }
+        }
+        else
+        {
+            BackgroundMusic.playDeadMusic = true;
+            BackgroundMusic.playNormalMusic = false;
+            BackgroundMusic.playScaredMusic = false;
+        }
+    }
+
+    /// <summary>
     /// Play the correct music depending on ghost states
     /// </summary>
     /// <param name="i"></param>
     private void setMusicForScaredMode(int i)
     {
-        if (areAnyOtherGhostsScared(i))
+
+        if (!areAnyOtherGhostsDead(i))
         {
-            BackgroundMusic.playScaredMusic = true;
-            BackgroundMusic.playNormalMusic = false;
+            if (areAnyOtherGhostsScared(i))
+            {
+                BackgroundMusic.playScaredMusic = true;
+                BackgroundMusic.playNormalMusic = false;
+            }
+            else
+            {
+                BackgroundMusic.playNormalMusic = true;
+                BackgroundMusic.playScaredMusic = false;
+            }
             BackgroundMusic.playDeadMusic = false;
+        }
+    }
+
+    /// <summary>
+    /// Set animator for ghosts
+    /// </summary>
+    /// <param name="i"></param>
+    private void setAnimatorForGhost(int i)
+    {
+        if (IsScared[i])
+        {
+            if (HUDAspect.GhostTimerValue > 0 && HUDAspect.GhostTimerValue <= 3)
+            {
+                animatorController[i].SetTrigger("TransitionToRecoverTrigger");
+            }
+            else
+            {
+                animatorController[i].SetTrigger("ScaredTrigger");
+            }
         }
         else
         {
-            BackgroundMusic.playScaredMusic = false;
-            BackgroundMusic.playNormalMusic = true;
-            BackgroundMusic.playDeadMusic = false;
+            animatorController[i].SetTrigger("TransitionToNormalTrigger");
         }
     }
 }
