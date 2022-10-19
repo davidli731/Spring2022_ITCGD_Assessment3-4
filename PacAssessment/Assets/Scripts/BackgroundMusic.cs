@@ -8,6 +8,9 @@ public class BackgroundMusic : MonoBehaviour
     private bool gameStart;
     private const float fadeTime = 0.2f;
 
+    [SerializeField]
+    private GhostController ghostController;
+
     public AudioClip[] clips;
     public static bool playScaredMusic;
     public static bool playDeadMusic;
@@ -23,6 +26,15 @@ public class BackgroundMusic : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        init();
+        handleMusicSwitching();
+    }
+
+    /// <summary>
+    /// Initialise variables on game start after initial countdown
+    /// </summary>
+    private void init()
+    {
         if (gameStart && !HUDAspect.IsStartTextActive)
         {
             playScaredMusic = false;
@@ -32,7 +44,13 @@ public class BackgroundMusic : MonoBehaviour
             audioSource.Play();
             gameStart = false;
         }
+    }
 
+    /// <summary>
+    /// Switch music
+    /// </summary>
+    private void handleMusicSwitching()
+    {
         if (playScaredMusic)
         {
             PlayMusic(MusicClips.Scared);

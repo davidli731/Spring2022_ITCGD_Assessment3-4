@@ -35943,6 +35943,7 @@ GameObject:
   m_Component:
   - component: {fileID: 568138816}
   - component: {fileID: 568138817}
+  - component: {fileID: 568138818}
   m_Layer: 5
   m_Name: Ghost2
   m_TagString: Ghost
@@ -35985,6 +35986,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 14, y: 14, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &568138818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 568138815}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32af2a6a03bb4c84ea3a2bb2084c5941, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &570687860
 GameObject:
   m_ObjectHideFlags: 0
@@ -49757,6 +49770,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c2e0ec079254d24ea2d9f78c55512c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ghostController: {fileID: 1833921}
   clips:
   - {fileID: 8300000, guid: e9117981075ad924eace23b5aef6d1bf, type: 3}
   - {fileID: 8300000, guid: f2fa4f91981204148966ba7a9a609445, type: 3}
@@ -101147,6 +101161,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1412999179}
   - component: {fileID: 1412999180}
+  - component: {fileID: 1412999181}
   m_Layer: 5
   m_Name: Ghost3
   m_TagString: Ghost
@@ -101189,6 +101204,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 14, y: 14, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1412999181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1412999178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11704b571b4eb464a9bf1a4447514d5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1414119598
 GameObject:
   m_ObjectHideFlags: 0
@@ -117209,6 +117236,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1670937368}
   - component: {fileID: 1670937369}
+  - component: {fileID: 1670937370}
   m_Layer: 5
   m_Name: Ghost1
   m_TagString: Ghost
@@ -117251,6 +117279,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 14, y: 14, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1670937370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1670937367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 113d2eaedcbbf54419a343eec87dbe57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1673249015
 GameObject:
   m_ObjectHideFlags: 0

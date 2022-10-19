@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class LevelGenerator : MonoBehaviour
 {
@@ -94,12 +91,6 @@ public class LevelGenerator : MonoBehaviour
         ghost.SetInitialScale(tileArraySizeX, tileArraySizeY);
         ghost.SetMap(map);
         ghost.Setup();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     /// <summary>

@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PacStudentController : MonoBehaviour
@@ -446,9 +444,6 @@ public class PacStudentController : MonoBehaviour
             {
                 ghostController.KillGhost(ghostIndex);
                 HUDAspect.AddPoints(Points.Ghost);
-                BackgroundMusic.playScaredMusic = false;
-                BackgroundMusic.playNormalMusic = false;
-                BackgroundMusic.playDeadMusic = true;
             }
         }
         else if (collider.gameObject.tag == "BonusCherry")

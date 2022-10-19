@@ -1,53 +1,71 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
-public struct GhostFourInstruction
-{
-    public string PositionName;
-    public Direction Direction;
-
-    // Constructor
-    public GhostFourInstruction(
-        string positionName,
-        Direction direction)
-    {
-        PositionName = positionName;
-        Direction = direction;
-    }
-}
 
 public class GhostFourInstructions : MonoBehaviour
 {
-    public GhostFourInstruction[] Instructions = new GhostFourInstruction[]
+    public GhostInstruction[] Instructions = new GhostInstruction[]
     {
-        new GhostFourInstruction(null, Direction.None),
-        new GhostFourInstruction("BotRight_13_11", Direction.Left),
-        new GhostFourInstruction("BotRight_13_13", Direction.Down),
-        new GhostFourInstruction("BotRight_11_13", Direction.Right),
-        new GhostFourInstruction("BotRight_11_9", Direction.Up),
-        new GhostFourInstruction("TopRight_14_9", Direction.Right),
-        new GhostFourInstruction("TopRight_14_6", Direction.Down),
-        new GhostFourInstruction("BotRight_8_6", Direction.Right),
-        new GhostFourInstruction("BotRight_8_1", Direction.Down),
-        new GhostFourInstruction("BotRight_1_1", Direction.Left),
-        new GhostFourInstruction("BotRight_1_12", Direction.Up),
-        new GhostFourInstruction("BotRight_5_12", Direction.Left),
-        new GhostFourInstruction("BotLeft_5_12", Direction.Down),
-        new GhostFourInstruction("BotLeft_1_12", Direction.Left),
-        new GhostFourInstruction("BotLeft_1_1", Direction.Up),
-        new GhostFourInstruction("BotLeft_8_1", Direction.Right),
-        new GhostFourInstruction("BotLeft_8_6", Direction.Up),
-        new GhostFourInstruction("TopLeft_8_6", Direction.Left),
-        new GhostFourInstruction("TopLeft_8_1", Direction.Up),
-        new GhostFourInstruction("TopLeft_1_1", Direction.Right),
-        new GhostFourInstruction("TopLeft_1_12", Direction.Down),
-        new GhostFourInstruction("TopLeft_5_12", Direction.Right),
-        new GhostFourInstruction("TopRight_5_12", Direction.Up),
-        new GhostFourInstruction("TopRight_1_12", Direction.Right),
-        new GhostFourInstruction("TopRight_1_1", Direction.Down),
-        new GhostFourInstruction("TopRight_8_1", Direction.Left),
-        new GhostFourInstruction("TopRight_8_6", Direction.Down)
+        new GhostInstruction(null, Direction.None),
+        new GhostInstruction("BotRight_13_11", Direction.Left),
+        new GhostInstruction("BotRight_13_13", Direction.Down),
+        new GhostInstruction("BotRight_11_13", Direction.Right),
+        new GhostInstruction("BotRight_11_9", Direction.Up),
+        new GhostInstruction("TopRight_14_9", Direction.Right),
+        new GhostInstruction("TopRight_14_6", Direction.Down),
+        new GhostInstruction("BotRight_8_6", Direction.Right),
+        new GhostInstruction("BotRight_8_1", Direction.Down),
+        new GhostInstruction("BotRight_1_1", Direction.Left),
+        new GhostInstruction("BotRight_1_12", Direction.Up),
+        new GhostInstruction("BotRight_5_12", Direction.Left),
+        new GhostInstruction("BotLeft_5_12", Direction.Down),
+        new GhostInstruction("BotLeft_1_12", Direction.Left),
+        new GhostInstruction("BotLeft_1_1", Direction.Up),
+        new GhostInstruction("BotLeft_8_1", Direction.Right),
+        new GhostInstruction("BotLeft_8_6", Direction.Up),
+        new GhostInstruction("TopLeft_8_6", Direction.Left),
+        new GhostInstruction("TopLeft_8_1", Direction.Up),
+        new GhostInstruction("TopLeft_1_1", Direction.Right),
+        new GhostInstruction("TopLeft_1_12", Direction.Down),
+        new GhostInstruction("TopLeft_5_12", Direction.Right),
+        new GhostInstruction("TopRight_5_12", Direction.Up),
+        new GhostInstruction("TopRight_1_12", Direction.Right),
+        new GhostInstruction("TopRight_1_1", Direction.Down),
+        new GhostInstruction("TopRight_8_1", Direction.Left),
+        new GhostInstruction("TopRight_8_6", Direction.Down),
+
+        new GhostInstruction("TopLeft_1_6", Direction.Right),
+        new GhostInstruction("TopRight_1_6", Direction.Right),
+        new GhostInstruction("BotLeft_1_6", Direction.Left),
+        new GhostInstruction("BotRight_1_6", Direction.Left),
+
+        new GhostInstruction("TopLeft_5_1", Direction.Up),
+        new GhostInstruction("TopRight_5_1", Direction.Down),
+        new GhostInstruction("BotLeft_5_1", Direction.Up),
+        new GhostInstruction("BotRight_5_1", Direction.Down),
+
+        new GhostInstruction("TopLeft_5_9", Direction.Left),
+        new GhostInstruction("TopRight_5_9", Direction.Right),
+        new GhostInstruction("BotLeft_5_9", Direction.Left),
+        new GhostInstruction("BotRight_5_9", Direction.Right),
+
+        new GhostInstruction("TopLeft_8_9", Direction.Up),
+        new GhostInstruction("TopRight_8_9", Direction.Up),
+        new GhostInstruction("BotLeft_8_9", Direction.Down),
+        new GhostInstruction("BotRight_8_9", Direction.Down),
+
+        new GhostInstruction("TopLeft_8_12", Direction.Left),
+        new GhostInstruction("TopRight_8_12", Direction.Right),
+        new GhostInstruction("BotLeft_8_12", Direction.Left),
+        new GhostInstruction("BotRight_8_12", Direction.Right),
+
+        new GhostInstruction("TopLeft_11_9", Direction.Down),
+        new GhostInstruction("TopRight_11_9", Direction.Down),
+        new GhostInstruction("BotLeft_11_9", Direction.Up),
+        new GhostInstruction("BotRight_11_9", Direction.Up),
+
+        new GhostInstruction("TopLeft_14_0", Direction.Right),
+        new GhostInstruction("TopRight_14_0", Direction.Left),
+        new GhostInstruction("TopLeft_14_6", Direction.Up),
+        new GhostInstruction("TopLeft_14_9", Direction.Left)
     };
 
     /// <summary>
@@ -55,9 +73,9 @@ public class GhostFourInstructions : MonoBehaviour
     /// </summary>
     /// <param name="positionName"></param>
     /// <returns></returns>
-    public GhostFourInstruction GetInstruction(string positionName)
+    public GhostInstruction GetInstruction(string positionName)
     {
-        foreach (GhostFourInstruction instruction in Instructions)
+        foreach (GhostInstruction instruction in Instructions)
         {
             if (positionName == instruction.PositionName) return instruction;
         }
