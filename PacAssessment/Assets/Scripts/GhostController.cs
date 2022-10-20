@@ -687,16 +687,22 @@ public class GhostController : MonoBehaviour
 
         yield return new WaitForSeconds(ScaredTimer - recoverTimer);
 
-        foreach (Animator animator in animatorController)
+        for (int i = 0; i < Ghosts.Length; i++)
         {
-            animator.SetTrigger("TransitionToRecoverTrigger");
+            if (!IsDead[i] && IsScared[i])
+            {
+                animatorController[i].SetTrigger("TransitionToRecoverTrigger");
+            }
         }
 
         yield return new WaitForSeconds(recoverTimer);
 
-        foreach (Animator animator in animatorController)
+        for (int i = 0; i < Ghosts.Length; i++)
         {
-            animator.SetTrigger("TransitionToNormalTrigger");
+            if (!IsDead[i])
+            {
+                animatorController[i].SetTrigger("TransitionToNormalTrigger");
+            }
         }
 
         for (int i = 0; i < Ghosts.Length; i++)
