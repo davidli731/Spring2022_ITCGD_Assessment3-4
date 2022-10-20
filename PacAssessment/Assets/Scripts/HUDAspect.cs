@@ -22,9 +22,6 @@ public class HUDAspect : MonoBehaviour
 
     public const float startTimerCountdownDelay = 1.0f;
 
-    // set this to 4_3 or 16_9 to change aspect ratio
-    private string defaultAspectRatio = "16_9";
-
     private GameObject hudGO;
     private GameObject[] LivesGO;
     private TextMeshProUGUI scoreTMP;
@@ -53,87 +50,13 @@ public class HUDAspect : MonoBehaviour
     public static int GhostTimerValue;
     public static int LifeCount;
 
+    // set this to 4_3 or 16_9 to change aspect ratio
+    public static string DefaultAspectRatio = "16_9";
+
     // Start is called before the first frame update
     void Start()
     {
-        scoreValue = 0;
-        totalTime = 0;
-        GhostTimerValue = 0;
-        LifeCount = 3;
-        IsTimerActive = false;
-        IsStartTextActive = false;
-        IsEndGame = false;
-
-        GameObject[] gameObjects = GameObject.FindGameObjectsWithTag(hudTag);
-
-        // Remove existing canvas
-        foreach(GameObject dupe in gameObjects)
-        {
-            Destroy(dupe);
-        }
-
-        // Add new canvas
-        if (defaultAspectRatio == "4_3")
-        {
-            hudGO = Instantiate(hud4_3);
-        }
-        else if (defaultAspectRatio == "16_9")
-        {
-            hudGO = Instantiate(hud16_9);
-        }
-
-        gameObjects = GameObject.FindGameObjectsWithTag(scoreTag);
-        foreach(GameObject go in gameObjects)
-        {
-            scoreTMP = go.GetComponentInChildren<TextMeshProUGUI>();
-        }
-
-        gameObjects = GameObject.FindGameObjectsWithTag(ghostTimerTag);
-        foreach (GameObject go in gameObjects)
-        {
-            ghostScaredTimerTMP = go.GetComponentInChildren<TextMeshProUGUI>();
-        }
-
-        LivesGO = new GameObject[LifeCount];
-        for (int i = 1; i <= 3; i++)
-        {
-            gameObjects = GameObject.FindGameObjectsWithTag("Live" + i);
-            foreach(GameObject go in gameObjects)
-            {
-                LivesGO[i - 1] = go;
-            }
-        }
-
-        gameObjects = GameObject.FindGameObjectsWithTag(startTextTag);
-        foreach (GameObject go in gameObjects)
-        {
-            startTextTMP = go.GetComponent<TextMeshProUGUI>();
-        }
-
-        gameObjects = GameObject.FindGameObjectsWithTag(endTextTag);
-        foreach (GameObject go in gameObjects)
-        {
-            endTextTMP = go.GetComponent<TextMeshProUGUI>();
-        }
-
-        gameObjects = GameObject.FindGameObjectsWithTag(timerTag);
-        foreach (GameObject go in gameObjects)
-        {
-            timerTMP = go.GetComponentInChildren<TextMeshProUGUI>();
-        }
-
-        gameObjects = GameObject.FindGameObjectsWithTag(subTextTag);
-        foreach (GameObject go in gameObjects)
-        {
-            subTextTMP = go.GetComponentInChildren<TextMeshProUGUI>();
-        }
-
-        subTextTMP.enabled = false;
-
-        if (startTextCoroutine == null)
-        {
-            startTextCoroutine = StartCoroutine(startTextCountdown());
-        }
+        init();
     }
 
     private void Update()
@@ -221,6 +144,91 @@ public class HUDAspect : MonoBehaviour
             }
 
             subTextTMP.enabled = false;
+        }
+    }
+
+    /// <summary>
+    /// Initialise menu
+    /// </summary>
+    private void init()
+    {
+        scoreValue = 0;
+        totalTime = 0;
+        GhostTimerValue = 0;
+        LifeCount = 3;
+        IsTimerActive = false;
+        IsStartTextActive = false;
+        IsEndGame = false;
+
+        GameObject[] gameObjects = GameObject.FindGameObjectsWithTag(hudTag);
+
+        // Remove existing canvas
+        foreach (GameObject dupe in gameObjects)
+        {
+            Destroy(dupe);
+        }
+
+        // Add new canvas
+        if (DefaultAspectRatio == "4_3")
+        {
+            hudGO = Instantiate(hud4_3);
+        }
+        else if (DefaultAspectRatio == "16_9")
+        {
+            hudGO = Instantiate(hud16_9);
+        }
+
+        gameObjects = GameObject.FindGameObjectsWithTag(scoreTag);
+        foreach (GameObject go in gameObjects)
+        {
+            scoreTMP = go.GetComponentInChildren<TextMeshProUGUI>();
+        }
+
+        gameObjects = GameObject.FindGameObjectsWithTag(ghostTimerTag);
+        foreach (GameObject go in gameObjects)
+        {
+            ghostScaredTimerTMP = go.GetComponentInChildren<TextMeshProUGUI>();
+        }
+
+        LivesGO = new GameObject[LifeCount];
+        for (int i = 1; i <= 3; i++)
+        {
+            gameObjects = GameObject.FindGameObjectsWithTag("Live" + i);
+            foreach (GameObject go in gameObjects)
+            {
+                LivesGO[i - 1] = go;
+            }
+        }
+
+        gameObjects = GameObject.FindGameObjectsWithTag(startTextTag);
+        foreach (GameObject go in gameObjects)
+        {
+            startTextTMP = go.GetComponent<TextMeshProUGUI>();
+        }
+
+        gameObjects = GameObject.FindGameObjectsWithTag(endTextTag);
+        foreach (GameObject go in gameObjects)
+        {
+            endTextTMP = go.GetComponent<TextMeshProUGUI>();
+        }
+
+        gameObjects = GameObject.FindGameObjectsWithTag(timerTag);
+        foreach (GameObject go in gameObjects)
+        {
+            timerTMP = go.GetComponentInChildren<TextMeshProUGUI>();
+        }
+
+        gameObjects = GameObject.FindGameObjectsWithTag(subTextTag);
+        foreach (GameObject go in gameObjects)
+        {
+            subTextTMP = go.GetComponentInChildren<TextMeshProUGUI>();
+        }
+
+        subTextTMP.enabled = false;
+
+        if (startTextCoroutine == null)
+        {
+            startTextCoroutine = StartCoroutine(startTextCountdown());
         }
     }
 

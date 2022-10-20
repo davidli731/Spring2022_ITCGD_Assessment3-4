@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StartAspect : MonoBehaviour
 {
@@ -13,9 +14,13 @@ public class StartAspect : MonoBehaviour
 
     private TextMeshProUGUI highScoreTMP;
     private TextMeshProUGUI timeTMP;
+    private Button fourThreeButton;
+    private Button sixteenNineButton;
+
+    private string[] aspectRatioTag = { "4:3Tag", "16:9Tag" };
 
     // set this to 4_3 or 16_9 to change aspect ratio
-    private string defaultAspectRatio = "16_9";
+    private static string defaultAspectRatio = "16_9";
 
     [SerializeField] private GameObject startCanvas4_3;
     [SerializeField] private GameObject startCanvas16_9;
@@ -23,10 +28,18 @@ public class StartAspect : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        init();
+    }
+
+    /// <summary>
+    /// Initialise
+    /// </summary>
+    private void init()
+    {
         GameObject[] dupes = GameObject.FindGameObjectsWithTag(startCanvasTag);
 
         // Remove existing canvas
-        foreach(GameObject dupe in dupes)
+        foreach (GameObject dupe in dupes)
         {
             Destroy(dupe);
         }
@@ -52,6 +65,20 @@ public class StartAspect : MonoBehaviour
         {
             timeTMP = go.GetComponent<TextMeshProUGUI>();
         }
+
+        gameObjects = GameObject.FindGameObjectsWithTag(aspectRatioTag[(int)AspectRatio.FourThree]);
+        foreach (GameObject go in gameObjects)
+        {
+            fourThreeButton = go.GetComponent<Button>();
+        }
+        fourThreeButton.onClick.AddListener(() => SetAspectRatio("4_3"));
+
+        gameObjects = GameObject.FindGameObjectsWithTag(aspectRatioTag[(int)AspectRatio.SixteenNine]);
+        foreach (GameObject go in gameObjects)
+        {
+            sixteenNineButton = go.GetComponent<Button>();
+        }
+        sixteenNineButton.onClick.AddListener(() => SetAspectRatio("16_9"));
 
         getHighScore();
         getTime();
@@ -95,5 +122,16 @@ public class StartAspect : MonoBehaviour
         }
 
         timeTMP.text = timeText + hoursText + ":" + minutesText + ":" + secondsText;
+    }
+
+    /// <summary>
+    /// Set aspect ratio for menu and game HUD
+    /// Input needs to be "16_9" or "4_3"
+    /// </summary>
+    private void SetAspectRatio(string ratio)
+    {
+        defaultAspectRatio = ratio;
+        HUDAspect.DefaultAspectRatio = ratio;
+        init();
     }
 }

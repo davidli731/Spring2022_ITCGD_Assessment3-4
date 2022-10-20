@@ -1,3 +1,9 @@
+public enum AspectRatio
+{
+    FourThree,
+    SixteenNine
+}
+
 public enum Direction
 {
     None = -1,
