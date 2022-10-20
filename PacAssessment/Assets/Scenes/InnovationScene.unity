@@ -118783,6 +118783,7 @@ GameObject:
   - component: {fileID: 1694097197}
   - component: {fileID: 1694097198}
   - component: {fileID: 1694097199}
+  - component: {fileID: 1694097200}
   m_Layer: 5
   m_Name: Grid
   m_TagString: Untagged
@@ -118845,6 +118846,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 49322a42e4f1cc148b83ebfc453e1d5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1694097200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1694097196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ba7f1f4854a3874ba04986b72f74674, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1696699246
@@ -127601,6 +127614,7 @@ GameObject:
   - component: {fileID: 1830073121}
   - component: {fileID: 1830073122}
   - component: {fileID: 1830073123}
+  - component: {fileID: 1830073124}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -127650,6 +127664,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bonusGOPrefab: {fileID: 7929640319941678502, guid: 7b6f6277ae9fc014b8d164db137ab806, type: 3}
+--- !u!114 &1830073124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1830073120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d653c51c82a81944afd2ea4b222de94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  doubleSpeedGOPrefab: {fileID: 1048223827751147660, guid: 6ba759d866c0a3d40ba01313811bb71c, type: 3}
+  levelGenerator: {fileID: 1694097198}
+  excludeRegions: {fileID: 1694097200}
 --- !u!1 &1833779478
 GameObject:
   m_ObjectHideFlags: 0

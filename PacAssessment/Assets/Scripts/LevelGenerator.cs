@@ -517,4 +517,13 @@ public class LevelGenerator : MonoBehaviour
         GameObject.Find("CentreX").SetActive(false);
         GameObject.Find("CentreY").SetActive(false);
     }
+
+    /// <summary>
+    /// Return map
+    /// </summary>
+    /// <returns></returns>
+    public Map GetMap()
+    {
+        return map;
+    }
 }

@@ -1,48 +1,38 @@
 using UnityEngine;
-
-public struct SpawnAreaPosition
-{
-    public string PositionName;
-
-    // Constructor
-    public SpawnAreaPosition(string positionName)
-    {
-        PositionName = positionName;
-    }
-}
+using UnityEngine.UIElements;
 
 public class SpawnAreaPositions : MonoBehaviour
 {
-    public SpawnAreaPosition[] SpawnPosition = new SpawnAreaPosition[]
+    public Positions[] SpawnPosition = new Positions[]
     {
-        new SpawnAreaPosition("TopLeft_14_13"),
-        new SpawnAreaPosition("TopLeft_14_12"),
-        new SpawnAreaPosition("TopLeft_14_11"),
-        new SpawnAreaPosition("TopLeft_13_13"),
-        new SpawnAreaPosition("TopLeft_13_12"),
-        new SpawnAreaPosition("TopLeft_13_11"),
-        new SpawnAreaPosition("TopLeft_12_13"),
-        new SpawnAreaPosition("TopRight_14_13"),
-        new SpawnAreaPosition("TopRight_14_12"),
-        new SpawnAreaPosition("TopRight_14_11"),
-        new SpawnAreaPosition("TopRight_13_13"),
-        new SpawnAreaPosition("TopRight_13_12"),
-        new SpawnAreaPosition("TopRight_13_11"),
-        new SpawnAreaPosition("TopRight_12_13"),
-        new SpawnAreaPosition("BotRight_14_13"),
-        new SpawnAreaPosition("BotRight_14_12"),
-        new SpawnAreaPosition("BotRight_14_11"),
-        new SpawnAreaPosition("BotRight_13_13"),
-        new SpawnAreaPosition("BotRight_13_12"),
-        new SpawnAreaPosition("BotRight_13_11"),
-        new SpawnAreaPosition("BotRight_12_13"),
-        new SpawnAreaPosition("BotLeft_14_13"),
-        new SpawnAreaPosition("BotLeft_14_12"),
-        new SpawnAreaPosition("BotLeft_14_11"),
-        new SpawnAreaPosition("BotLeft_13_13"),
-        new SpawnAreaPosition("BotLeft_13_12"),
-        new SpawnAreaPosition("BotLeft_13_11"),
-        new SpawnAreaPosition("BotLeft_12_13")
+        new Positions("TopLeft_14_13"),
+        new Positions("TopLeft_14_12"),
+        new Positions("TopLeft_14_11"),
+        new Positions("TopLeft_13_13"),
+        new Positions("TopLeft_13_12"),
+        new Positions("TopLeft_13_11"),
+        new Positions("TopLeft_12_13"),
+        new Positions("TopRight_14_13"),
+        new Positions("TopRight_14_12"),
+        new Positions("TopRight_14_11"),
+        new Positions("TopRight_13_13"),
+        new Positions("TopRight_13_12"),
+        new Positions("TopRight_13_11"),
+        new Positions("TopRight_12_13"),
+        new Positions("BotRight_14_13"),
+        new Positions("BotRight_14_12"),
+        new Positions("BotRight_14_11"),
+        new Positions("BotRight_13_13"),
+        new Positions("BotRight_13_12"),
+        new Positions("BotRight_13_11"),
+        new Positions("BotRight_12_13"),
+        new Positions("BotLeft_14_13"),
+        new Positions("BotLeft_14_12"),
+        new Positions("BotLeft_14_11"),
+        new Positions("BotLeft_13_13"),
+        new Positions("BotLeft_13_12"),
+        new Positions("BotLeft_13_11"),
+        new Positions("BotLeft_12_13")
     };
 
     /// <summary>
@@ -52,7 +42,7 @@ public class SpawnAreaPositions : MonoBehaviour
     /// <returns></returns>
     public bool IsInSpawn(string posName)
     {
-        foreach (SpawnAreaPosition position in SpawnPosition)
+        foreach (Positions position in SpawnPosition)
         {
             if (position.PositionName == posName) return true;
         }

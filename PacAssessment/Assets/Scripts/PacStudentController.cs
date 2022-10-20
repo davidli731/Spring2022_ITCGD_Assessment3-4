@@ -27,6 +27,9 @@ public class PacStudentController : MonoBehaviour
     public bool isWalking = false;
     public bool isDead = false;
 
+    // 1.0f speed for default player speed
+    public static float PlayerSpeed = 1.0f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -156,7 +159,7 @@ public class PacStudentController : MonoBehaviour
 
             if (distance > marginalDistance)
             {
-                transform.position = Vector3.Lerp(tween.StartPos, tween.DestPos, (Time.time - tween.StartTime) / duration);
+                transform.position = Vector3.Lerp(tween.StartPos, tween.DestPos, (Time.time - tween.StartTime) / (duration / PlayerSpeed));
             } else
             {
                 string currentPosName;
@@ -452,6 +455,13 @@ public class PacStudentController : MonoBehaviour
             audioSource.Play();
             Destroy(collider.gameObject);
             HUDAspect.AddPoints(Points.BonusCherry);
+        }
+        else if (collider.gameObject.tag == "DoubleSpeed")
+        {
+            DoubleSpeedController.HasCollectedDoubleSpeed = true;
+            audioSource.clip = audioArray[(int)PacStudentState.EatingPellet];
+            audioSource.Play();
+            Destroy(collider.gameObject);
         }
         else
         {

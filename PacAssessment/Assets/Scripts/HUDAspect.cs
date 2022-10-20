@@ -10,14 +10,17 @@ public class HUDAspect : MonoBehaviour
     private const string scoreText = "Score: ";
     private const string ghostTimerTag = "HUDScaredTimer";
     private const string startTextTag = "HUDStartText";
+    private const string subTextTag = "HUDSubText";
     private const string endTextTag = "HUDEndText";
     private const string timerTag = "HUDTimer";
     private const string ghostTimerText = "Scared Timer: ";
     private const string timerText = "Timer: ";
     private const string saveScoreKey = "SaveScoreKey";
     private const string saveTotalTimeKey = "SaveTotalTimeKey";
-    public const float startTimerCountdownDelay = 1.0f;
     private const float gameOverDelay = 3.0f;
+    private const float flickerTimer = 1.0f;
+
+    public const float startTimerCountdownDelay = 1.0f;
 
     // set this to 4_3 or 16_9 to change aspect ratio
     private string defaultAspectRatio = "16_9";
@@ -27,11 +30,13 @@ public class HUDAspect : MonoBehaviour
     private TextMeshProUGUI scoreTMP;
     private TextMeshProUGUI ghostScaredTimerTMP;
     private TextMeshProUGUI startTextTMP;
+    private TextMeshProUGUI subTextTMP;
     private TextMeshProUGUI endTextTMP;
     private TextMeshProUGUI timerTMP;
     private Coroutine startTextCoroutine;
     private Coroutine endTextCoroutine;
     private Coroutine timerCoroutine;
+    private Coroutine subTextCoroutine;
     private string[] startText = { "GO!", "1", "2", "3" };
     private string hoursText, minutesText, secondsText;
     private int hours, minutes, seconds;
@@ -117,6 +122,14 @@ public class HUDAspect : MonoBehaviour
             timerTMP = go.GetComponentInChildren<TextMeshProUGUI>();
         }
 
+        gameObjects = GameObject.FindGameObjectsWithTag(subTextTag);
+        foreach (GameObject go in gameObjects)
+        {
+            subTextTMP = go.GetComponentInChildren<TextMeshProUGUI>();
+        }
+
+        subTextTMP.enabled = false;
+
         if (startTextCoroutine == null)
         {
             startTextCoroutine = StartCoroutine(startTextCountdown());
@@ -191,6 +204,24 @@ public class HUDAspect : MonoBehaviour
                 endTextCoroutine = StartCoroutine(showGameOver());
             }
         }
+
+        if (DoubleSpeedController.HasCollectedDoubleSpeed && !DoubleSpeedController.HasUsedDoubleSpeed)
+        {
+            if (subTextCoroutine == null)
+            {
+                subTextCoroutine = StartCoroutine(subTextFlicker());
+            }
+        }
+        else
+        {
+            if (subTextCoroutine != null)
+            {
+                StopCoroutine(subTextCoroutine);
+                subTextCoroutine = null;
+            }
+
+            subTextTMP.enabled = false;
+        }
     }
 
     /// <summary>
@@ -263,6 +294,21 @@ public class HUDAspect : MonoBehaviour
         endTextCoroutine = null;
 
         SceneManager.LoadScene((int)GameState.StartScene);
+    }
+
+    /// <summary>
+    /// Coroutine to flicker subText
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator subTextFlicker()
+    {
+        subTextTMP.enabled = true;
+        yield return new WaitForSeconds(flickerTimer);
+        subTextTMP.enabled = false;
+        yield return new WaitForSeconds(flickerTimer);
+
+        StopCoroutine(subTextCoroutine);
+        subTextCoroutine = null;
     }
 
     /// <summary>
