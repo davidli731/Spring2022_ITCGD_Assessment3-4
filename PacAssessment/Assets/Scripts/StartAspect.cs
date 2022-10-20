@@ -28,13 +28,13 @@ public class StartAspect : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        init();
+        initialise();
     }
 
     /// <summary>
     /// Initialise
     /// </summary>
-    private void init()
+    private void initialise()
     {
         GameObject[] dupes = GameObject.FindGameObjectsWithTag(startCanvasTag);
 
@@ -132,6 +132,6 @@ public class StartAspect : MonoBehaviour
     {
         defaultAspectRatio = ratio;
         HUDAspect.DefaultAspectRatio = ratio;
-        init();
+        initialise();
     }
 }

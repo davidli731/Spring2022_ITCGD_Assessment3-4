@@ -14,13 +14,12 @@ public class LevelGenerator : MonoBehaviour
     private float startingYPos = -14.0f;
     private const float startingZPos = 0.0f;
     private int arrayIndex;
+    private string[] quadrant = { "TopLeft", "TopRight", "BotLeft", "BotRight" };
 
     public int tileArraySizeX;
     public int tileArraySizeY;
 
     public static int NumOfPellets;
-
-    private string[] quadrant = { "TopLeft", "TopRight", "BotLeft", "BotRight" };
 
     [SerializeField] private GameObject squareTileGO;
 

@@ -5,9 +5,9 @@ public class GhostController : MonoBehaviour
 {
     private const float duration = 0.5f;
     private const float marginalDistance = 0.05f;
-    public const float ScaredTimer = 10.0f;
     private const float recoverTimer = 3.0f;
-    private string[] ghostPositions = { "TopLeft_13_11", "TopRight_13_11", "BotLeft_13_11", "BotRight_13_11" };
+
+    public const float ScaredTimer = 10.0f;
 
     [SerializeField] private GameObject[] Ghosts = new GameObject[4];
     [SerializeField] private PacStudentController pacStudentController;
@@ -29,6 +29,7 @@ public class GhostController : MonoBehaviour
     private GhostTwoInstructions ghostTwoInstructions;
     private GhostThreeInstructions ghostThreeInstructions;
     private GhostFourInstructions ghostFourInstructions;
+    private string[] ghostPositions = { "TopLeft_13_11", "TopRight_13_11", "BotLeft_13_11", "BotRight_13_11" };
 
     public bool[] IsScared;
     public bool[] IsDead;
@@ -36,7 +37,7 @@ public class GhostController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        init();
+        initialise();
     }
 
     // Update is called once per frame
@@ -71,7 +72,7 @@ public class GhostController : MonoBehaviour
     /// <summary>
     /// Initialise variables
     /// </summary>
-    private void init()
+    private void initialise()
     {
         gameStart = true;
         deadTimer = new float[Ghosts.Length];

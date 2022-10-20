@@ -26,14 +26,14 @@ public class BackgroundMusic : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        init();
+        initialise();
         handleMusicSwitching();
     }
 
     /// <summary>
     /// Initialise variables on game start after initial countdown
     /// </summary>
-    private void init()
+    private void initialise()
     {
         if (gameStart && !HUDAspect.IsStartTextActive)
         {

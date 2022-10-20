@@ -28,13 +28,15 @@ public class PacStudentController : MonoBehaviour
     public bool isDead = false;
 
     // 1.0f speed for default player speed
-    public static float PlayerSpeed = 1.0f;
+    public static float PlayerSpeed;
 
     // Start is called before the first frame update
     void Start()
     {
         animatorController = PacStudentSpriteGO.GetComponent<Animator>();
         pacStudentSpriteRenderer = PacStudentSpriteGO.GetComponent<SpriteRenderer>();
+
+        PlayerSpeed = 1.0f;
     }
 
     // Update is called once per frame
