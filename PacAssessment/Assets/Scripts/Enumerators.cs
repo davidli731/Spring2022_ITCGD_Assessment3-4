@@ -10,7 +10,8 @@ public enum Direction
 public enum GameState
 {
     StartScene,
-    GameScene
+    GameScene,
+    InnovationScene
 }
 
 public enum Ghost : int

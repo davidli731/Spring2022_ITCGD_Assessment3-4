@@ -525,6 +525,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6585161230870833439, guid: 4dcbdab98e5dbcf42aefbb93dc51a2a4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 4dcbdab98e5dbcf42aefbb93dc51a2a4, type: 3}
@@ -639,7 +643,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a54c776a639bce4291cfc01f6b1d4ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  highScoreTMP: {fileID: 0}
-  timeTMP: {fileID: 0}
   startCanvas4_3: {fileID: 4524949649496698953, guid: 4dcbdab98e5dbcf42aefbb93dc51a2a4, type: 3}
   startCanvas16_9: {fileID: 4524949649496698953, guid: a1c85b8b7a3914343a9c848974b5e8f9, type: 3}
